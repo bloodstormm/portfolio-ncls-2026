@@ -10,6 +10,7 @@
   --brand: 140, 110, 93;       /* #8C6E5D - cor de marca */
   --brand-hover: 115, 88, 73;  /* #735849 - hover/alt */
   --text-muted: 74, 74, 74;    /* #4A4A4A - texto secundário */
+  --beige: 210, 200, 186;      /* #D2C8BA - beige suave que combina */
 }
 
 .dark {
@@ -21,14 +22,15 @@
   --brand: 193, 158, 121;      /* brand levemente mais clara */
   --brand-hover: 168, 133, 100;
   --text-muted: 200, 200, 200;
+  --beige: 100, 95, 85;        /* beige mais escuro para modo escuro */
 }
 
 /* Tokens do Tailwind 4 */
 @theme inline {
-  /* fontes */
-  --font-Odasans: "Odasans Semibold", sans-serif;
-  --font-Wulkan: "Wulkan", serif;
-  --font-Poppins: "Poppins", sans-serif;
+  /* fontes — referenciam as variáveis CSS injetadas pelo Next.js localFont */
+  --font-Odasans: var(--font-Odasans);
+  --font-Wulkan: var(--font-Wulkan);
+  --font-Poppins: var(--font-Poppins);
 
   /* cores usadas pelas utilities: bg-background, text-primary, etc. */
   --color-background: rgb(var(--background));
@@ -38,6 +40,7 @@
   --color-primary: rgb(var(--brand));
   --color-primary-hover: rgb(var(--brand-hover));
   --color-muted: rgb(var(--text-muted));
+  --color-beige: rgb(var(--beige));
 }
 
 /* Estilo global do body */

@@ -1,34 +1,31 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
-import { calcLength, motion } from "framer-motion";
-
-import { fadeInDown } from "../../utils/Animations";
 import { MenuModal } from "../MenuModal";
 
 import { MdOpenInNew } from "react-icons/md";
 import { BsMoon, BsStars } from "react-icons/bs";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
-
-type HeaderProps = {
-  scrolled: boolean;
-};
+import { transition } from "@/app/utils/Animations";
 
 export const Header = () => {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<string>();
 
+  // Páginas com hero de imagem escura — header usa texto branco quando transparente
+  const darkHeroPages = /^\/projects\/.+/;
+  const hasDarkHero = darkHeroPages.test(pathname) && !scrolled;
 
   // Tema do sistema do usuário
-  const [theme, setTheme] = useState<string>();
-  
-  // Evento para checar se o user selecionou um tema diferente do seu sistema
   useEffect(() => {
-    
     if (typeof window === "undefined") return;
-    
+
     const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e: MediaQueryListEvent) => {
@@ -36,12 +33,11 @@ export const Header = () => {
         setTheme(e.matches ? "dark" : "light");
       }
     };
-    
+
     darkQuery.addEventListener("change", handleChange);
     return () => darkQuery.removeEventListener("change", handleChange);
   }, []);
 
-  // Na primeira vez que a página carrega, checamos se o user selecionou um tema diferente do seu sistema
   useEffect(() => {
     if (
       localStorage.getItem("theme") === "dark" ||
@@ -55,7 +51,6 @@ export const Header = () => {
     }
   }, []);
 
-  // Lógica para alterar o tema a cada vez que clica no botão de tema, e salvamos no localStorage
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -66,97 +61,133 @@ export const Header = () => {
     }
   }, [theme]);
 
-  // Handler do botão
   const handleSwitchTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <motion.div
-      {...fadeInDown}
-      transition={{ ...fadeInDown.transition, delay: 1.1 }}
-      className={`${
-        scrolled && "bg-brown/10 text-offWhite shadow-sm backdrop-blur-xl"
-      } sticky top-0 z-30 flex py-6 transition-colors duration-150`}
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.6, -0.05, 0.1, 0.9] }}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     >
-      <div className="container mx-auto flex items-center justify-between px-10 xl:px-0 ">
-        <Link
-          href="/"
-          className="font-Odasans text-5xl font-semibold text-primary dark:text-secondary"
-          onClick={() => window.scrollTo(0, 0)}
-        >
-          NCLS
-        </Link>
+      {/* Background: sempre blur leve, mais sólido após scroll */}
+      <div
+        className={`absolute inset-0 transition-all duration-500 ${
+          scrolled
+            ? "backdrop-blur-md bg-background/80"
+            : "backdrop-blur-none bg-transparent"
+        }`}
+      />
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="flex items-center justify-between h-20">
 
-        <div className="hidden gap-16 font-medium text-sm xl:text-base lg:flex">
-          <Link
-            href="/sobre-mim"
-            className="bottomLine"
-            onClick={() => window.scrollTo(0, 0)}
+          {/* Logo */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{...transition, duration: 0.6 }}
           >
-            Sobre Mim
-          </Link>
-          <Link
-            href="/projects"
-            className="bottomLine"
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            Projetos
-          </Link>
-          <Link
-            href="#career"
-            className="bottomLine"
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            Carreira
-          </Link>
-          <Link
-            href="#contact"
-            className="bottomLine"
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            Contato
-          </Link>
-        </div>
+            <Link
+              href="/"
+              className="relative group"
+            >
+              <span className="font-Odasans text-4xl lg:text-5xl font-bold">
+                <span className="text-primary dark:text-secondary transition-colors duration-300">NCLS</span>
+              </span>
 
-        <div className="flex items-center gap-4">
-          {theme === "light" ? (
-            <BsMoon
+              {/* Underline effect */}
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary dark:bg-secondary group-hover:w-full transition-all duration-300 ease-out"></div>
+            </Link>
+          </motion.div>
+
+          {/* Navigation - Centralizada */}
+          <nav className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center space-x-12">
+              <motion.div whileHover={{ y: -2 }} transition={{...transition, duration: 0.2 }}>
+                <Link
+                  href="/about"
+                  className={`relative text-base font-medium transition-colors duration-300 group ${
+                    hasDarkHero
+                      ? "text-white/90 hover:text-white"
+                      : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
+                  }`}
+                >
+                  Sobre
+                  <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current group-hover:w-full transition-all duration-300 ease-out"></div>
+                </Link>
+              </motion.div>
+
+              <motion.div whileHover={{ y: -2 }} transition={{...transition, duration: 0.2 }}>
+                <Link
+                  href="/projects"
+                  className={`relative text-base font-medium transition-colors duration-300 group ${
+                    hasDarkHero
+                      ? "text-white/90 hover:text-white"
+                      : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
+                  }`}
+                >
+                  Projetos
+                  <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current group-hover:w-full transition-all duration-300 ease-out"></div>
+                </Link>
+              </motion.div>
+            </div>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center space-x-4">
+
+            {/* Theme Toggle */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{...transition}}
               onClick={handleSwitchTheme}
-              className={`h-6 w-6 ${scrolled ? 'text-offWhite' : 'text-brown'}  hover:scale-125 cursor-pointer transition duration-500`}
-            />
-          ) : (
-            <BsStars
-              onClick={handleSwitchTheme}
-              className="h-6 w-6 text-offWhite hover:scale-125 cursor-pointer transition duration-500"
-            />
-          )}
-          <a
-            href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
-            download
-            target="_blank"
-            className="hidden items-center gap-3 rounded-3xl bg-primary dark:bg-secondary hover:brightness-110 py-3 px-5 text-white transition-all disabled:cursor-not-allowed xl:text-base text-sm disabled:hover:bg-primary/40 disabled:hover:text-white/80 lg:flex"
-          >
-            Ver Currículo
-            <MdOpenInNew />
-          </a>
-          {/* Botao Menu p Mobile  */}
-          <button onClick={() => setIsOpen(true)} className="block lg:hidden">
-            <HiOutlineMenuAlt4 className="text-2xl" />
-          </button>
+              className="p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors"
+            >
+              {theme === "light" ? (
+                <BsMoon className={`h-5 w-5 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
+              ) : (
+                <BsStars className={`h-5 w-5 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
+              )}
+            </motion.button>
+
+            {/* Resume Button */}
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{...transition, duration: 0.6}}
+              href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
+              target="_blank"
+              className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium text-sm hover:shadow-lg transition-colors duration-300"
+            >
+              <span>Currículo</span>
+              <MdOpenInNew className="h-4 w-4" />
+            </motion.a>
+
+            {/* Mobile Menu */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsOpen(true)}
+              className="lg:hidden p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors duration-300"
+            >
+              <HiOutlineMenuAlt4 className={`h-6 w-6 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
+            </motion.button>
+          </div>
         </div>
       </div>
 
-      {/* Menu p Mobile */}
+      {/* Menu Mobile */}
       <MenuModal isOpen={isOpen} setIsOpen={setIsOpen} />
-    </motion.div>
+    </motion.header>
   );
 };

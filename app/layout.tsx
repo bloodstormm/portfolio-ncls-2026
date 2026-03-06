@@ -36,9 +36,15 @@ export default function RootLayout({
       <body
         className={`${odasans.variable} ${wulkan.variable} ${poppins.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <Providers>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 pt-20">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );

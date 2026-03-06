@@ -5,157 +5,138 @@ import { collection, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BsArrowUpRight, BsArrowLeft } from "react-icons/bs";
+import { BsArrowUpRight } from "react-icons/bs";
 import { db } from "../lib/firebase";
 import { StaggerContainer, itemAnimation, fadeInUp } from "../utils/Animations";
+import { RichTextRenderer } from "../components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const snap = await getDocs(collection(db, "projects"));
-      const data = snap.docs.map(
-        (doc) =>
-          ({
-            id: doc.id,
-            ...(doc.data() as Omit<Project, "id">),
-          }) as Project
-      );
-      setProjects(data);
+      try {
+        const snap = await getDocs(collection(db, "projects"));
+        const data = snap.docs
+          .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<Project, "id">) }) as Project)
+          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+        setProjects(data);
+      } finally {
+        setLoading(false);
+      }
     }
-
     load();
   }, []);
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Header */}
-      <motion.header
+
+      {/* ── Cabeçalho ── */}
+      <motion.section
         {...fadeInUp}
-        transition={{ ...fadeInUp.transition, delay: 0.1 }}
-        className="container mx-auto px-4 py-8"
+        className="container mx-auto px-6 pt-16 pb-12 max-w-6xl"
       >
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors duration-300 mb-8"
-        >
-          <BsArrowLeft className="h-4 w-4" />
-          <span>Voltar ao início</span>
-        </Link>
-
-        <div className="text-center space-y-4">
-          <h1 className="font-Wulkan text-4xl md:text-5xl uppercase tracking-wide">
-            Meus Projetos
+        <div className="space-y-4">
+          <span className="text-xs uppercase tracking-widest text-primary font-semibold">
+            Portfólio
+          </span>
+          <h1 className="font-Wulkan text-5xl md:text-7xl uppercase tracking-wide leading-none">
+            Projetos
           </h1>
-          <div className="w-32 h-1 bg-primary mx-auto rounded-full"></div>
-          <p className="text-muted text-lg max-w-3xl mx-auto">
-            Aqui você encontra todos os meus trabalhos de UX/UI Design e Desenvolvimento Front-end.
-            Cada projeto representa uma jornada única de criação e aprendizado.
-          </p>
+          <div className="flex items-end justify-between gap-6 flex-wrap">
+            <p className="text-foreground/60 text-lg max-w-xl leading-relaxed">
+              Uma seleção dos meus trabalhos em UX/UI Design e Desenvolvimento Front-end.
+            </p>
+            <span className="text-sm text-muted font-mono">
+              {projects.length} projeto{projects.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+          <div className="w-full h-px bg-beige/30 mt-6" />
         </div>
-      </motion.header>
+      </motion.section>
 
-      {/* Projects Grid */}
-      <section className="container mx-auto px-4 pb-16">
-        <motion.div
-          variants={StaggerContainer}
-          initial="hidden"
-          animate="show"
-          className="grid gap-8 md:grid-cols-2 xl:grid-cols-3"
-        >
-          {projects.map((project) => (
-            <motion.div key={project.id} variants={itemAnimation}>
-              <Link href={`/projects/${project.id}`} className="group block">
-                <article className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-background/90 to-background/60 backdrop-blur-sm border border-beige/20 hover:border-primary/30 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
+      {/* ── Lista de projetos ── */}
+      <section className="container mx-auto px-6 pb-24 max-w-6xl">
+        {loading ? (
+          <div className="flex justify-center py-24">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : projects.length === 0 ? (
+          <motion.div {...fadeInUp} className="text-center py-24 text-muted">
+            <p className="text-lg">Em breve, novos projetos.</p>
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={StaggerContainer}
+            initial="hidden"
+            animate="show"
+            className="space-y-0"
+          >
+            {projects.map((project, index) => (
+              <motion.div key={project.id} variants={itemAnimation}>
+                <Link href={`/projects/${project.id}`} className="group block">
+                  <article className="grid md:grid-cols-2 gap-0 border-b border-beige/20 py-10 group-hover:border-primary/20 transition-colors duration-300">
 
-                  {/* Project Image */}
-                  <div className="relative h-80 w-full overflow-hidden">
-                    <Image
-                      src={project.coverUrl}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    {/* View Button */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="bg-white/20 backdrop-blur-md rounded-full p-6 transform -translate-y-4 group-hover:translate-y-0">
-                        <BsArrowUpRight className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-
-                    {/* Status Indicator */}
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-
-                  {/* Project Info */}
-                  <div className="p-8 space-y-4">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="font-Odasans text-2xl font-semibold text-primary group-hover:text-primary/80 transition-colors duration-300">
-                        {project.title}
-                      </h3>
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full border border-beige/30 flex items-center justify-center group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300">
-                        <BsArrowUpRight className="h-5 w-5 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-                      </div>
-                    </div>
-
-                    <p className="text-muted leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Additional Images Preview */}
-                    {project.images && project.images.length > 0 && (
-                      <div className="pt-4">
-                        <div className="flex gap-3 overflow-hidden">
-                          {project.images.slice(0, 4).map((url, index) => (
-                            <div
-                              key={url}
-                              className="relative h-16 w-20 shrink-0 rounded-lg overflow-hidden opacity-60 hover:opacity-100 transition-opacity duration-300"
-                            >
-                              <Image
-                                src={url}
-                                alt={`${project.title} preview ${index + 1}`}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          ))}
-                          {project.images.length > 4 && (
-                            <div className="h-16 w-20 rounded-lg bg-beige/20 flex items-center justify-center text-sm text-muted font-medium">
-                              +{project.images.length - 4}
-                            </div>
+                    {/* Info */}
+                    <div className="flex flex-col justify-between gap-6 md:pr-12">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-mono text-foreground/30">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          {project.category && (
+                            <span className="text-xs uppercase tracking-widest text-primary/70 font-medium">
+                              {project.category}
+                            </span>
                           )}
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </article>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
 
-        {/* Empty State */}
-        {projects.length === 0 && (
-          <motion.div
-            {...fadeInUp}
-            transition={{ ...fadeInUp.transition, delay: 0.5 }}
-            className="text-center py-16"
-          >
-            <div className="text-6xl mb-4">🎨</div>
-            <h3 className="font-Odasans text-xl text-primary mb-2">
-              Em breve, novos projetos
-            </h3>
-            <p className="text-muted">
-              Estou trabalhando em novos projetos incríveis. Volte em breve!
-            </p>
+                        <h2 className="font-Wulkan text-3xl md:text-4xl uppercase leading-tight text-foreground group-hover:text-primary transition-colors duration-300">
+                          {project.title}
+                        </h2>
+
+                        <RichTextRenderer
+                          content={project.description}
+                          className="text-foreground/60 text-sm leading-relaxed"
+                          maxLines={3}
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-3 flex-wrap">
+                        {project.tags?.slice(0, 4).map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs text-muted border border-beige/30 px-3 py-1 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Imagem */}
+                    <div
+                      className="relative overflow-hidden rounded-2xl mt-6 md:mt-0"
+                      style={{ aspectRatio: "16/9" }}
+                    >
+                      <Image
+                        src={project.coverUrl}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
+                      <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                        <BsArrowUpRight className="h-4 w-4 text-white" />
+                      </div>
+                    </div>
+
+                  </article>
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </section>

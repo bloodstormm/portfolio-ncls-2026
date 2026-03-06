@@ -1,7 +1,7 @@
 import type { Transition } from "framer-motion";
 const transition: Transition = {
   duration: 0.8,
-  ease: [0.6, -0.05, 0.1, 0.9],
+  ease: [0.4, -0.05, 0.1, 1.1],
 };
 
 const fadeIn = {
@@ -11,9 +11,9 @@ const fadeIn = {
 };
 
 const fadeInDown = {
-  initial: { y: -100, opacity: 0 },
+  initial: { y: -50, opacity: 0 },
   animate: { y: 0, opacity: 1 },
-  exit: { y: 100, opacity: 0 },
+  exit: { y: 50, opacity: 0 },
   transition: { ...transition, duration: 1 },
 };
 
