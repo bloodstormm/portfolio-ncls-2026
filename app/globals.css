@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
+/* Tema base em RGB (para usar com rgb(var(--...))) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Fundo e texto (modo claro) */
+  --background: 245, 243, 241; /* ##E5DDD4 */
+  --foreground: 22, 22, 22;    /* #161616 */
+
+  /* Cores de marca principais (claras) */
+  --brand: 140, 110, 93;       /* #8C6E5D - cor de marca */
+  --brand-hover: 115, 88, 73;  /* #735849 - hover/alt */
+  --text-muted: 74, 74, 74;    /* #4A4A4A - texto secundário */
 }
 
+.dark {
+  /* Fundo e texto (modo escuro suave) */
+  --background: 28, 28, 28;    /* quase preto suave */
+  --foreground: 245, 245, 245; /* texto claro */
+
+  /* Mantém a marca mas um pouco mais clara no escuro */
+  --brand: 193, 158, 121;      /* brand levemente mais clara */
+  --brand-hover: 168, 133, 100;
+  --text-muted: 200, 200, 200;
+}
+
+/* Tokens do Tailwind 4 */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* fontes */
+  --font-Odasans: "Odasans Semibold", sans-serif;
+  --font-Wulkan: "Wulkan", serif;
+  --font-Poppins: "Poppins", sans-serif;
+
+  /* cores usadas pelas utilities: bg-background, text-primary, etc. */
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-brand: rgb(var(--brand));
+  --color-brand-hover: rgb(var(--brand-hover));
+  --color-primary: rgb(var(--brand));
+  --color-primary-hover: rgb(var(--brand-hover));
+  --color-muted: rgb(var(--text-muted));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Estilo global do body */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-family: var(--font-Poppins);
+}
+
+/* keyframes da animação scroll (mantida) */
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
 }

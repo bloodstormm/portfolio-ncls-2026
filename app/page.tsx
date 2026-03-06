@@ -1,65 +1,119 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+import { fadeInDown, fadeInUp, transition } from "./utils/Animations";
+
+
+import { BsArrowUpRight, BsGithub } from "react-icons/bs";
+import { FaLinkedinIn } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
+import HomeImage from "@/public/images/home-image.jpg";
+import { ProjectsList } from "./components/ProjectsList";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <>
+
+      <section className="container relative z-20 mx-auto w-full h-FullScreen overflow-hidden sm:mt-4 flex flex-col items-center justify-center h-full">
+        <motion.div
+          {...fadeInUp}
+          transition={{ ...fadeInUp.transition, delay: 0.2, duration: 1.25 }}
+          className="mx-auto grid items-center gap-4 p-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-14 "
+        >
+          <div className="flex flex-col gap-6">
+            <h1 className="text-center font-Wulkan text-4xl lg:text-5xl font-medium uppercase lg:text-left xl:text-5xl">
+              Ux/UI & 
+              <br className="hidden lg:block" /> Front-End DEV
+            </h1>
+
+            <p className="text-sm xl:text-base">
+              Olá, seja bem-vindo(a) ao meu portfólio! <br></br> Aqui você
+              encontrará meus projetos que venho feito ultimamente. Logo abaixo
+              está algumas das minhas redes, sinta-se à vontade de entrar em
+              contato! 🤠
+            </p>
+            {/* Redes sociais */}
+            <div className="flex justify-center gap-10 pb-4 text-3xl sm:justify-start sm:pt-6">
+              <a
+                href="https://www.linkedin.com/in/nicolas-malachias/"
+                className="transition hover:text-primary"
+                target="_blank"
+              >
+                <FaLinkedinIn />
+              </a>
+              <a
+                href="mailto:nicolasmalaquias2015@gmail.com"
+                className="transition-colors duration-300 hover:text-primary"
+                target="_blank"
+              >
+                <HiOutlineMail />
+              </a>
+
+              <a
+                href="https://github.com/bloodstormm"
+                className="transition hover:text-primary"
+                target="_blank"
+              >
+                <BsGithub />
+              </a>
+            </div>
+          </div>
+
+          <div className="mx-auto w-[90%] shadow-2xl overflow-hidden rounded-full">
+            <motion.img
+              whileHover={{ scale: 1.1 }}
+              initial={{ scale: 1.15 }}
+              animate={{ scale: 1 }}
+              transition={{ ...transition, duration: 1.45, delay: 0.7 }}
+              src={HomeImage.src || undefined}
+              className="mx-auto w-full"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          </div>
+          <div className="relative h-2/3 ">
+            <h1 className="text-center font-Wulkan text-4xl lg:text-5xl uppercase md:hidden lg:block sm:text-left xl:text-6xl">
+              Nícolas Malachias
+            </h1>
+
+            <Link
+              href="/projects"
+              className="absolute group -bottom-4 hover:scale-105 transition duration-300 left-6 hidden h-32 w-32 items-center justify-center rounded-full border border-brown dark:border-beige sm:flex lg:left-14 lg:h-40 lg:w-40 xl:bottom-0"
+            >
+              <div className="absolute top-2 right-1 h-6 w-6 rounded-full group-hover:animate-pulse transition bg-primary lg:top-1 lg:right-5"></div>
+              <p className="w-20">Ver meus Projetos</p>
+              <BsArrowUpRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </motion.div>
+
+        <motion.div
+          {...fadeInDown}
+          transition={{ ...fadeInDown.transition, duration: 1.25 }}
+          className="flex mx-auto rounded-3xl overflow-x-auto w-full justify-center items-center gap-6 pt-4 pb-10 lg:gap-14 2xl:gap-20 sm:p-6"
+        >
+          {/* <CompaniesCarousel /> */}
+        </motion.div>
+
+        <ProjectsList />
+      </section>
+
+      {/* Efeitos em volta do site */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.8 } }}
+        className="absolute bottom-5 left-20 h-96 w-72 rounded-full bg-gradient-to-br from-primary dark:from-secondary to-transparent p-px sm:bottom-0 sm:rounded-t-full"
+      >
+        <div className="h-full w-full rounded-t-full bg-background dark:bg-background transition-colors duration-300" />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.8 } }}
+        className="absolute top-0 right-0 h-64 w-56 rounded-b-full bg-gradient-to-tl
+         from-primary to-transparent p-px "
+      >
+        <div className="h-full w-full rounded-b-full dark:bg-background bg-background transition-colors duration-300" />
+      </motion.div>
+    </>
   );
-}
+};

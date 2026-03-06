@@ -1,0 +1,162 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+
+import { calcLength, motion } from "framer-motion";
+
+import { fadeInDown } from "../../utils/Animations";
+import { MenuModal } from "../MenuModal";
+
+import { MdOpenInNew } from "react-icons/md";
+import { BsMoon, BsStars } from "react-icons/bs";
+import { HiOutlineMenuAlt4 } from "react-icons/hi";
+
+type HeaderProps = {
+  scrolled: boolean;
+};
+
+export const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+
+  // Tema do sistema do usuário
+  const [theme, setTheme] = useState<string>();
+  
+  // Evento para checar se o user selecionou um tema diferente do seu sistema
+  useEffect(() => {
+    
+    if (typeof window === "undefined") return;
+    
+    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (!localStorage.getItem("theme")) {
+        setTheme(e.matches ? "dark" : "light");
+      }
+    };
+    
+    darkQuery.addEventListener("change", handleChange);
+    return () => darkQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  // Na primeira vez que a página carrega, checamos se o user selecionou um tema diferente do seu sistema
+  useEffect(() => {
+    if (
+      localStorage.getItem("theme") === "dark" ||
+      (!localStorage.getItem("theme") && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+      setTheme("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      setTheme("light");
+    }
+  }, []);
+
+  // Lógica para alterar o tema a cada vez que clica no botão de tema, e salvamos no localStorage
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else if (theme === "light") {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [theme]);
+
+  // Handler do botão
+  const handleSwitchTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <motion.div
+      {...fadeInDown}
+      transition={{ ...fadeInDown.transition, delay: 1.1 }}
+      className={`${
+        scrolled && "bg-brown/10 text-offWhite shadow-sm backdrop-blur-xl"
+      } sticky top-0 z-30 flex py-6 transition-colors duration-150`}
+    >
+      <div className="container mx-auto flex items-center justify-between px-10 xl:px-0 ">
+        <Link
+          href="/"
+          className="font-Odasans text-5xl font-semibold text-primary dark:text-secondary"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          NCLS
+        </Link>
+
+        <div className="hidden gap-16 font-medium text-sm xl:text-base lg:flex">
+          <Link
+            href="/sobre-mim"
+            className="bottomLine"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Sobre Mim
+          </Link>
+          <Link
+            href="/projects"
+            className="bottomLine"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Projetos
+          </Link>
+          <Link
+            href="#career"
+            className="bottomLine"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Carreira
+          </Link>
+          <Link
+            href="#contact"
+            className="bottomLine"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            Contato
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-4">
+          {theme === "light" ? (
+            <BsMoon
+              onClick={handleSwitchTheme}
+              className={`h-6 w-6 ${scrolled ? 'text-offWhite' : 'text-brown'}  hover:scale-125 cursor-pointer transition duration-500`}
+            />
+          ) : (
+            <BsStars
+              onClick={handleSwitchTheme}
+              className="h-6 w-6 text-offWhite hover:scale-125 cursor-pointer transition duration-500"
+            />
+          )}
+          <a
+            href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
+            download
+            target="_blank"
+            className="hidden items-center gap-3 rounded-3xl bg-primary dark:bg-secondary hover:brightness-110 py-3 px-5 text-white transition-all disabled:cursor-not-allowed xl:text-base text-sm disabled:hover:bg-primary/40 disabled:hover:text-white/80 lg:flex"
+          >
+            Ver Currículo
+            <MdOpenInNew />
+          </a>
+          {/* Botao Menu p Mobile  */}
+          <button onClick={() => setIsOpen(true)} className="block lg:hidden">
+            <HiOutlineMenuAlt4 className="text-2xl" />
+          </button>
+        </div>
+      </div>
+
+      {/* Menu p Mobile */}
+      <MenuModal isOpen={isOpen} setIsOpen={setIsOpen} />
+    </motion.div>
+  );
+};
