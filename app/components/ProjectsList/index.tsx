@@ -104,7 +104,7 @@ function ProjectCard({
                   <RichTextRenderer
                     content={project.description}
                     className="text-sm text-white/80 leading-relaxed"
-                    maxLines={3}
+                    maxLines={2}
                   />
                 </motion.div>
               )}

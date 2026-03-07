@@ -19,9 +19,9 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div className="relative overflow-hidden pb-10">
 
-      <section className="container relative z-20 mx-auto w-full min-h-screen overflow-hidden sm:mt-4 flex flex-col items-center justify-center">
+      <section className="container relative z-20 mx-auto w-full min-h-screen sm:mt-4 flex flex-col items-center justify-center">
         <motion.div
           {...fadeInUp}
           transition={{ ...transition, delay: 0.2 }}
@@ -127,21 +127,67 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Efeitos em volta do site */}
-      <motion.div
-        {...scaleUp}
-        transition={{ ...transition, delay: 0.3 }}
-        className="absolute bottom-5 left-20 h-96 w-72 rounded-full bg-gradient-to-br from-primary dark:from-secondary to-transparent p-px sm:bottom-0 sm:rounded-t-full"
+      {/* Anéis pulsantes — canto inferior esquerdo */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={`bl-${i}`}
+          className="pointer-events-none absolute rounded-full border border-primary/30"
+          style={{
+            width: 200 + i * 100,
+            height: 200 + i * 100,
+            bottom: -(100 + i * 50),
+            left: -(100 + i * 50),
+          }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.2, 0.6] }}
+          transition={{ repeat: Infinity, duration: 4 + i * 0.8, delay: i * 0.5, ease: "easeInOut" }}
+        />
+      ))}
+      {/* Anéis pulsantes — canto superior direito */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={`tr-${i}`}
+          className="pointer-events-none absolute rounded-full border border-primary/25"
+          style={{
+            width: 180 + i * 90,
+            height: 180 + i * 90,
+            top: -(90 + i * 45),
+            right: -(90 + i * 45),
+          }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.15, 0.5] }}
+          transition={{ repeat: Infinity, duration: 5 + i * 0.7, delay: 0.4 + i * 0.5, ease: "easeInOut" }}
+        />
+      ))}
+
+      {/* Grade de pontos animada */}
+      <motion.svg
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ ...transition, delay: 0.5 }}
+        className="pointer-events-none absolute inset-0 w-full h-full z-0"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <div className="h-full w-full rounded-t-full bg-background dark:bg-background transition-colors duration-300" />
-      </motion.div>
-      <motion.div
-        {...scaleUp}
-        transition={{ ...transition, delay: 0.1 }}
-        className="absolute top-0 right-0 h-64 w-56 rounded-b-full bg-gradient-to-tl from-primary to-transparent p-px"
-      >
-        <div className="h-full w-full rounded-b-full dark:bg-background bg-background transition-colors duration-300" />
-      </motion.div>
-    </>
+        <defs>
+          <pattern id="dot-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="currentColor" fillOpacity="0.35" className="text-primary" />
+          </pattern>
+          <radialGradient id="dot-fade" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="70%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+          <mask id="dot-mask">
+            <rect width="100%" height="100%" fill="url(#dot-fade)" />
+          </mask>
+        </defs>
+        <motion.rect
+          width="100%"
+          height="100%"
+          fill="url(#dot-grid)"
+          mask="url(#dot-mask)"
+          animate={{ x: [0, 32] }}
+          transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+        />
+      </motion.svg>
+    </div>
   );
 };

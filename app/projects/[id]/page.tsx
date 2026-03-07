@@ -6,9 +6,15 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BsArrowLeft, BsArrowRight, BsArrowUpRight, BsGithub, BsGlobe } from "react-icons/bs";
+import {
+  BsArrowLeft,
+  BsArrowRight,
+  BsArrowUpRight,
+  BsGithub,
+  BsGlobe,
+} from "react-icons/bs";
 import { db } from "../../lib/firebase";
-import { fadeInUp } from "../../utils/Animations";
+import { fadeIn, fadeInUp, transition } from "../../utils/Animations";
 import { RichTextRenderer } from "../../components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
 
@@ -34,8 +40,12 @@ export default function ProjectDetailsPage() {
         }
 
         const all = allSnap.docs
-          .map((d) => ({ id: d.id, ...d.data() } as Project))
-          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+          .map((d) => ({ id: d.id, ...d.data() }) as Project)
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt || 0).getTime() -
+              new Date(a.createdAt || 0).getTime(),
+          );
 
         const currentIndex = all.findIndex((p) => p.id === params.id);
         if (currentIndex !== -1 && currentIndex < all.length - 1) {
@@ -65,8 +75,14 @@ export default function ProjectDetailsPage() {
   if (!project) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
-        <motion.div {...fadeInUp} className="text-center space-y-6">
-          <h1 className="font-Wulkan text-3xl text-primary">Projeto não encontrado</h1>
+        <motion.div
+          {...fadeInUp}
+          transition={{ ...fadeInUp, duration: 0.8 }}
+          className="text-center space-y-6"
+        >
+          <h1 className="font-Wulkan text-3xl text-primary">
+            Projeto não encontrado
+          </h1>
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full"
@@ -81,7 +97,6 @@ export default function ProjectDetailsPage() {
 
   return (
     <main className="min-h-screen bg-background -mt-20">
-
       {/* ── Hero cover ── */}
       <section className="relative w-full h-[70vh] min-h-[480px]">
         <Image
@@ -99,6 +114,8 @@ export default function ProjectDetailsPage() {
         {/* Back button */}
         <motion.div
           {...fadeInUp}
+          initial={{ opacity: 0, y: 50 }}
+          transition={{...transition, duration: 0.9}}
           className="absolute top-24 left-0 right-0 container mx-auto px-6"
         >
           <Link
@@ -115,7 +132,7 @@ export default function ProjectDetailsPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ ...transition, duration: 0.9, delay: 0.2 }}
             className="space-y-4 max-w-3xl"
           >
             {project.category && (
@@ -147,12 +164,14 @@ export default function ProjectDetailsPage() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ ...transition, duration: 1, delay: 0.6 }}
           className="space-y-10"
         >
           {/* Description */}
           <div className="space-y-4">
-            <h3 className="text-3xl font-semibold text-primary">Sobre o projeto</h3>
+            <h3 className="text-3xl font-semibold text-primary">
+              Sobre o projeto
+            </h3>
             <div className="w-12 h-0.5 bg-primary rounded-full" />
             <RichTextRenderer
               content={project.description}
@@ -197,7 +216,7 @@ export default function ProjectDetailsPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ ...transition, duration: 0.5, delay: 0.5 }}
             className="space-y-8"
           >
             <div className="flex items-center gap-4">
@@ -260,7 +279,6 @@ export default function ProjectDetailsPage() {
         <section className="container mx-auto px-6 py-16 max-w-6xl">
           <Link href={`/projects/${nextProject.id}`} className="group block">
             <div className="relative overflow-hidden rounded-2xl h-52">
-
               {/* Imagem — oculta por padrão, revela no hover */}
               <Image
                 src={nextProject.coverUrl}
@@ -295,7 +313,6 @@ export default function ProjectDetailsPage() {
                   </div>
                 </div>
               </div>
-
             </div>
           </Link>
         </section>
@@ -320,7 +337,10 @@ export default function ProjectDetailsPage() {
           {lightboxIndex > 0 && (
             <button
               className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all"
-              onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex - 1);
+              }}
             >
               <BsArrowLeft className="h-4 w-4" />
             </button>
@@ -342,7 +362,10 @@ export default function ProjectDetailsPage() {
           {lightboxIndex < project.images.length - 1 && (
             <button
               className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all"
-              onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex(lightboxIndex + 1);
+              }}
             >
               <BsArrowRight className="h-4 w-4" />
             </button>
@@ -352,7 +375,10 @@ export default function ProjectDetailsPage() {
             {project.images.map((_, i) => (
               <button
                 key={i}
-                onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(i);
+                }}
                 className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                   i === lightboxIndex ? "bg-white w-4" : "bg-white/40"
                 }`}

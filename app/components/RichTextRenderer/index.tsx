@@ -54,15 +54,22 @@ export function RichTextRenderer({
 
   const truncateClasses = maxLines ? `
     overflow-hidden
-    line-clamp-${maxLines}
     [&_p]:!mb-0 [&_p]:!mt-0
     [&_ul]:!mb-0 [&_ul]:!mt-0
     [&_li]:!mb-0
   ` : "";
 
+  const truncateStyle = maxLines ? {
+    display: "-webkit-box",
+    WebkitLineClamp: maxLines,
+    WebkitBoxOrient: "vertical" as const,
+    overflow: "hidden",
+  } : undefined;
+
   return (
     <div
       className={`${baseClasses} ${truncateClasses} ${className}`}
+      style={truncateStyle}
       dangerouslySetInnerHTML={{ __html: sanitizedContent }}
     />
   );
