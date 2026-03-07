@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
@@ -27,6 +27,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Portfólio NCLS",
   description: "Portfólio de Nicolas Malachias",
+  openGraph: {
+    images: "/images/og-image.jpg", // Relative URL from public directory
+  },
 };
 
 export default function RootLayout({
@@ -40,9 +43,7 @@ export default function RootLayout({
         <Providers>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1 pt-20">
-              {children}
-            </main>
+            <main className="flex-1 pt-20">{children}</main>
             <Footer />
           </div>
         </Providers>

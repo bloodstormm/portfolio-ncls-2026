@@ -179,11 +179,11 @@ export function ProjectsList() {
         transition={{ ...fadeInUp.transition, delay: 0.3 }}
         className="text-center space-y-4"
       >
-        <h2 className="font-Wulkan text-4xl md:text-5xl uppercase tracking-wide">
+        <h2 className="font-Wulkan text-3xl md:text-5xl uppercase tracking-wide">
           Projetos em Destaque
         </h2>
-        <div className="w-32 h-1 bg-primary mx-auto rounded-full" />
-        <p className="text-foreground/70 text-xl max-w-3xl mx-auto leading-relaxed">
+        <div className="w-24 md:w-32 h-1 bg-primary mx-auto rounded-full" />
+        <p className="text-foreground/70 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
           Uma curadoria visual dos meus trabalhos mais impactantes
         </p>
       </motion.div>
@@ -195,11 +195,11 @@ export function ProjectsList() {
         className="space-y-6"
       >
         {/* Linha principal: destaque lateral */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ height: 520 }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:h-[520px]">
 
           {/* Projeto 1 — destaque, ocupa 2/3 */}
           {p0 && (
-            <div className="md:col-span-2 h-full">
+            <div className="md:col-span-2 aspect-[4/3] md:aspect-auto md:h-full">
               <ProjectCard
                 project={p0}
                 index={0}
@@ -212,9 +212,9 @@ export function ProjectsList() {
           )}
 
           {/* Projetos 2 e 3 — empilhados na direita */}
-          <div className="flex flex-col gap-6 h-full">
+          <div className="flex flex-col gap-6 md:h-full">
             {p1 && (
-              <div className="flex-1">
+              <div className="aspect-[16/9] md:aspect-auto md:flex-1">
                 <ProjectCard
                   project={p1}
                   index={1}
@@ -226,7 +226,7 @@ export function ProjectsList() {
               </div>
             )}
             {p2 && (
-              <div className="flex-1">
+              <div className="aspect-[16/9] md:aspect-auto md:flex-1">
                 <ProjectCard
                   project={p2}
                   index={2}
@@ -242,20 +242,18 @@ export function ProjectsList() {
 
         {/* Grade 3 colunas para o restante */}
         {rest.length > 0 && (
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            style={{ gridAutoRows: "280px" }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {rest.map((project, i) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={i + 3}
-                isHovered={hoveredProject === project.id}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                size="large"
-              />
+              <div key={project.id} className="aspect-[16/9] sm:aspect-auto sm:h-[280px]">
+                <ProjectCard
+                  project={project}
+                  index={i + 3}
+                  isHovered={hoveredProject === project.id}
+                  onMouseEnter={() => setHoveredProject(project.id)}
+                  onMouseLeave={() => setHoveredProject(null)}
+                  size="large"
+                />
+              </div>
             ))}
           </div>
         )}
@@ -269,7 +267,7 @@ export function ProjectsList() {
       >
         <Link
           href="/projects"
-          className="group inline-flex items-center gap-4 px-12 py-6 bg-primary text-white rounded-full font-medium text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500 hover:scale-105 relative overflow-hidden"
+          className="group inline-flex items-center gap-3 px-8 md:px-12 py-4 md:py-6 bg-primary text-white rounded-full font-medium text-base md:text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500 hover:scale-105 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
           <span className="relative z-10">Explorar Todos os Projetos</span>
