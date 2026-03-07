@@ -14,7 +14,9 @@ import {
   BsGlobe,
 } from "react-icons/bs";
 import { db } from "../../lib/firebase";
-import { fadeIn, fadeInUp, transition } from "../../utils/Animations";
+import { fadeInUpBlur } from "../../utils/Animations";
+
+const ease = [0.16, 1, 0.3, 1] as const;
 import { RichTextRenderer } from "../../components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
 
@@ -24,6 +26,14 @@ export default function ProjectDetailsPage() {
   const [nextProject, setNextProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxIndex(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
 
   useEffect(() => {
     async function loadProject() {
@@ -76,8 +86,8 @@ export default function ProjectDetailsPage() {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
-          {...fadeInUp}
-          transition={{ ...fadeInUp, duration: 0.8 }}
+          {...fadeInUpBlur}
+          transition={{ ...fadeInUpBlur.transition, duration: 0.8 }}
           className="text-center space-y-6"
         >
           <h1 className="font-Wulkan text-3xl text-primary">
@@ -94,6 +104,8 @@ export default function ProjectDetailsPage() {
       </main>
     );
   }
+
+  const allImages = [project.coverUrl, ...(project.images ?? [])];
 
   return (
     <main className="min-h-screen bg-background -mt-20">
@@ -113,9 +125,9 @@ export default function ProjectDetailsPage() {
 
         {/* Back button */}
         <motion.div
-          {...fadeInUp}
-          initial={{ opacity: 0, y: 50 }}
-          transition={{...transition, duration: 0.9}}
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.9, ease }}
           className="absolute top-24 left-0 right-0 container mx-auto px-6"
         >
           <Link
@@ -130,9 +142,9 @@ export default function ProjectDetailsPage() {
         {/* Title over image */}
         <div className="absolute bottom-0 left-0 right-0 container mx-auto px-6 pb-12">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...transition, duration: 0.9, delay: 0.2 }}
+            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.9, ease, delay: 0.2 }}
             className="space-y-4 max-w-3xl"
           >
             {project.category && (
@@ -162,9 +174,9 @@ export default function ProjectDetailsPage() {
       {/* ── Description + links ── */}
       <section className="container mx-auto px-6 py-20 max-w-4xl">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...transition, duration: 1, delay: 0.6 }}
+          initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1, ease, delay: 0.6 }}
           className="space-y-10"
         >
           {/* Description */}
@@ -211,12 +223,12 @@ export default function ProjectDetailsPage() {
       </section>
 
       {/* ── Gallery ── */}
-      {project.images && project.images.length > 0 && (
-        <section className="container mx-auto px-6 pb-24 max-w-6xl">
+      <section className="container mx-auto px-6 pb-24 max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...transition, duration: 0.5, delay: 0.5 }}
+            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.9, ease, delay: 0.1 }}
             className="space-y-8"
           >
             <div className="flex items-center gap-4">
@@ -233,7 +245,7 @@ export default function ProjectDetailsPage() {
               onClick={() => setLightboxIndex(0)}
             >
               <Image
-                src={project.images[0]}
+                src={allImages[0]}
                 alt={`${project.title} - 1`}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -246,9 +258,9 @@ export default function ProjectDetailsPage() {
             </div>
 
             {/* Remaining images — grid */}
-            {project.images.length > 1 && (
+            {allImages.length > 1 && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {project.images.slice(1).map((imageUrl, i) => (
+                {allImages.slice(1).map((imageUrl, i) => (
                   <div
                     key={imageUrl}
                     className="relative rounded-xl overflow-hidden cursor-pointer group"
@@ -272,7 +284,6 @@ export default function ProjectDetailsPage() {
             )}
           </motion.div>
         </section>
-      )}
 
       {/* ── Next project ── */}
       {nextProject && (
@@ -319,7 +330,7 @@ export default function ProjectDetailsPage() {
       )}
 
       {/* ── Lightbox ── */}
-      {lightboxIndex !== null && project.images && (
+      {lightboxIndex !== null && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -327,31 +338,31 @@ export default function ProjectDetailsPage() {
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setLightboxIndex(null)}
         >
+          {/* Fechar */}
           <button
-            className="absolute top-6 right-6 text-white/60 hover:text-white text-2xl transition-colors"
+            className="absolute top-6 right-6 text-white/60 hover:text-white text-2xl transition-colors z-10"
             onClick={() => setLightboxIndex(null)}
           >
             ✕
           </button>
 
+          {/* Seta esquerda */}
           {lightboxIndex > 0 && (
             <button
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all"
-              onClick={(e) => {
-                e.stopPropagation();
-                setLightboxIndex(lightboxIndex - 1);
-              }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all z-10"
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
             >
               <BsArrowLeft className="h-4 w-4" />
             </button>
           )}
 
+          {/* Imagem — stopPropagation para não fechar ao clicar nela */}
           <div
             className="relative max-w-5xl w-full max-h-[85vh] rounded-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={project.images[lightboxIndex]}
+              src={allImages[lightboxIndex]}
               alt={`${project.title} - ${lightboxIndex + 1}`}
               width={1400}
               height={900}
@@ -359,26 +370,22 @@ export default function ProjectDetailsPage() {
             />
           </div>
 
-          {lightboxIndex < project.images.length - 1 && (
+          {/* Seta direita */}
+          {lightboxIndex < allImages.length - 1 && (
             <button
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all"
-              onClick={(e) => {
-                e.stopPropagation();
-                setLightboxIndex(lightboxIndex + 1);
-              }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/60 transition-all z-10"
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
             >
               <BsArrowRight className="h-4 w-4" />
             </button>
           )}
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-            {project.images.map((_, i) => (
+          {/* Dots de navegação */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {allImages.map((_, i) => (
               <button
                 key={i}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setLightboxIndex(i);
-                }}
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
                 className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                   i === lightboxIndex ? "bg-white w-4" : "bg-white/40"
                 }`}

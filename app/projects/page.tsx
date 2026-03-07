@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BsArrowUpRight } from "react-icons/bs";
 import { db } from "../lib/firebase";
-import { StaggerContainer, itemAnimation, fadeInUp } from "../utils/Animations";
+import { fadeInUpBlur } from "../utils/Animations";
 import { RichTextRenderer } from "../components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
 
@@ -35,7 +35,7 @@ export default function ProjectsPage() {
 
       {/* ── Cabeçalho ── */}
       <motion.section
-        {...fadeInUp}
+        {...fadeInUpBlur}
         className="container mx-auto px-6 pt-16 pb-12 max-w-6xl"
       >
         <div className="space-y-4">
@@ -64,23 +64,30 @@ export default function ProjectsPage() {
             <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         ) : projects.length === 0 ? (
-          <motion.div {...fadeInUp} className="text-center py-24 text-muted">
+          <motion.div {...fadeInUpBlur} className="text-center py-24 text-muted">
             <p className="text-lg">Em breve, novos projetos.</p>
           </motion.div>
         ) : (
-          <motion.div
-            variants={StaggerContainer}
-            initial="hidden"
-            animate="show"
-            className="space-y-0"
-          >
+          <div className="space-y-0">
             {projects.map((project, index) => (
-              <motion.div key={project.id} variants={itemAnimation}>
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 }}
+              >
                 <Link href={`/projects/${project.id}`} className="group block">
                   <article className="grid md:grid-cols-2 gap-0 border-b border-beige/20 py-10 group-hover:border-primary/20 transition-colors duration-300">
 
                     {/* Info */}
-                    <div className="flex flex-col justify-between gap-6 md:pr-12">
+                    <motion.div
+                      initial={{ opacity: 0, x: -30, filter: "blur(8px)" }}
+                      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 + 0.1 }}
+                      className="flex flex-col justify-between gap-6 md:pr-12"
+                    >
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <span className="text-xs font-mono text-foreground/30">
@@ -114,7 +121,7 @@ export default function ProjectsPage() {
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
 
                     {/* Imagem */}
                     <div
@@ -137,7 +144,7 @@ export default function ProjectsPage() {
                 </Link>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         )}
       </section>
     </main>

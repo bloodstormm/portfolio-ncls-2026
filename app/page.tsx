@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { fadeInUp, fadeInLeft, scaleUp, fadeIn, transition } from "./utils/Animations";
+import { fadeInUpBlur, fadeInLeftBlur, fadeInRightBlur, scaleUpBlur, transition } from "./utils/Animations";
 
 
 import { BsArrowUpRight, BsGithub } from "react-icons/bs";
@@ -23,13 +23,13 @@ export default function Home() {
 
       <section className="container relative z-20 mx-auto w-full min-h-screen sm:mt-4 flex flex-col items-center justify-center">
         <motion.div
-          {...fadeInUp}
-          transition={{ ...transition, delay: 0.2 }}
+          {...fadeInUpBlur}
+          transition={{ ...fadeInUpBlur.transition, delay: 0.2 }}
           className="mx-auto grid items-center gap-4 p-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-14"
         >
           <motion.div
-            {...fadeInLeft}
-            transition={{ ...transition, delay: 0.4 }}
+            {...fadeInLeftBlur}
+            transition={{ ...fadeInLeftBlur.transition, delay: 0.4 }}
             className="flex flex-col gap-6"
           >
             <h1 className="text-center font-Wulkan text-4xl lg:text-5xl font-medium uppercase lg:text-left xl:text-5xl">
@@ -45,8 +45,8 @@ export default function Home() {
             </p>
             {/* Redes sociais */}
             <motion.div
-              {...fadeIn}
-              transition={{ ...transition, delay: 0.8 }}
+              {...fadeInUpBlur}
+              transition={{ ...fadeInUpBlur.transition, delay: 0.8 }}
               className="flex justify-center gap-10 pb-4 text-3xl sm:justify-start sm:pt-6"
             >
               <motion.a
@@ -78,8 +78,8 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            {...scaleUp}
-            transition={{ ...transition, duration: 1.3, delay: 0.7 }}
+            {...scaleUpBlur}
+            transition={{ ...scaleUpBlur.transition, delay: 0.7 }}
             className="mx-auto w-[90%] shadow-2xl overflow-hidden rounded-full"
           >
             <motion.img
@@ -91,9 +91,8 @@ export default function Home() {
             />
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: -120 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ ...transition, delay: 0.5 }}
+            {...fadeInRightBlur}
+            transition={{ ...fadeInRightBlur.transition, delay: 0.5 }}
             className="relative h-2/3"
           >
             <h1 className="text-center font-Wulkan text-4xl lg:text-5xl uppercase md:hidden lg:block sm:text-left xl:text-6xl">
@@ -112,16 +111,8 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          {...fadeIn}
-          transition={{ ...transition, delay: 1.0 }}
-          className="flex mx-auto rounded-3xl overflow-x-auto w-full justify-center items-center gap-6 pt-4 pb-10 lg:gap-14 2xl:gap-20 sm:p-6"
-        >
-          {/* <CompaniesCarousel /> */}
-        </motion.div>
-
-        <motion.div
-          {...fadeInUp}
-          transition={{ ...transition, delay: 1.2 }}
+          {...fadeInUpBlur}
+          transition={{ ...fadeInUpBlur.transition, delay: 1.2 }}
         >
           <ProjectsList />
         </motion.div>

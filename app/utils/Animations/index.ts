@@ -38,6 +38,37 @@ const scaleUp = {
   transition: { ...transition },
 };
 
+const fadeInUpBlur = {
+  initial: { y: 60, opacity: 0, filter: "blur(10px)" },
+  animate: { y: 0, opacity: 1, filter: "blur(0px)" },
+  exit: { y: 60, opacity: 0, filter: "blur(10px)" },
+  transition: { duration: 1.3, ease: [0.16, 1, 0.3, 1] as const },
+};
+
+// Entra pela direita (x: 60 → 0) com blur
+const fadeInLeftBlur = {
+  initial: { x: 60, opacity: 0, filter: "blur(10px)" },
+  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
+  exit: { x: 60, opacity: 0, filter: "blur(10px)" },
+  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+};
+
+// Entra pela esquerda (x: -60 → 0) com blur
+const fadeInRightBlur = {
+  initial: { x: -60, opacity: 0, filter: "blur(10px)" },
+  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
+  exit: { x: -60, opacity: 0, filter: "blur(10px)" },
+  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+};
+
+// Scale suave + blur
+const scaleUpBlur = {
+  initial: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
+  animate: { scale: 1, opacity: 1, filter: "blur(0px)" },
+  exit: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
+  transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] as const },
+};
+
 // Stagger Animations
 
 // Se algum dia o stagger nao funcionar, olhar se ele nao esta chegando vazio e depois preenchendo
@@ -89,8 +120,12 @@ export {
   fadeIn,
   fadeInDown,
   fadeInUp,
+  fadeInUpBlur,
   fadeInLeft,
+  fadeInLeftBlur,
+  fadeInRightBlur,
   scaleUp,
+  scaleUpBlur,
   StaggerContainer,
   itemAnimation,
   StaggerText,
