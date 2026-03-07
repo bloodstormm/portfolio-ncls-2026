@@ -39,34 +39,34 @@ const scaleUp = {
 };
 
 const fadeInUpBlur = {
-  initial: { y: 60, opacity: 0, filter: "blur(10px)" },
-  animate: { y: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { y: 60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.3, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { y: 40, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  exit: { y: 40, opacity: 0 },
+  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Entra pela direita (x: 60 → 0) com blur
+// Entra pela direita (x: 60 → 0)
 const fadeInLeftBlur = {
-  initial: { x: 60, opacity: 0, filter: "blur(10px)" },
-  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { x: 60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { x: 50, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: 50, opacity: 0 },
+  transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Entra pela esquerda (x: -60 → 0) com blur
+// Entra pela esquerda (x: -60 → 0)
 const fadeInRightBlur = {
-  initial: { x: -60, opacity: 0, filter: "blur(10px)" },
-  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { x: -60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { x: -50, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: -50, opacity: 0 },
+  transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Scale suave + blur
+// Scale suave
 const scaleUpBlur = {
-  initial: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
-  animate: { scale: 1, opacity: 1, filter: "blur(0px)" },
-  exit: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
-  transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { scale: 0.9, opacity: 0 },
+  animate: { scale: 1, opacity: 1 },
+  exit: { scale: 0.9, opacity: 0 },
+  transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as const },
 };
 
 // Stagger Animations
