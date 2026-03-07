@@ -67,14 +67,16 @@ export function ImageUpload({
   return (
     <div className="space-y-4">
       {/* Label */}
-      <label className="block text-sm font-medium text-primary">
-        {label}
-        {multiple && (
-          <span className="text-muted ml-2">
-            ({currentImages.length}/{maxImages})
-          </span>
-        )}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium text-primary">
+          {label}
+          {multiple && (
+            <span className="text-muted ml-2">
+              ({currentImages.length}/{maxImages})
+            </span>
+          )}
+        </label>
+      )}
 
       {/* Upload Area */}
       {canAddMore && (
