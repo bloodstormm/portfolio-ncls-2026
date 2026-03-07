@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
@@ -14,22 +14,29 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      // Simples verificação de senha - em produção, use algo mais seguro
-      const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin123";
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-      if (password === adminPassword) {
-        // Salva a autenticação no sessionStorage
+      if (res.ok) {
         sessionStorage.setItem("admin_authenticated", "true");
         toast.success("🎉 Login realizado com sucesso!");
         router.push("/admin/projects");
       } else {
-        setError("Senha incorreta. Tente novamente.");
+        const data = await res.json();
+        setError(data.error || "Senha incorreta. Tente novamente.");
         toast.error("❌ Senha incorreta. Tente novamente.");
       }
     } catch (err) {
@@ -42,11 +49,8 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="bg-background flex items-center justify-center mt-24 px-4">
-      <motion.div
-        {...fadeInUp}
-        className="w-full max-w-md"
-      >
+    <main className="bg-background flex items-center justify-center my-24 px-4">
+      <motion.div {...fadeInUp} className="w-full max-w-md">
         <div className="bg-gradient-to-br from-background/90 to-background/60 backdrop-blur-sm border border-beige/20 rounded-2xl p-8 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
