@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -81,6 +82,8 @@ const stats = [
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function SobreMim() {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -110,15 +113,15 @@ export default function SobreMim() {
       <section ref={heroRef} className="relative min-h-screen overflow-hidden flex items-center">
 
         {/* ══ Grid: texto à esquerda, foto à direita ══ */}
-        <div className="container mx-auto px-8 pb-24 w-full grid grid-cols-12 gap-10 items-center">
+        <div className="container mx-auto px-6 md:px-8 pb-16 md:pb-24 w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-10 items-center">
 
           {/* ── Coluna esquerda: tipografia solta ── */}
-          <div className="col-span-6 flex flex-col">
+          <div className="flex flex-col">
 
             {/* Label */}
             <motion.span
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease, delay: 0.2 }}
               className="text-[10px] uppercase tracking-[0.4em] text-primary/50 font-Odasans mb-6"
             >
@@ -127,18 +130,18 @@ export default function SobreMim() {
 
             {/* Nome */}
             <motion.h1
-              initial={{ opacity: 0, x: -50, filter: "blur(12px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.3, ease, delay: 0.35 }}
-              className="font-Wulkan uppercase leading-none text-6xl xl:text-7xl"
+              className="font-Wulkan uppercase leading-none text-5xl md:text-6xl xl:text-7xl"
             >
               Nícolas
             </motion.h1>
             <motion.h1
-              initial={{ opacity: 0, x: -50, filter: "blur(12px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.3, ease, delay: 0.45 }}
-              className="font-Wulkan uppercase leading-none text-6xl xl:text-7xl text-primary"
+              className="font-Wulkan uppercase leading-none text-5xl md:text-6xl xl:text-7xl text-primary"
             >
               Malachias
             </motion.h1>
@@ -153,8 +156,8 @@ export default function SobreMim() {
 
             {/* Bio */}
             <motion.p
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease, delay: 0.8 }}
               className="text-sm leading-relaxed text-muted/70 max-w-sm"
             >
@@ -165,8 +168,8 @@ export default function SobreMim() {
 
             {/* Stats */}
             <motion.div
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease, delay: 0.95 }}
               className="flex gap-10 mt-8"
             >
@@ -186,8 +189,8 @@ export default function SobreMim() {
 
             {/* Socials + disponível */}
             <motion.div
-              initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease, delay: 1.15 }}
               className="flex flex-wrap items-center gap-3 mt-8"
             >
@@ -216,11 +219,11 @@ export default function SobreMim() {
 
           {/* ── Foto estilo polaroid ── */}
           <motion.div
-            initial={{ opacity: 0, x: 60, rotate: 0, filter: "blur(14px)" }}
-            animate={{ opacity: 1, x: 0, rotate: 2, filter: "blur(0px)" }}
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0, rotate: 2 }}
             transition={{ duration: 1.4, ease, delay: 0.3 }}
             whileHover={{ rotate: 0, scale: 1.02, transition: { duration: 0.4 } }}
-            className="col-span-6 relative cursor-pointer"
+            className="relative cursor-pointer w-full max-w-sm mx-auto md:max-w-none"
             style={{
               background: "#fff",
               padding: "12px 12px 48px 12px",
@@ -228,7 +231,7 @@ export default function SobreMim() {
               borderRadius: "4px",
             }}
           >
-            <div className="overflow-hidden" style={{ height: "68vh" }}>
+            <div className="overflow-hidden aspect-[3/4] md:aspect-auto md:h-[68vh]">
               <motion.img
                 initial={{ scale: 1.12 }}
                 animate={{ scale: 1 }}
@@ -268,10 +271,10 @@ export default function SobreMim() {
       </motion.div>
 
       {/* ── Timeline ── */}
-      <section className="container mx-auto px-8 py-20">
+      <section className="container mx-auto px-6 md:px-8 py-20">
         <motion.div
-          initial={{ opacity: 0, y: 50, filter: "blur(6px)" }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 1, ease }}
           className="mb-14"
@@ -295,8 +298,8 @@ export default function SobreMim() {
             {timeline.map((item, i) => (
               <motion.div
                 key={item.company}
-                initial={{ opacity: 0, x: -80, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 1, ease, delay: i * 0.1 }}
                 className="relative pl-14"
@@ -364,7 +367,7 @@ export default function SobreMim() {
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 1.1, ease }}
-        className="container mx-auto px-8 pb-24 text-center"
+        className="container mx-auto px-6 md:px-8 pb-16 md:pb-24 text-center"
       >
         <div className="rounded-3xl border border-primary/20 bg-primary/5 px-8 py-14 flex flex-col items-center gap-6">
           <motion.h2
@@ -413,7 +416,7 @@ export default function SobreMim() {
       </motion.section>
 
       {/* ── Decorativos ── */}
-      {[0, 1, 2].map((i) => (
+      {!isMobile && [0, 1, 2].map((i) => (
         <motion.div
           key={`about-bl-${i}`}
           className="pointer-events-none absolute rounded-full border border-primary/20"
@@ -422,7 +425,7 @@ export default function SobreMim() {
           transition={{ repeat: Infinity, duration: 5 + i * 0.9, delay: i * 0.6, ease: "easeInOut" }}
         />
       ))}
-      {[0, 1, 2].map((i) => (
+      {!isMobile && [0, 1, 2].map((i) => (
         <motion.div
           key={`about-tr-${i}`}
           className="pointer-events-none absolute rounded-full border border-primary/15"

@@ -1,143 +1,147 @@
+"use client";
+
 import Link from "next/link";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { AnimatePresence, motion, Transition } from "framer-motion";
-
+import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { BsX, BsArrowUpRight, BsGithub } from "react-icons/bs";
+import { FaLinkedinIn } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 import { MdOpenInNew } from "react-icons/md";
-
-import {
-  fadeIn,
-  fadeInDown,
-  scaleUp,
-  transition,
-} from "../../utils/Animations";
-import { StaggerContainer, itemAnimation } from "../../utils/Animations";
 
 type MenuModalProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "Sobre" },
+  { href: "/projects", label: "Projetos" },
+];
+
 export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
+  const pathname = usePathname();
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <Dialog
-          static
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-          className="relative z-30"
-        >
-          {/* The backdrop, rendered as a fixed sibling to the panel StaggerContainer */}
+        <>
+          {/* Backdrop */}
           <motion.div
-            {...fadeIn}
-            transition={{ ...transition, duration: 0.7 }}
-            className="fixed inset-0 bg-brown/30 dark:bg-beige/30 backdrop-blur-sm"
-            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
           />
 
-          {/* Full-screen scrollable StaggerContainer */}
-          <div className="fixed inset-0 overflow-y-auto">
-            {/* StaggerContainer to center the panel */}
-            <div className="flex min-h-full items-center justify-center p-4">
-              <DialogPanel className="relative mx-auto flex h-128 w-[90%] overflow-hidden rounded-2xl bg-offWhite dark:bg-background p-4">
-                <motion.div
-                  {...scaleUp}
-                  className="flex h-full w-full flex-col items-center"
-                >
-                  <DialogTitle
-                    as={motion.h1}
-                    {...fadeInDown}
-                    transition={{ ...fadeInDown.transition, duration: 0.8 }}
-                    className="font-Odasans text-5xl font-semibold text-primary dark:text-secondary"
-                  >
-                    NCLS
-                  </DialogTitle>
-
-                  <motion.div
-                    variants={StaggerContainer}
-                    initial="hidden"
-                    animate="show"
-                    exit="exit"
-                    className="mt-8 flex w-full flex-col items-center gap-2 font-medium"
-                  >
-                    <motion.div
-                      variants={itemAnimation}
-                      className="w-full rounded-lg bg-primary/40 dark:bg-secondary/40 p-3"
-                    >
-                      <Link
-                        href="/"
-                        className="bottomLine w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Home
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      variants={itemAnimation}
-                      className="w-full rounded-lg bg-primary/40 dark:bg-secondary/40 p-3"
-                    >
-                      <Link
-                        href="#about"
-                        className="bottomLine w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Sobre Mim
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      transition={{ duration: 1.3 }}
-                      variants={itemAnimation}
-                      className="w-full rounded-lg bg-primary/40 dark:bg-secondary/40 p-3"
-                    >
-                      <Link
-                        href="#projects"
-                        className="bottomLine w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Projetos
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      variants={itemAnimation}
-                      className="w-full rounded-lg bg-primary/40 dark:bg-secondary/40 p-3"
-                    >
-                      <Link
-                        href="#career"
-                        className="bottomLine w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Carreira
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      variants={itemAnimation}
-                      className="w-full rounded-lg bg-primary/40 dark:bg-secondary/40 p-3"
-                    >
-                      <Link
-                        href="#contact"
-                        className="bottomLine w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Contato
-                      </Link>
-                    </motion.div>
-
-                    <motion.a
-                      variants={itemAnimation}
-                      href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
-                      download
-                      target="_blank"
-                      className="mt-8 flex items-center gap-3 rounded-xl bg-primary dark:bg-secondary py-4 px-6 text-white"
-                    >
-                      Ver Currículo
-                      <MdOpenInNew />
-                    </motion.a>
-                  </motion.div>
-                </motion.div>
-              </DialogPanel>
+          {/* Panel */}
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed top-0 right-0 bottom-0 z-50 w-[min(320px,100vw)] bg-background border-l border-beige/20 flex flex-col"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 h-20 border-b border-beige/20">
+              <span className="font-Wulkan text-2xl uppercase text-primary tracking-wide">
+                NCLS
+              </span>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-beige/30 text-muted hover:text-primary hover:border-primary/40 transition-all duration-300"
+              >
+                <BsX className="h-5 w-5" />
+              </button>
             </div>
-          </div>
-        </Dialog>
+
+            {/* Nav links */}
+            <nav className="flex flex-col gap-1 px-4 pt-8 flex-1">
+              {navLinks.map((link, i) => {
+                const isActive = pathname === link.href;
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.07 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`group flex items-center justify-between px-4 py-4 rounded-xl transition-all duration-300 ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground/70 hover:bg-beige/20 hover:text-foreground"
+                      }`}
+                    >
+                      <span className="font-Wulkan text-3xl uppercase tracking-wide leading-none">
+                        {link.label}
+                      </span>
+                      {isActive && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+
+              {/* CV */}
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 + navLinks.length * 0.07 }}
+                className="mt-4"
+              >
+                <a
+                  href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-between px-4 py-4 rounded-xl border border-beige/30 text-foreground/60 hover:border-primary/40 hover:text-primary transition-all duration-300"
+                >
+                  <span className="font-Wulkan text-3xl uppercase tracking-wide leading-none">
+                    Currículo
+                  </span>
+                  <MdOpenInNew className="h-5 w-5 shrink-0" />
+                </a>
+              </motion.div>
+            </nav>
+
+            {/* Footer social */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+              className="px-6 py-8 border-t border-beige/20 flex items-center gap-5"
+            >
+              <a
+                href="https://www.linkedin.com/in/nicolas-malachias/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted hover:text-primary transition-colors duration-300"
+              >
+                <FaLinkedinIn className="h-5 w-5" />
+              </a>
+              <a
+                href="mailto:nicolasmalaquias2015@gmail.com"
+                className="text-muted hover:text-primary transition-colors duration-300"
+              >
+                <HiOutlineMail className="h-5 w-5" />
+              </a>
+              <a
+                href="https://github.com/bloodstormm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted hover:text-primary transition-colors duration-300"
+              >
+                <BsGithub className="h-5 w-5" />
+              </a>
+            </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   );
