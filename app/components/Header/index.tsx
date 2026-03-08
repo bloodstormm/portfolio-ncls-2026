@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 import { MenuModal } from "../MenuModal";
+import { useTheme } from "@/app/hooks/useTheme";
 
 import { MdOpenInNew } from "react-icons/md";
 import { BsMoon, BsStars } from "react-icons/bs";
@@ -16,59 +17,13 @@ export const Header = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState<string>();
+  const { theme, toggleTheme } = useTheme();
 
-  // Páginas com hero de imagem escura — header usa texto branco quando transparente
   const darkHeroPages = /^\/projects\/.+/;
   const hasDarkHero = darkHeroPages.test(pathname) && !scrolled;
 
-  // Tema do sistema do usuário
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "dark" : "light");
-      }
-    };
-
-    darkQuery.addEventListener("change", handleChange);
-    return () => darkQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    if (
-      localStorage.getItem("theme") === "dark" ||
-      (!localStorage.getItem("theme") && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else if (theme === "light") {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [theme]);
-
-  const handleSwitchTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -121,7 +76,7 @@ export const Header = () => {
                       : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
                   }`}
                 >
-                  Sobre
+                  Sobre mim
                   <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current group-hover:w-full transition-all duration-300 ease-out"></div>
                 </Link>
               </motion.div>
@@ -150,7 +105,7 @@ export const Header = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               transition={{...transition}}
-              onClick={handleSwitchTheme}
+              onClick={toggleTheme}
               className="p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors"
             >
               {theme === "light" ? (

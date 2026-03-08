@@ -15,7 +15,7 @@ type MenuModalProps = {
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "Sobre" },
+  { href: "/about", label: "Sobre mim" },
   { href: "/projects", label: "Projetos" },
 ];
 
