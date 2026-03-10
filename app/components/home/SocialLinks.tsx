@@ -1,12 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BsGithub } from "react-icons/bs";
+import { BsGithub, BsWhatsapp } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { fadeInUpBlur } from "@/app/utils/Animations";
 
 const socialLinks = [
+  {
+    href: "https://api.whatsapp.com/send?phone=5512988770308",
+    icon: <BsWhatsapp />,
+    label: "GitHub",
+  },
   {
     href: "https://www.linkedin.com/in/nicolas-malachias/",
     icon: <FaLinkedinIn />,
@@ -16,11 +21,6 @@ const socialLinks = [
     href: "mailto:nicolasmalaquias2015@gmail.com",
     icon: <HiOutlineMail />,
     label: "Email",
-  },
-  {
-    href: "https://github.com/bloodstormm",
-    icon: <BsGithub />,
-    label: "GitHub",
   },
 ];
 

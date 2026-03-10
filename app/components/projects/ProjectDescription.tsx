@@ -39,7 +39,7 @@ export function ProjectDescription({ project }: ProjectDescriptionProps) {
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors duration-300 text-sm font-medium"
               >
                 <BsGlobe className="h-4 w-4" />
-                Ver demo
+                Acessar Site
                 <BsArrowUpRight className="h-3.5 w-3.5" />
               </a>
             )}

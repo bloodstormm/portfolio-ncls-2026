@@ -30,9 +30,11 @@ export function AboutHero() {
   const heroOpacity = useTransform(heroProgress, [0, 0.65], [1, 0]);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen overflow-hidden flex items-center">
+    <section
+      ref={heroRef}
+      className="relative min-h-screen overflow-hidden flex items-center"
+    >
       <div className="container mx-auto px-6 md:px-8 pb-16 md:pb-24 w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-
         {/* Coluna esquerda: tipografia + stats + socials */}
         <div className="flex flex-col">
           <motion.span
@@ -65,18 +67,20 @@ export function AboutHero() {
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
             transition={{ duration: 1, ease, delay: 0.7 }}
-            className="h-px bg-gradient-to-r from-primary/40 via-primary/15 to-transparent origin-left mt-8 mb-7"
+            className="h-px bg-linear-to-r from-primary/40 via-primary/15 to-transparent origin-left mt-8 mb-7"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease, delay: 0.8 }}
-            className="text-sm leading-relaxed text-muted/70 max-w-sm"
+            className="text-sm leading-relaxed text-muted/80 max-w-sm"
           >
-            Comecei pelo front-end, aprendi a pensar em design
-            e hoje transito pelos dois mundos com fluência —
-            inclusive em inglês. Passagem por CI&amp;T e J&amp;J.
+            Olá 👋, sou formado em Análise e
+            Desenvolvimento de Sistemas e hoje atuo entre front-end e UX/UI. <br /> <br />
+            <b className="text-primary">Faço sites como freelancer</b> e já entreguei mais de 3 projetos de
+            ponta a ponta que aumentaram <b className="text-primary">retenção</b> e <b className="text-primary">credibilidade</b> dos meus
+            clientes :)
           </motion.p>
 
           {/* Stats */}
@@ -94,8 +98,12 @@ export function AboutHero() {
                 transition={{ duration: 0.6, ease, delay: 1.0 + i * 0.08 }}
                 className="flex flex-col gap-0.5"
               >
-                <span className="font-Wulkan text-4xl text-primary leading-none">{s.value}</span>
-                <span className="text-[9px] text-muted/50 uppercase tracking-widest font-Odasans mt-1">{s.label}</span>
+                <span className="font-Wulkan text-4xl text-primary leading-none">
+                  {s.value}
+                </span>
+                <span className="text-[9px] text-muted/50 uppercase tracking-widest font-Odasans mt-1">
+                  {s.label}
+                </span>
               </motion.div>
             ))}
           </motion.div>
@@ -109,7 +117,9 @@ export function AboutHero() {
           >
             <div className="flex items-center gap-2 mr-4">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-[10px] text-muted/60 font-Odasans uppercase tracking-wide">Disponível</span>
+              <span className="text-[10px] text-muted/60 font-Odasans uppercase tracking-wide">
+                Disponível
+              </span>
             </div>
             {socials.map((s, i) => (
               <motion.a
@@ -140,7 +150,8 @@ export function AboutHero() {
           style={{
             background: "#fff",
             padding: "12px 12px 48px 12px",
-            boxShadow: "0 30px 80px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.16)",
+            boxShadow:
+              "0 30px 80px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.16)",
             borderRadius: "4px",
           }}
         >
@@ -168,7 +179,9 @@ export function AboutHero() {
           animate={{ scaleY: [0, 1, 0], opacity: [0, 1, 0] }}
           transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
         />
-        <span className="text-[7px] uppercase tracking-[0.3em] text-muted/40 font-Odasans">scroll</span>
+        <span className="text-[7px] uppercase tracking-[0.3em] text-muted/40 font-Odasans">
+          scroll
+        </span>
       </motion.div>
     </section>
   );

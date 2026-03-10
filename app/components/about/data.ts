@@ -28,14 +28,14 @@ export const timeline = [
     subroles: [
       {
         title: "Desenvolvedor Front-End",
-        period: "Jan 2023 — Dez 2024 · 2 anos",
+        period: "Jun 2024 — Dez 2024 · 6 meses",
         bullets: [
           "Atuação no rebranding do Janssen Pro, portal voltado para profissionais da saúde, adaptando-o à nova identidade visual.",
           "Desenvolvimento das mudanças de layout e apoio à equipe de UX/UI na implementação, utilizando Drupal, Site Studio e PHP.",
         ],
       },
       {
-        title: "UX/UI & Developer",
+        title: "UX/UI",
         period: "Jan 2024 — Jun 2024 · 6 meses",
         bullets: [
           "Participação no Grow Program, atuando como UX/UI Designer na equipe de Total Experience — redesign de uma plataforma de comunicação interna com foco em acessibilidade.",
@@ -62,7 +62,7 @@ export const socials = [
 ];
 
 export const stats = [
-  { value: "2+", label: "Anos de experiência" },
+  { value: "3", label: "Anos de experiência" },
   { value: "3+", label: "Projetos entregues" },
   { value: "2", label: "Empresas" },
 ];

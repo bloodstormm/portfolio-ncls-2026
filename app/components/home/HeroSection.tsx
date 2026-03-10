@@ -5,7 +5,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
 import HomeImage from "@/public/images/home-image.jpg";
-import { fadeInUpBlur, fadeInLeftBlur, fadeInRightBlur, scaleUpBlur } from "@/app/utils/Animations";
+import {
+  fadeInUpBlur,
+  fadeInLeftBlur,
+  fadeInRightBlur,
+  scaleUpBlur,
+} from "@/app/utils/Animations";
 import { SocialLinks } from "./SocialLinks";
 import { ProjectsList } from "@/app/components/ProjectsList";
 
@@ -28,14 +33,14 @@ export function HeroSection() {
           className="flex flex-col gap-6"
         >
           <h1 className="text-center font-Wulkan text-4xl lg:text-5xl font-medium uppercase lg:text-left xl:text-5xl">
-            Ux/UI &
-            <br className="hidden lg:block" /> Front-End DEV
+            UX/UI &
+            <br className="hidden lg:block" /> Desenvolvedor
           </h1>
           <p className="text-sm xl:text-base">
-            Olá, seja bem-vindo(a) ao meu portfólio! <br />
-            Aqui você encontrará meus projetos que venho feito ultimamente.
-            Logo abaixo está algumas das minhas redes, sinta-se à vontade de
-            entrar em contato! 🤠
+            Crio sites profissionais que transmitem credibilidade e atraem
+            clientes para o seu negócio. Logo abaixo está
+            algumas das minhas redes, sinta-se à vontade de entrar em contato!
+            🤠
           </p>
           <SocialLinks />
         </motion.div>

@@ -35,11 +35,11 @@ export function ProjectsList() {
         className="text-center space-y-4"
       >
         <h2 className="font-Wulkan text-3xl md:text-5xl uppercase tracking-wide">
-          Projetos em Destaque
+          Projetos Recentes
         </h2>
         <div className="w-24 md:w-32 h-1 bg-primary mx-auto rounded-full" />
         <p className="text-foreground/70 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
-          Uma curadoria visual dos meus trabalhos mais impactantes
+          Alguns dos projetos mais recentes que desenvolvi como freelancer.
         </p>
       </motion.div>
 

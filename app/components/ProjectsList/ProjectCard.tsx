@@ -42,11 +42,11 @@ export function ProjectCard({
               src={project.coverUrl}
               alt={project.title}
               fill
-              className="object-cover transition-all duration-1000 group-hover:scale-110 group-hover:brightness-50"
+              className="object-cover transition-all duration-1000 group-hover:scale-110 group-hover:blur-xs group-hover:brightness-50"
               priority={index === 0}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/15 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-br from-primary/30 to-secondary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </div>
 
           <div className="relative h-full p-6 flex flex-col justify-between">
