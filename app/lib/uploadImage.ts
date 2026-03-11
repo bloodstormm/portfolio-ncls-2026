@@ -1,37 +1,21 @@
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebase";
+export async function uploadImageViaApi(file: File, path: string, adminToken: string): Promise<string> {
+  const form = new FormData();
+  form.append("file", file);
+  form.append("path", path);
 
-export async function uploadImage(file: File, path: string): Promise<string> {
-  try {
-    // Gera um nome único para o arquivo
-    const timestamp = Date.now();
-    const fileName = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-    const fullPath = `${path}/${fileName}`;
+  const res = await fetch("/api/admin/upload", {
+    method: "POST",
+    headers: { "x-admin-token": adminToken },
+    body: form,
+  });
 
-    // Cria a referência no Storage
-    const imageRef = ref(storage, fullPath);
-
-    // Faz o upload
-    const snapshot = await uploadBytes(imageRef, file);
-
-    // Obtém a URL pública
-    const downloadURL = await getDownloadURL(snapshot.ref);
-
-    return downloadURL;
-  } catch (error) {
-    console.error("Erro ao fazer upload da imagem:", error);
-    throw new Error("Falha no upload da imagem");
-  }
+  if (!res.ok) throw new Error("Falha no upload da imagem");
+  const { url } = await res.json();
+  return url;
 }
 
-export async function uploadMultipleImages(files: File[], path: string): Promise<string[]> {
-  try {
-    const uploadPromises = files.map(file => uploadImage(file, path));
-    return await Promise.all(uploadPromises);
-  } catch (error) {
-    console.error("Erro ao fazer upload de múltiplas imagens:", error);
-    throw new Error("Falha no upload das imagens");
-  }
+export async function uploadMultipleImagesViaApi(files: File[], path: string, adminToken: string): Promise<string[]> {
+  return Promise.all(files.map((file) => uploadImageViaApi(file, path, adminToken)));
 }
 
 // Validação de arquivos de imagem

@@ -1,11 +1,26 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { toast } from "sonner";
-import { db } from "@/app/lib/firebase";
-import { uploadImage, uploadMultipleImages } from "@/app/lib/uploadImage";
+import { uploadImageViaApi, uploadMultipleImagesViaApi } from "@/app/lib/uploadImage";
 import type { Project } from "@/app/types/projects";
+
+function getAdminToken(): string {
+  return sessionStorage.getItem("admin_token") ?? "";
+}
+
+async function apiProjects(method: string, body: object) {
+  const res = await fetch("/api/admin/projects", {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-token": getAdminToken(),
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Erro na operação do projeto");
+  return res.json();
+}
 
 export interface ProjectFormData {
   title: string;
@@ -155,16 +170,17 @@ export function useProjectForm(onSuccess: () => void) {
 
     setLoading(true);
     try {
+      const token = getAdminToken();
       let coverUrl = formData.coverUrl;
       if (coverFile) {
         toast.loading("Fazendo upload da imagem de capa...", { id: "upload" });
-        coverUrl = await uploadImage(coverFile, "projects/covers");
+        coverUrl = await uploadImageViaApi(coverFile, "projects/covers", token);
       }
 
       let uploadedNewImages: string[] = [];
       if (additionalFiles.length > 0) {
         toast.loading("Fazendo upload das imagens adicionais...", { id: "upload" });
-        uploadedNewImages = await uploadMultipleImages(additionalFiles, "projects/images");
+        uploadedNewImages = await uploadMultipleImagesViaApi(additionalFiles, "projects/images", token);
       }
 
       let newFileIdx = 0;
@@ -188,11 +204,11 @@ export function useProjectForm(onSuccess: () => void) {
 
       if (editingProject) {
         toast.loading("Atualizando projeto...", { id: "upload" });
-        await updateDoc(doc(db, "projects", editingProject.id), projectData);
+        await apiProjects("PUT", { id: editingProject.id, ...projectData });
         toast.success("✨ Projeto atualizado com sucesso!", { id: "upload", duration: 4000 });
       } else {
         toast.loading("Criando projeto...", { id: "upload" });
-        await addDoc(collection(db, "projects"), projectData);
+        await apiProjects("POST", projectData);
         toast.success("🎉 Projeto criado com sucesso!", { id: "upload", duration: 4000 });
       }
 

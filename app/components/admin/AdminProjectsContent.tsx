@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { toast } from "sonner";
-import { db } from "@/app/lib/firebase";
 import { useProjectForm } from "@/app/hooks/useProjectForm";
 import { AdminTopBar } from "./AdminTopBar";
 import { AdminProjectList } from "./AdminProjectList";
@@ -38,8 +36,12 @@ export function AdminProjectsContent() {
 
   const loadProjects = async () => {
     try {
-      const snap = await getDocs(collection(db, "projects"));
-      const data = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Project, "id">) }) as Project);
+      const token = sessionStorage.getItem("admin_token") ?? "";
+      const res = await fetch("/api/admin/projects", {
+        headers: { "x-admin-token": token },
+      });
+      if (!res.ok) throw new Error();
+      const data: Project[] = await res.json();
       setProjects(data);
     } catch (error) {
       console.error("Erro ao carregar projetos:", error);
@@ -62,7 +64,13 @@ export function AdminProjectsContent() {
   const handleDelete = async (project: Project) => {
     if (!confirm(`Tem certeza que deseja excluir o projeto "${project.title}"?`)) return;
     try {
-      await deleteDoc(doc(db, "projects", project.id));
+      const token = sessionStorage.getItem("admin_token") ?? "";
+      const res = await fetch("/api/admin/projects", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", "x-admin-token": token },
+        body: JSON.stringify({ id: project.id }),
+      });
+      if (!res.ok) throw new Error();
       toast.success("Projeto excluído com sucesso!");
       loadProjects();
     } catch (error) {
@@ -79,6 +87,7 @@ export function AdminProjectsContent() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("admin_authenticated");
+    sessionStorage.removeItem("admin_token");
     router.push("/admin");
   };
 

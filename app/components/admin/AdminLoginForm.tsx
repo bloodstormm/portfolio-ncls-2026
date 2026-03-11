@@ -32,6 +32,7 @@ export function AdminLoginForm() {
 
       if (res.ok) {
         sessionStorage.setItem("admin_authenticated", "true");
+        sessionStorage.setItem("admin_token", password);
         toast.success("🎉 Login realizado com sucesso!");
         router.push("/admin/projects");
       } else {
