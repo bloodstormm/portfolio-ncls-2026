@@ -25,8 +25,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Portfólio NCLS",
-  description: "Portfólio de Nicolas Malachias",
+  title: "Desenvolvedor de Sites Freelancer | Nícolas Malachias. ",
+  description: "Desenvolvedor de sites freelancer com atendimento próximo, entrega profissional e preço acessível.",
   openGraph: {
     images: "/images/og-image.jpg", // Relative URL from public directory
   },
