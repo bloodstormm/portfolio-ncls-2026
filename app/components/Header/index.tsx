@@ -120,7 +120,7 @@ export const Header = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{...transition, duration: 0.6}}
-              href="https://drive.google.com/file/d/1XvHqOCw8e2B5hcoC4BdM8CrgqI9XcDNa/view?usp=sharing"
+              href="https://drive.google.com/file/d/1guysg_cXsD0BNPari--HCYaCtV-tZyV6/view?usp=sharing"
               target="_blank"
               className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium text-sm hover:shadow-lg transition-colors duration-300"
             >
