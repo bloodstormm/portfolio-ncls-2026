@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { BsArrowUpRight } from "react-icons/bs";
 import { Lightbox } from "./Lightbox";
+import { useTranslations } from "next-intl";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -14,6 +15,7 @@ interface ProjectGalleryProps {
 }
 
 export function ProjectGallery({ images, title }: ProjectGalleryProps) {
+  const t = useTranslations("projectDetail");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   if (images.length === 0) return null;
@@ -29,7 +31,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
       >
         <div className="flex items-center gap-4">
           <div className="w-12 h-0.5 bg-primary rounded-full" />
-          <span className="text-sm uppercase tracking-widest text-muted font-medium">Galeria</span>
+          <span className="text-sm uppercase tracking-widest text-muted font-medium">{t("gallery")}</span>
         </div>
 
         {/* Primeira imagem — largura total */}

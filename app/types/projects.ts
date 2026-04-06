@@ -2,6 +2,7 @@ export type Project = {
     id: string;
     title: string;
     description: string;
+    description_en?: string;
     coverUrl: string;
     images?: string[]; // múltiplas imagens opcionais
     tags?: string[]; // tecnologias/categorias usadas

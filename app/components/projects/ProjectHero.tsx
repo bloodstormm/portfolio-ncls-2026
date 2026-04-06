@@ -2,9 +2,10 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import type { Project } from "@/app/types/projects";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -13,6 +14,7 @@ interface ProjectHeroProps {
 }
 
 export function ProjectHero({ project }: ProjectHeroProps) {
+  const t = useTranslations("projectDetail");
   return (
     <section className="relative w-full h-[70vh] min-h-[480px]">
       <Image
@@ -37,7 +39,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
           className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full text-sm"
         >
           <BsArrowLeft className="h-4 w-4" />
-          Todos os projetos
+          {t("allProjects")}
         </Link>
       </motion.div>
 

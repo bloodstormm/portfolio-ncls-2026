@@ -7,6 +7,7 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import AboutImage from "@/public/images/about-imager.jpg";
 import { ease, stats, socials } from "./data";
+import { useTranslations } from "next-intl";
 
 const socialIcons: Record<string, React.ReactNode> = {
   WhatsApp: <BsWhatsapp />,
@@ -16,6 +17,8 @@ const socialIcons: Record<string, React.ReactNode> = {
 };
 
 export function AboutHero() {
+  const t = useTranslations("about");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -43,7 +46,7 @@ export function AboutHero() {
             transition={{ duration: 0.9, ease, delay: 0.2 }}
             className="text-[10px] uppercase tracking-[0.4em] text-primary/50 font-Odasans mb-6"
           >
-            UX/UI &amp; Front-End Dev
+            {t("subtitle")}
           </motion.span>
 
           <motion.h1
@@ -76,11 +79,8 @@ export function AboutHero() {
             transition={{ duration: 1, ease, delay: 0.8 }}
             className="text-sm leading-relaxed text-muted/80 max-w-sm"
           >
-            Olá 👋, sou formado em Análise e
-            Desenvolvimento de Sistemas e hoje atuo entre front-end e UX/UI. <br /> <br />
-            <b className="text-primary">Faço sites como freelancer</b> e já entreguei mais de 3 projetos de
-            ponta a ponta que aumentaram <b className="text-primary">retenção</b> e <b className="text-primary">credibilidade</b> dos meus
-            clientes :)
+            {t("bio")} <br /> <br />
+            <b className="text-primary">{t("bio2")}</b>
           </motion.p>
 
           {/* Stats */}
@@ -92,7 +92,7 @@ export function AboutHero() {
           >
             {stats.map((s, i) => (
               <motion.div
-                key={s.label}
+                key={s.key}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease, delay: 1.0 + i * 0.08 }}
@@ -102,7 +102,7 @@ export function AboutHero() {
                   {s.value}
                 </span>
                 <span className="text-[9px] text-muted/50 uppercase tracking-widest font-Odasans mt-1">
-                  {s.label}
+                  {t(`stats.${s.key}` as "stats.experience" | "stats.projects" | "stats.companies")}
                 </span>
               </motion.div>
             ))}
@@ -118,7 +118,7 @@ export function AboutHero() {
             <div className="flex items-center gap-2 mr-4">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               <span className="text-[10px] text-muted/60 font-Odasans uppercase tracking-wide">
-                Disponível
+                {t("available")}
               </span>
             </div>
             {socials.map((s, i) => (

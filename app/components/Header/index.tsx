@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname as useRawPathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useTranslations, useLocale } from "next-intl";
 
+import { Link, useRouter, usePathname } from "@/app/i18n/navigation";
 import { MenuModal } from "../MenuModal";
 import { useTheme } from "@/app/hooks/useTheme";
 
@@ -14,19 +15,28 @@ import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { transition } from "@/app/utils/Animations";
 
 export const Header = () => {
-  const pathname = usePathname();
+  const pathname = usePathname(); // sem prefixo de locale, para o toggle
+  const rawPathname = useRawPathname(); // com prefixo, para checar dark hero
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  const darkHeroPages = /^\/projects\/.+/;
-  const hasDarkHero = darkHeroPages.test(pathname) && !scrolled;
+  const darkHeroPages = /^\/(en\/)?projects\/.+/;
+  const hasDarkHero = darkHeroPages.test(rawPathname) && !scrolled;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleLocale = () => {
+    const next = locale === "pt" ? "en" : "pt";
+    router.replace(pathname, { locale: next });
+  };
 
   return (
     <motion.header
@@ -76,7 +86,7 @@ export const Header = () => {
                       : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
                   }`}
                 >
-                  Sobre mim
+                  {t("about")}
                   <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current group-hover:w-full transition-all duration-300 ease-out"></div>
                 </Link>
               </motion.div>
@@ -90,7 +100,7 @@ export const Header = () => {
                       : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
                   }`}
                 >
-                  Projetos
+                  {t("projects")}
                   <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current group-hover:w-full transition-all duration-300 ease-out"></div>
                 </Link>
               </motion.div>
@@ -99,6 +109,19 @@ export const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
+
+            {/* Language Toggle */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{...transition}}
+              onClick={toggleLocale}
+              className={`p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors text-xs font-Odasans font-semibold tracking-widest ${
+                hasDarkHero ? "text-white/80" : "text-foreground/70"
+              }`}
+            >
+              {locale === "pt" ? "EN" : "PT"}
+            </motion.button>
 
             {/* Theme Toggle */}
             <motion.button
@@ -124,7 +147,7 @@ export const Header = () => {
               target="_blank"
               className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium text-sm hover:shadow-lg transition-colors duration-300"
             >
-              <span>Currículo</span>
+              <span>{t("resume")}</span>
               <MdOpenInNew className="h-4 w-4" />
             </motion.a>
 

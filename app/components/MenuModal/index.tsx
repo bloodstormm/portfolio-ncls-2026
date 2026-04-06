@@ -1,26 +1,28 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { BsX, BsArrowUpRight, BsGithub } from "react-icons/bs";
+import { BsX, BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdOpenInNew } from "react-icons/md";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 
 type MenuModalProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "Sobre mim" },
-  { href: "/projects", label: "Projetos" },
-];
-
 export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
   const pathname = usePathname();
+  const t = useTranslations("menu");
+
+  const navLinks = [
+    { href: "/" as const, label: t("home") },
+    { href: "/about" as const, label: t("about") },
+    { href: "/projects" as const, label: t("projects") },
+  ];
 
   return (
     <AnimatePresence>
@@ -103,7 +105,7 @@ export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
                   className="flex items-center justify-between px-4 py-4 rounded-xl border border-beige/30 text-foreground/60 hover:border-primary/40 hover:text-primary transition-all duration-300"
                 >
                   <span className="font-Wulkan text-3xl uppercase tracking-wide leading-none">
-                    Currículo
+                    {t("resume")}
                   </span>
                   <MdOpenInNew className="h-5 w-5 shrink-0" />
                 </a>

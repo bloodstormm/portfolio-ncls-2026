@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 import { BsArrowUpRight } from "react-icons/bs";
 import { db } from "../../lib/firebase";
 import { StaggerContainer, fadeInUp } from "../../utils/Animations";
@@ -11,6 +12,7 @@ import { ProjectCard } from "./ProjectCard";
 import type { Project } from "@/app/types/projects";
 
 export function ProjectsList() {
+  const t = useTranslations("projectsList");
   const [projects, setProjects] = useState<Project[]>([]);
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
@@ -35,11 +37,11 @@ export function ProjectsList() {
         className="text-center space-y-4"
       >
         <h2 className="font-Wulkan text-3xl md:text-5xl uppercase tracking-wide">
-          Projetos Recentes
+          {t("heading")}
         </h2>
         <div className="w-24 md:w-32 h-1 bg-primary mx-auto rounded-full" />
         <p className="text-foreground/70 text-base md:text-xl max-w-3xl mx-auto leading-relaxed">
-          Alguns dos projetos mais recentes que desenvolvi como freelancer.
+          {t("subheading")}
         </p>
       </motion.div>
 
@@ -121,7 +123,7 @@ export function ProjectsList() {
           className="group inline-flex items-center gap-3 px-8 md:px-12 py-4 md:py-6 bg-primary text-white rounded-full font-medium text-base md:text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500 hover:scale-105 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-          <span className="relative z-10">Explorar Todos os Projetos</span>
+          <span className="relative z-10">{t("cta")}</span>
           <BsArrowUpRight className="w-6 h-6 relative z-10 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
         </Link>
       </motion.div>

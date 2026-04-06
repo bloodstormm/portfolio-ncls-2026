@@ -1,15 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import type { Project } from "@/app/types/projects";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 
 interface NextProjectProps {
   project: Project;
 }
 
 export function NextProject({ project }: NextProjectProps) {
+  const t = useTranslations("projectDetail");
   return (
     <section className="container mx-auto px-6 py-16 max-w-6xl">
       <Link href={`/projects/${project.id}`} className="group block">
@@ -24,7 +26,7 @@ export function NextProject({ project }: NextProjectProps) {
 
           <div className="relative h-full px-8 py-6 flex flex-col justify-between">
             <span className="text-xs uppercase tracking-widest text-muted group-hover:text-white/60 font-medium transition-colors duration-500">
-              Próximo projeto
+              {t("nextProject")}
             </span>
             <div className="flex items-end justify-between gap-4">
               <div className="space-y-1">

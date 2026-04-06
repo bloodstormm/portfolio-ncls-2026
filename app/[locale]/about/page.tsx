@@ -1,4 +1,4 @@
-import { CompaniesCarousel } from "../components/CompaniesCarousel";
+import { CompaniesCarousel } from "../../components/CompaniesCarousel";
 import { AboutHero } from "@/app/components/about/AboutHero";
 import { AboutTimeline } from "@/app/components/about/AboutTimeline";
 import { AboutCTA } from "@/app/components/about/AboutCTA";

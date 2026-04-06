@@ -2,9 +2,13 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { ease, timeline } from "./data";
+import { ease, getTimeline } from "./data";
+import { useTranslations, useLocale } from "next-intl";
 
 export function AboutTimeline() {
+  const t = useTranslations("about");
+  const locale = useLocale();
+  const timeline = getTimeline(locale);
   const timelineRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -22,8 +26,8 @@ export function AboutTimeline() {
         transition={{ duration: 1, ease }}
         className="mb-14"
       >
-        <span className="text-xs uppercase tracking-widest text-primary font-Odasans">Experiência</span>
-        <h2 className="font-Wulkan text-4xl uppercase mt-2">Trajetória</h2>
+        <span className="text-xs uppercase tracking-widest text-primary font-Odasans">{t("timelineLabel")}</span>
+        <h2 className="font-Wulkan text-4xl uppercase mt-2">{t("timelineTitle")}</h2>
       </motion.div>
 
       <div ref={timelineRef} className="relative">

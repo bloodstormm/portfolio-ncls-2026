@@ -25,6 +25,7 @@ async function apiProjects(method: string, body: object) {
 export interface ProjectFormData {
   title: string;
   description: string;
+  description_en: string;
   coverUrl: string;
   images: string[];
   tags: string[];
@@ -36,6 +37,7 @@ export interface ProjectFormData {
 const emptyForm: ProjectFormData = {
   title: "",
   description: "",
+  description_en: "",
   coverUrl: "",
   images: [],
   tags: [],
@@ -67,6 +69,7 @@ export function useProjectForm(onSuccess: () => void) {
     setFormData({
       title: project.title,
       description: project.description,
+      description_en: project.description_en || "",
       coverUrl: project.coverUrl,
       images: project.images || [],
       tags: project.tags || [],
@@ -191,6 +194,7 @@ export function useProjectForm(onSuccess: () => void) {
       const projectData = {
         title: formData.title.trim(),
         description: formData.description,
+        description_en: formData.description_en,
         coverUrl,
         images: additionalImages,
         tags: formData.tags,

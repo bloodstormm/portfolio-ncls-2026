@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 const companies = [
   { key: "cit", src: "/companies-logo/cit-logo.png", alt: "CI&T", className: "h-16 w-auto object-contain" },
   { key: "jj",  src: "/companies-logo/johnson-logo.svg", alt: "Johnson & Johnson", className: "h-7 w-auto object-contain" },
@@ -9,10 +11,11 @@ const companies = [
 const items = [...companies, ...companies, ...companies, ...companies];
 
 export function CompaniesCarousel() {
+  const t = useTranslations("companiesCarousel");
   return (
     <div className="w-full overflow-hidden py-8">
       <p className="text-center text-xs uppercase tracking-widest text-muted/50 mb-8 font-Odasans">
-        Empresas onde trabalhei
+        {t("label")}
       </p>
       <div className="flex animate-[scroll_20s_linear_infinite] gap-20 items-center w-max">
         {items.map((company, i) => (

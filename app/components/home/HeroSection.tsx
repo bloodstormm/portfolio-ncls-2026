@@ -2,8 +2,9 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 import HomeImage from "@/public/images/home-image.jpg";
 import {
   fadeInUpBlur,
@@ -15,6 +16,8 @@ import { SocialLinks } from "./SocialLinks";
 import { ProjectsList } from "@/app/components/ProjectsList";
 
 export function HeroSection() {
+  const t = useTranslations("hero");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -33,14 +36,11 @@ export function HeroSection() {
           className="flex flex-col gap-6"
         >
           <h1 className="text-center font-Wulkan text-4xl lg:text-5xl font-medium uppercase lg:text-left xl:text-5xl">
-            UX/UI &
-            <br className="hidden lg:block" /> Desenvolvedor
+            {t("title1")}
+            <br className="hidden lg:block" /> {t("title2")}
           </h1>
           <p className="text-sm xl:text-base">
-            Crio sites profissionais que transmitem credibilidade e atraem
-            clientes para o seu negócio. Logo abaixo está
-            algumas das minhas redes, sinta-se à vontade de entrar em contato!
-            🤠
+            {t("bio")}
           </p>
           <SocialLinks />
         </motion.div>
@@ -74,7 +74,7 @@ export function HeroSection() {
             className="absolute group -bottom-4 left-6 hidden h-32 w-32 items-center justify-center rounded-full border border-brown dark:border-beige sm:flex lg:left-14 lg:h-40 lg:w-40 xl:bottom-0 hover:-translate-y-1 hover:scale-105 transition-transform duration-300"
           >
             <div className="absolute top-2 right-1 h-6 w-6 rounded-full group-hover:animate-pulse transition bg-primary lg:top-1 lg:right-5" />
-            <p className="w-20">Ver meus Projetos</p>
+            <p className="w-20">{t("viewProjects")}</p>
             <BsArrowUpRight className="h-5 w-5" />
           </Link>
         </motion.div>

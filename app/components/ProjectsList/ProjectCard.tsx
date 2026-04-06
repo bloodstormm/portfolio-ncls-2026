@@ -7,6 +7,8 @@ import { BsArrowUpRight, BsEye } from "react-icons/bs";
 import { itemAnimation } from "@/app/utils/Animations";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
+import { useLocale } from "next-intl";
+import { getDescription } from "@/app/utils/projectLocale";
 
 export type CardSize = "small" | "large" | "featured";
 
@@ -27,6 +29,7 @@ export function ProjectCard({
   onMouseLeave,
   size = "small",
 }: ProjectCardProps) {
+  const locale = useLocale();
   return (
     <motion.div
       variants={itemAnimation}
@@ -99,7 +102,7 @@ export function ProjectCard({
                   className="hidden md:block"
                 >
                   <RichTextRenderer
-                    content={project.description}
+                    content={getDescription(project, locale)}
                     className="text-sm text-white/80 leading-relaxed"
                     maxLines={2}
                   />

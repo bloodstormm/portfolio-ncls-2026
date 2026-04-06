@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "title": "Freelance Web Developer | Nícolas Malachias.",
+    "description": "Freelance web developer with personalized service, professional delivery and affordable pricing."
+  },
+  "header": {
+    "about": "About me",
+    "projects": "Projects",
+    "resume": "Resume"
+  },
+  "footer": {
+    "portfolio": "NCLS Portfolio",
+    "rights": "All rights reserved.",
+    "available": "Available for new projects."
+  },
+  "hero": {
+    "title1": "UX/UI &",
+    "title2": "Developer",
+    "bio": "I build professional websites that convey credibility and attract clients to your business. Below are some of my social links — feel free to reach out! 🤠",
+    "viewProjects": "View my Projects"
+  },
+  "projectsList": {
+    "heading": "Recent Projects",
+    "subheading": "Some of the most recent projects I've developed as a freelancer.",
+    "cta": "Explore All Projects"
+  },
+  "projectDetail": {
+    "about": "About the project",
+    "gallery": "Gallery",
+    "visitSite": "Visit Site",
+    "repository": "Repository",
+    "allProjects": "All projects",
+    "nextProject": "Next project",
+    "loading": "Loading project...",
+    "notFound": "Project not found",
+    "backToProjects": "View all projects"
+  },
+  "companiesCarousel": {
+    "label": "Companies I've worked at"
+  },
+  "about": {
+    "subtitle": "UX/UI & Front-End Dev",
+    "available": "Available",
+    "bio": "Hey 👋, I have a degree in Systems Analysis and Development and currently work across front-end and UX/UI.",
+    "bio2": "I build websites as a freelancer and have delivered 3+ end-to-end projects that improved retention and credibility for my clients :)",
+    "stats": {
+      "experience": "Years of experience",
+      "projects": "Projects delivered",
+      "companies": "Companies"
+    },
+    "timelineLabel": "Experience",
+    "timelineTitle": "Timeline",
+    "ctaTitle": "Let's talk?",
+    "ctaSubtitle": "I'm available for new projects and collaborations. Get in touch!",
+    "sendEmail": "Send email"
+  },
+  "projects": {
+    "label": "Portfolio",
+    "title": "Projects",
+    "description": "A selection of my work in UX/UI Design and Front-end Development.",
+    "count_one": "{count} project",
+    "count_other": "{count} projects",
+    "soon": "New projects coming soon."
+  },
+  "menu": {
+    "home": "Home",
+    "about": "About me",
+    "projects": "Projects",
+    "resume": "Resume"
+  }
+}

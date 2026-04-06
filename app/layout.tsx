@@ -1,12 +1,6 @@
-import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
-
 import localFont from "next/font/local";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import { Providers } from "./providers";
+import "./globals.css";
 
 const odasans = localFont({
   src: "./fonts/Odasans/Odasans-Semibold.ttf",
@@ -24,30 +18,17 @@ const poppins = Poppins({
   variable: "--font-Poppins",
 });
 
-export const metadata: Metadata = {
-  title: "Desenvolvedor de Sites Freelancer | Nícolas Malachias. ",
-  description: "Desenvolvedor de sites freelancer com atendimento próximo, entrega profissional e preço acessível.",
-  openGraph: {
-    images: "/images/og-image.jpg", // Relative URL from public directory
-  },
-};
-
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
         className={`${odasans.variable} ${wulkan.variable} ${poppins.variable} antialiased`}
       >
-        <Providers>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1 pt-20">{children}</main>
-            <Footer />
-          </div>
-        </Providers>
-        <Analytics />
+        {children}
       </body>
     </html>
   );

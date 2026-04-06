@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { BsArrowUpRight, BsGithub, BsGlobe } from "react-icons/bs";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
+import { useLocale, useTranslations } from "next-intl";
+import { getDescription } from "@/app/utils/projectLocale";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -12,6 +14,8 @@ interface ProjectDescriptionProps {
 }
 
 export function ProjectDescription({ project }: ProjectDescriptionProps) {
+  const locale = useLocale();
+  const t = useTranslations("projectDetail");
   return (
     <section className="container mx-auto px-6 py-20 max-w-4xl">
       <motion.div
@@ -21,10 +25,10 @@ export function ProjectDescription({ project }: ProjectDescriptionProps) {
         className="space-y-10"
       >
         <div className="space-y-4">
-          <h3 className="text-3xl font-semibold text-primary">Sobre o projeto</h3>
+          <h3 className="text-3xl font-semibold text-primary">{t("about")}</h3>
           <div className="w-12 h-0.5 bg-primary rounded-full" />
           <RichTextRenderer
-            content={project.description}
+            content={getDescription(project, locale)}
             className="text-lg leading-relaxed text-foreground/80"
           />
         </div>
@@ -39,7 +43,7 @@ export function ProjectDescription({ project }: ProjectDescriptionProps) {
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors duration-300 text-sm font-medium"
               >
                 <BsGlobe className="h-4 w-4" />
-                Acessar Site
+                {t("visitSite")}
                 <BsArrowUpRight className="h-3.5 w-3.5" />
               </a>
             )}
@@ -51,7 +55,7 @@ export function ProjectDescription({ project }: ProjectDescriptionProps) {
                 className="inline-flex items-center gap-2 px-6 py-3 border border-beige/40 text-foreground hover:border-primary/50 hover:text-primary rounded-full transition-all duration-300 text-sm font-medium"
               >
                 <BsGithub className="h-4 w-4" />
-                Repositório
+                {t("repository")}
               </a>
             )}
           </div>

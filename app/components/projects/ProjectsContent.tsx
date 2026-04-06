@@ -5,11 +5,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { db } from "@/app/lib/firebase";
 import { fadeInUpBlur } from "@/app/utils/Animations";
+import { useTranslations } from "next-intl";
 import { ProjectsHeader } from "./ProjectsHeader";
 import { ProjectCard } from "./ProjectCard";
 import type { Project } from "@/app/types/projects";
 
 export function ProjectsContent() {
+  const t = useTranslations("projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +41,7 @@ export function ProjectsContent() {
           </div>
         ) : projects.length === 0 ? (
           <motion.div {...fadeInUpBlur} className="text-center py-24 text-muted">
-            <p className="text-lg">Em breve, novos projetos.</p>
+            <p className="text-lg">{t("soon")}</p>
           </motion.div>
         ) : (
           <div className="space-y-0">

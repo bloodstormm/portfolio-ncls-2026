@@ -5,8 +5,10 @@ import Link from "next/link";
 import { HiOutlineMail } from "react-icons/hi";
 import { BsWhatsapp } from "react-icons/bs";
 import { ease } from "./data";
+import { useTranslations } from "next-intl";
 
 export function AboutCTA() {
+  const t = useTranslations("about");
   return (
     <motion.section
       initial={{ opacity: 0, y: 80, scale: 0.96 }}
@@ -23,7 +25,7 @@ export function AboutCTA() {
           transition={{ duration: 0.8, ease, delay: 0.15 }}
           className="font-Wulkan text-4xl uppercase"
         >
-          Vamos conversar?
+          {t("ctaTitle")}
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -32,7 +34,7 @@ export function AboutCTA() {
           transition={{ duration: 0.8, ease, delay: 0.25 }}
           className="text-sm text-muted max-w-sm"
         >
-          Estou disponível para novos projetos e colaborações. Entre em contato!
+          {t("ctaSubtitle")}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,7 +48,7 @@ export function AboutCTA() {
             className="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-background text-sm font-medium hover:bg-primary-hover transition-colors duration-300"
           >
             <HiOutlineMail className="text-lg" />
-            Enviar e-mail
+            {t("sendEmail")}
           </Link>
           <a
             href="https://wa.me/5512988770308"

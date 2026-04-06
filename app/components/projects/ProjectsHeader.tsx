@@ -2,12 +2,14 @@
 
 import { motion } from "framer-motion";
 import { fadeInUpBlur } from "@/app/utils/Animations";
+import { useTranslations } from "next-intl";
 
 interface ProjectsHeaderProps {
   count: number;
 }
 
 export function ProjectsHeader({ count }: ProjectsHeaderProps) {
+  const t = useTranslations("projects");
   return (
     <motion.section
       {...fadeInUpBlur}
@@ -15,17 +17,17 @@ export function ProjectsHeader({ count }: ProjectsHeaderProps) {
     >
       <div className="space-y-4">
         <span className="text-xs uppercase tracking-widest text-primary font-semibold">
-          Portfólio
+          {t("label")}
         </span>
         <h1 className="font-Wulkan text-5xl md:text-7xl uppercase tracking-wide leading-none">
-          Projetos
+          {t("title")}
         </h1>
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <p className="text-foreground/60 text-lg max-w-xl leading-relaxed">
-            Uma seleção dos meus trabalhos em UX/UI Design e Desenvolvimento Front-end.
+            {t("description")}
           </p>
           <span className="text-sm text-muted font-mono">
-            {count} projeto{count !== 1 ? "s" : ""}
+            {t(count !== 1 ? "count_other" : "count_one", { count })}
           </span>
         </div>
         <div className="w-full h-px bg-beige/30 mt-6" />

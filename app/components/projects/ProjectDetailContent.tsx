@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 import { db } from "@/app/lib/firebase";
 import { fadeInUpBlur } from "@/app/utils/Animations";
+import { useTranslations } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
 import { ProjectHero } from "./ProjectHero";
 import { ProjectDescription } from "./ProjectDescription";
 import { ProjectGallery } from "./ProjectGallery";
@@ -16,6 +17,7 @@ import type { Project } from "@/app/types/projects";
 
 export function ProjectDetailContent() {
   const params = useParams();
+  const t = useTranslations("projectDetail");
   const [project, setProject] = useState<Project | null>(null);
   const [nextProject, setNextProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +59,7 @@ export function ProjectDetailContent() {
       <main className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-muted text-sm">Carregando projeto...</p>
+          <p className="text-muted text-sm">{t("loading")}</p>
         </div>
       </main>
     );
@@ -71,13 +73,13 @@ export function ProjectDetailContent() {
           transition={{ ...fadeInUpBlur.transition, duration: 0.8 }}
           className="text-center space-y-6"
         >
-          <h1 className="font-Wulkan text-3xl text-primary">Projeto não encontrado</h1>
+          <h1 className="font-Wulkan text-3xl text-primary">{t("notFound")}</h1>
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full"
           >
             <BsArrowLeft className="h-4 w-4" />
-            Ver todos os projetos
+            {t("backToProjects")}
           </Link>
         </motion.div>
       </main>

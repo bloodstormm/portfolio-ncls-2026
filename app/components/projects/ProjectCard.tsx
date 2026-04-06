@@ -6,6 +6,8 @@ import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
+import { useLocale } from "next-intl";
+import { getDescription } from "@/app/utils/projectLocale";
 
 interface ProjectCardProps {
   project: Project;
@@ -15,6 +17,7 @@ interface ProjectCardProps {
 const cardEase = [0.16, 1, 0.3, 1] as const;
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
+  const locale = useLocale();
   return (
     <motion.div
       initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
@@ -63,7 +66,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   {project.title}
                 </h2>
                 <RichTextRenderer
-                  content={project.description}
+                  content={getDescription(project, locale)}
                   className="text-foreground/60 text-sm leading-relaxed"
                   maxLines={3}
                 />

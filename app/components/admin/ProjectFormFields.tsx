@@ -185,18 +185,33 @@ export function ProjectFormFields({
             )}
           </motion.div>
 
-          {/* Descrição */}
+          {/* Descrição PT */}
           <motion.div
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.7, ease, delay: 0.2 }}
             className="space-y-3"
           >
-            {fieldLabel("Descrição *")}
+            {fieldLabel("Descrição (PT) *")}
             <RichTextEditor
               content={formData.description}
               onChange={(content) => setFormData((prev) => ({ ...prev, description: content }))}
               placeholder="Descreva o projeto, tecnologias, desafios e resultados..."
+            />
+          </motion.div>
+
+          {/* Descrição EN */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.7, ease, delay: 0.22 }}
+            className="space-y-3"
+          >
+            {fieldLabel("Descrição (EN)")}
+            <RichTextEditor
+              content={formData.description_en}
+              onChange={(content) => setFormData((prev) => ({ ...prev, description_en: content }))}
+              placeholder="Describe the project, technologies, challenges and results..."
             />
           </motion.div>
 

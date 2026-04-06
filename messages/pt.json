@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "title": "Desenvolvedor de Sites Freelancer | Nícolas Malachias.",
+    "description": "Desenvolvedor de sites freelancer com atendimento próximo, entrega profissional e preço acessível."
+  },
+  "header": {
+    "about": "Sobre mim",
+    "projects": "Projetos",
+    "resume": "Currículo"
+  },
+  "footer": {
+    "portfolio": "Portfólio NCLS",
+    "rights": "Todos os direitos reservados.",
+    "available": "Disponível para novos projetos."
+  },
+  "hero": {
+    "title1": "UX/UI &",
+    "title2": "Desenvolvedor",
+    "bio": "Crio sites profissionais que transmitem credibilidade e atraem clientes para o seu negócio. Logo abaixo está algumas das minhas redes, sinta-se à vontade de entrar em contato! 🤠",
+    "viewProjects": "Ver meus Projetos"
+  },
+  "projectsList": {
+    "heading": "Projetos Recentes",
+    "subheading": "Alguns dos projetos mais recentes que desenvolvi como freelancer.",
+    "cta": "Explorar Todos os Projetos"
+  },
+  "projectDetail": {
+    "about": "Sobre o projeto",
+    "gallery": "Galeria",
+    "visitSite": "Acessar Site",
+    "repository": "Repositório",
+    "allProjects": "Todos os projetos",
+    "nextProject": "Próximo projeto",
+    "loading": "Carregando projeto...",
+    "notFound": "Projeto não encontrado",
+    "backToProjects": "Ver todos os projetos"
+  },
+  "companiesCarousel": {
+    "label": "Empresas onde trabalhei"
+  },
+  "about": {
+    "subtitle": "UX/UI & Front-End Dev",
+    "available": "Disponível",
+    "bio": "Olá 👋, sou formado em Análise e Desenvolvimento de Sistemas e hoje atuo entre front-end e UX/UI.",
+    "bio2": "Faço sites como freelancer e já entreguei mais de 3 projetos de ponta a ponta que aumentaram retenção e credibilidade dos meus clientes :)",
+    "stats": {
+      "experience": "Anos de experiência",
+      "projects": "Projetos entregues",
+      "companies": "Empresas"
+    },
+    "timelineLabel": "Experiência",
+    "timelineTitle": "Trajetória",
+    "ctaTitle": "Vamos conversar?",
+    "ctaSubtitle": "Estou disponível para novos projetos e colaborações. Entre em contato!",
+    "sendEmail": "Enviar e-mail"
+  },
+  "projects": {
+    "label": "Portfólio",
+    "title": "Projetos",
+    "description": "Uma seleção dos meus trabalhos em UX/UI Design e Desenvolvimento Front-end.",
+    "count_one": "{count} projeto",
+    "count_other": "{count} projetos",
+    "soon": "Em breve, novos projetos."
+  },
+  "menu": {
+    "home": "Home",
+    "about": "Sobre mim",
+    "projects": "Projetos",
+    "resume": "Currículo"
+  }
+}
