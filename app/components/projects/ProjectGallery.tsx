@@ -23,8 +23,8 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
   return (
     <section className="container mx-auto px-6 pb-24 max-w-6xl">
       <motion.div
-        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.9, ease, delay: 0.1 }}
         className="space-y-8"
@@ -47,7 +47,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-4">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 rounded-full p-4">
               <BsArrowUpRight className="h-5 w-5 text-white" />
             </div>
           </div>
@@ -70,7 +70,7 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 backdrop-blur-sm rounded-full p-3">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/20 rounded-full p-3">
                     <BsArrowUpRight className="h-4 w-4 text-white" />
                   </div>
                 </div>

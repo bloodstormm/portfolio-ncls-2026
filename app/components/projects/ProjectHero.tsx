@@ -24,19 +24,19 @@ export function ProjectHero({ project }: ProjectHeroProps) {
         className="object-cover"
         priority
       />
-      <div className="absolute inset-0 backdrop-blur-[2px]" />
+      <div className="absolute inset-0" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
       {/* Botão voltar */}
       <motion.div
-        initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease }}
         className="absolute top-24 left-0 right-0 container mx-auto px-6"
       >
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full text-sm"
+          className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 px-4 py-2 rounded-full text-sm"
         >
           <BsArrowLeft className="h-4 w-4" />
           {t("allProjects")}
@@ -46,13 +46,13 @@ export function ProjectHero({ project }: ProjectHeroProps) {
       {/* Título sobre a imagem */}
       <div className="absolute bottom-0 left-0 right-0 container mx-auto px-6 pb-12">
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease, delay: 0.2 }}
           className="space-y-4 max-w-3xl"
         >
           {project.category && (
-            <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/15 px-3 py-1 rounded-full backdrop-blur-sm">
+            <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/15 px-3 py-1 rounded-full">
               {project.category}
             </span>
           )}
@@ -64,7 +64,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs text-white/70 border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm"
+                  className="text-xs text-white/70 border border-white/20 px-3 py-1 rounded-full"
                 >
                   {tag}
                 </span>

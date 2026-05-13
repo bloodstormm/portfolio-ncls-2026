@@ -39,34 +39,31 @@ const scaleUp = {
 };
 
 const fadeInUpBlur = {
-  initial: { y: 60, opacity: 0, filter: "blur(10px)" },
-  animate: { y: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { y: 60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.3, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { y: 30, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  exit: { y: 30, opacity: 0 },
+  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Entra pela direita (x: 60 → 0) com blur
 const fadeInLeftBlur = {
-  initial: { x: 60, opacity: 0, filter: "blur(10px)" },
-  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { x: 60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { x: 40, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: 40, opacity: 0 },
+  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Entra pela esquerda (x: -60 → 0) com blur
 const fadeInRightBlur = {
-  initial: { x: -60, opacity: 0, filter: "blur(10px)" },
-  animate: { x: 0, opacity: 1, filter: "blur(0px)" },
-  exit: { x: -60, opacity: 0, filter: "blur(10px)" },
-  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { x: -40, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  exit: { x: -40, opacity: 0 },
+  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
 };
 
-// Scale suave + blur
 const scaleUpBlur = {
-  initial: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
-  animate: { scale: 1, opacity: 1, filter: "blur(0px)" },
-  exit: { scale: 0.88, opacity: 0, filter: "blur(14px)" },
-  transition: { duration: 1.4, ease: [0.16, 1, 0.3, 1] as const },
+  initial: { scale: 0.95, opacity: 0 },
+  animate: { scale: 1, opacity: 1 },
+  exit: { scale: 0.95, opacity: 0 },
+  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
 };
 
 // Stagger Animations
@@ -75,24 +72,26 @@ const scaleUpBlur = {
 // Se entre o elemento pai e filho houver alguma outra coisa, não irá funcionar
 
 const StaggerContainer = {
+  hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
     },
   },
 };
 
 const itemAnimation = {
-  hidden: { y: 200, opacity: 0 },
+  hidden: { y: 24, opacity: 0 },
   show: {
     y: 0,
     opacity: 1,
     transition: {
-      ease: "anticipate" as const,
-      duration: 2,
+      ease: [0.16, 1, 0.3, 1] as const,
+      duration: 0.5,
     },
   },
-  exit: { opacity: 0, transition: { ...transition } },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
 const StaggerText = {

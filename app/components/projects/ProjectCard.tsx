@@ -20,8 +20,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
   const locale = useLocale();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 1, ease: cardEase, delay: index * 0.05 }}
     >
@@ -37,7 +37,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-            <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+            <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
               <BsArrowUpRight className="h-3.5 w-3.5 text-white" />
             </div>
           </div>
@@ -45,8 +45,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           {/* Grid desktop: info | imagem */}
           <div className="hidden md:grid md:grid-cols-2 md:gap-0">
             <motion.div
-              initial={{ opacity: 0, x: -30, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 1, ease: cardEase, delay: index * 0.05 + 0.1 }}
               className="flex flex-col justify-between gap-6 pr-12"
@@ -89,7 +89,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
-              <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+              <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                 <BsArrowUpRight className="h-4 w-4 text-white" />
               </div>
             </div>

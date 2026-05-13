@@ -21,7 +21,7 @@ export function CompaniesCarousel() {
         {items.map((company, i) => (
           <div
             key={`${company.key}-${i}`}
-            className="flex items-center px-8 py-4 rounded-xl border border-primary/15 bg-background/40 backdrop-blur-sm opacity-70 hover:opacity-100 transition-opacity duration-300"
+            className="flex items-center px-8 py-4 rounded-xl border border-primary/15 bg-background/40 opacity-70 hover:opacity-100 transition-opacity duration-300"
           >
             <img
               src={company.src}

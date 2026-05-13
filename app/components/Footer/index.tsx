@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 export const Footer = () => {
   const t = useTranslations("footer");
   return (
-  <footer className="mt-auto border-t border-beige/40 bg-brand/10 backdrop-blur-sm">
+  <footer className="mt-auto border-t border-beige/40 bg-brand/10">
   <div className="container mx-auto flex min-h-[180px] flex-col gap-8 px-6 py-10 md:flex-row md:items-center md:justify-between">
       <div className="space-y-1">
         <div className="flex items-center justify-between">

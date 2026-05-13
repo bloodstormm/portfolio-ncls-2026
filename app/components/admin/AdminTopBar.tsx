@@ -21,10 +21,10 @@ export function AdminTopBar({ viewMode, editingTitle, onCancel, onLogout }: Admi
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: -16, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="sticky top-0 z-40 border-b border-beige/20 bg-background/80 backdrop-blur-md"
+      className="sticky top-0 z-40 border-b border-beige/20 bg-background/80"
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between max-w-6xl">
         <div className="flex items-center gap-5">

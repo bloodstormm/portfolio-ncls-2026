@@ -30,8 +30,9 @@ export function DotGrid() {
         height="100%"
         fill="url(#dot-grid)"
         mask="url(#dot-mask)"
+        style={{ willChange: "transform" }}
         animate={{ x: [0, 32] }}
-        transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
       />
     </motion.svg>
   );

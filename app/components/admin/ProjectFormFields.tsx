@@ -48,8 +48,8 @@ export function ProjectFormFields({
   return (
     <section className="container mx-auto px-6 py-14 max-w-3xl">
       <motion.div
-        initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease }}
         className="space-y-3 mb-12"
       >
@@ -67,8 +67,8 @@ export function ProjectFormFields({
 
           {/* Título + Categoria */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.05 }}
             className="grid md:grid-cols-[1fr_200px] gap-6"
           >
@@ -101,8 +101,8 @@ export function ProjectFormFields({
 
           {/* Imagem de Capa */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.1 }}
             className="space-y-3"
           >
@@ -119,8 +119,8 @@ export function ProjectFormFields({
 
           {/* Galeria */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.15 }}
             className="space-y-3"
           >
@@ -187,8 +187,8 @@ export function ProjectFormFields({
 
           {/* Descrição PT */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.2 }}
             className="space-y-3"
           >
@@ -202,8 +202,8 @@ export function ProjectFormFields({
 
           {/* Descrição EN */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.22 }}
             className="space-y-3"
           >
@@ -217,8 +217,8 @@ export function ProjectFormFields({
 
           {/* Tags */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.25 }}
             className="space-y-3"
           >
@@ -254,8 +254,8 @@ export function ProjectFormFields({
 
           {/* URLs */}
           <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.3 }}
             className="grid md:grid-cols-2 gap-6"
           >

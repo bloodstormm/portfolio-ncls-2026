@@ -45,12 +45,11 @@ export const Header = () => {
       transition={{ duration: 0.6, ease: [0.6, -0.05, 0.1, 0.9] }}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     >
-      {/* Background: sempre blur leve, mais sólido após scroll */}
       <div
         className={`absolute inset-0 transition-all duration-500 ${
           scrolled
             ? "backdrop-blur-md bg-background/80"
-            : "backdrop-blur-none bg-transparent"
+            : "bg-transparent"
         }`}
       />
       <div className="container mx-auto px-6 lg:px-8 relative z-10">

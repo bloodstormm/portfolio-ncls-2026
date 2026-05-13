@@ -34,7 +34,7 @@ export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-background/60"
             onClick={() => setIsOpen(false)}
           />
 

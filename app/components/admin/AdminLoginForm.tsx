@@ -52,7 +52,7 @@ export function AdminLoginForm() {
   return (
     <main className="bg-background flex items-center justify-center my-24 px-4">
       <motion.div {...fadeInUp} className="w-full max-w-md">
-        <div className="bg-gradient-to-br from-background/90 to-background/60 backdrop-blur-sm border border-beige/20 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-linear-to-br from-background/90 to-background/60 border border-beige/20 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="font-Wulkan text-3xl uppercase text-primary mb-2">Admin Portal</h1>
             <div className="w-16 h-1 bg-primary mx-auto rounded-full mb-4" />

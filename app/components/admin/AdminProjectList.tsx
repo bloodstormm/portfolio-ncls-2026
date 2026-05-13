@@ -16,8 +16,8 @@ export function AdminProjectList({ projects, onNew, onEdit, onDelete }: AdminPro
   return (
     <section className="container mx-auto px-6 py-14 max-w-6xl">
       <motion.div
-        initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="flex items-end justify-between gap-6 mb-12"
       >
@@ -60,8 +60,8 @@ export function AdminProjectList({ projects, onNew, onEdit, onDelete }: AdminPro
           {projects.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: index * 0.06 }}
             >
               <article className="group grid md:grid-cols-[1fr_200px] gap-0 border-b border-beige/20 py-8 hover:border-primary/20 transition-colors duration-300">

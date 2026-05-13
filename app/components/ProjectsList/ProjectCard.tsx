@@ -45,7 +45,7 @@ export function ProjectCard({
               src={project.coverUrl}
               alt={project.title}
               fill
-              className="object-cover transition-all duration-1000 group-hover:scale-110 group-hover:blur-xs group-hover:brightness-50"
+              className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-50"
               priority={index === 0}
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/15 to-transparent" />
@@ -55,13 +55,13 @@ export function ProjectCard({
           <div className="relative h-full p-6 flex flex-col justify-between">
             {/* Top */}
             <div className="flex justify-between items-start">
-              <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+              <div className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
                 <span className="text-xs font-mono text-white/90">
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
               {size === "featured" && (
-                <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/20 px-3 py-1 rounded-full backdrop-blur-md">
+                <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/20 px-3 py-1 rounded-full">
                   Mais Recente
                 </span>
               )}
@@ -71,7 +71,7 @@ export function ProjectCard({
                 whileHover={{ scale: 1.2, rotate: 0 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
                   <BsEye className="w-4 h-4 text-white" />
                 </div>
               </motion.div>
@@ -116,14 +116,14 @@ export function ProjectCard({
                 transition={{ duration: 0.3, delay: 0.15 }}
               >
                 <span className="text-white/80 text-sm font-medium">Ver Detalhes</span>
-                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
                   <BsArrowUpRight className="w-4 h-4 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
                 </div>
               </motion.div>
 
               <div className="h-0.5 bg-white/20 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-primary to-secondary"
+                  className="h-full bg-linear-to-r from-primary to-secondary"
                   initial={{ width: "0%" }}
                   animate={{ width: isHovered ? "100%" : "0%" }}
                   transition={{ duration: 0.8, ease: "easeInOut" }}

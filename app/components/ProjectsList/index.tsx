@@ -48,7 +48,7 @@ export function ProjectsList() {
       <motion.div
         variants={StaggerContainer}
         initial="hidden"
-        animate="show"
+        animate={projects.length > 0 ? "show" : "hidden"}
         className="space-y-6"
       >
         {/* Linha principal: destaque + 2 empilhados */}

@@ -58,7 +58,7 @@ export function AboutTimeline() {
                 style={{ backgroundColor: item.color, boxShadow: `0 0 0 3px ${item.color}33` }}
               />
 
-              <div className="rounded-2xl border border-primary/15 bg-background/60 backdrop-blur-sm p-6 hover:border-primary/30 transition-colors duration-300">
+              <div className="rounded-2xl border border-primary/15 bg-background/60 p-6 hover:border-primary/30 transition-colors duration-300">
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-4">
                   <div>
                     <h3 className="font-Odasans text-lg" style={{ color: item.color }}>{item.company}</h3>
