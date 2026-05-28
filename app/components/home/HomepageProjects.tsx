@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { BsArrowUpRight } from "react-icons/bs";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
@@ -16,18 +16,6 @@ const DISCIPLINE_LABELS: Record<string, string> = {
   both: "Design & Dev",
 };
 
-const imageCache = new Set<string>();
-
-function preloadImage(url: string): Promise<void> {
-  return new Promise((resolve) => {
-    if (imageCache.has(url)) { resolve(); return; }
-    const img = new window.Image();
-    img.onload = () => { imageCache.add(url); resolve(); };
-    img.onerror = () => resolve();
-    img.src = url;
-  });
-}
-
 function ProjectCard({
   project,
   index,
@@ -38,85 +26,25 @@ function ProjectCard({
   size?: "large" | "small";
 }) {
   const locale = useLocale();
-  const [imageIndex, setImageIndex] = useState(0);
-  const allImages = [project.coverUrl, ...(project.images ?? [])].filter(Boolean);
+  const [isLoaded, setIsLoaded] = useState(false);
   const description =
     locale === "en" ? (project.description_en ?? project.description) : project.description;
 
-  const [loadedSet, setLoadedSet] = useState<Set<string>>(
-    () => new Set(allImages.filter((u) => imageCache.has(u)))
-  );
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isHoveringRef = useRef(false);
-
-  function markLoaded(url: string) {
-    imageCache.add(url);
-    setLoadedSet((prev) => (prev.has(url) ? prev : new Set(prev).add(url)));
-  }
-
-  function scheduleNext(currentIdx: number) {
-    timeoutRef.current = setTimeout(async () => {
-      if (!isHoveringRef.current) return;
-      const nextIdx = (currentIdx + 1) % allImages.length;
-      await preloadImage(allImages[nextIdx]);
-      if (!isHoveringRef.current) return;
-      markLoaded(allImages[nextIdx]);
-      setImageIndex(nextIdx);
-      scheduleNext(nextIdx);
-    }, 1300);
-  }
-
-  function startCycling() {
-    if (allImages.length <= 1) return;
-    isHoveringRef.current = true;
-    preloadImage(allImages[1 % allImages.length]).then(() =>
-      markLoaded(allImages[1 % allImages.length])
-    );
-    scheduleNext(0);
-  }
-
-  function stopCycling() {
-    isHoveringRef.current = false;
-    if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
-    setImageIndex(0);
-  }
-
-  useEffect(() => {
-    preloadImage(project.coverUrl).then(() => markLoaded(project.coverUrl));
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project.coverUrl]);
-
-  const currentUrl = allImages[imageIndex];
-  const isLoaded = loadedSet.has(currentUrl);
-
   return (
     <Link href={`/projects/${project.id}` as `/projects/${string}`} className="block h-full">
-      <div
-        className="group relative h-full overflow-hidden rounded-2xl cursor-pointer"
-        onMouseEnter={startCycling}
-        onMouseLeave={stopCycling}
-      >
-        {/* Scale wrapper — CSS only so it doesn't conflict with framer-motion */}
+      <div className="group relative h-full overflow-hidden rounded-2xl cursor-pointer">
         <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-102">
-          <AnimatePresence mode="sync">
-            <motion.img
-              key={`${project.id}-${imageIndex}`}
-              src={currentUrl}
-              alt={project.title}
-              className="absolute inset-0 w-full h-full object-cover"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              style={{
-                filter: isLoaded ? "blur(0px)" : "blur(18px)",
-                transform: isLoaded ? "scale(1)" : "scale(1.08)",
-                transition: "filter 0.65s ease-out, transform 0.65s ease-out",
-              }}
-              onLoad={() => markLoaded(currentUrl)}
-            />
-          </AnimatePresence>
+          <img
+            src={project.coverUrl}
+            alt={project.title}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              filter: isLoaded ? "blur(0px)" : "blur(18px)",
+              transform: isLoaded ? "scale(1)" : "scale(1.08)",
+              transition: "filter 0.65s ease-out, transform 0.65s ease-out",
+            }}
+            onLoad={() => setIsLoaded(true)}
+          />
         </div>
 
         {/* Gradient overlays */}
@@ -133,20 +61,6 @@ function ProjectCard({
           </span>
         </div>
 
-        {/* Image dots */}
-        {allImages.length > 1 && (
-          <div className="absolute top-5 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            {allImages.map((_, i) => (
-              <span
-                key={i}
-                className={`block h-1 rounded-full transition-all duration-300 ${
-                  i === imageIndex ? "w-4 bg-white" : "w-1 bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-
         {/* Bottom text */}
         <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
           {project.discipline && (
@@ -155,14 +69,13 @@ function ProjectCard({
             </p>
           )}
           <h3
-            className={`font-Wulkan uppercase text-white leading-tight ${
+            className={`font-Wulkan uppercase tracking-wide text-white leading-tight ${
               size === "large" ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"
             }`}
           >
             {project.title}
           </h3>
 
-          {/* Description — slides up on hover */}
           {description && (
             <div className="overflow-hidden mt-2 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 ease-out">
               <RichTextRenderer
@@ -233,7 +146,9 @@ export function HomepageProjects() {
       >
         {/* Large card */}
         {projects[0] && (
-          <ProjectCard project={projects[0]} index={0} size="large" />
+          <div className="h-72 md:h-full">
+            <ProjectCard project={projects[0]} index={0} size="large" />
+          </div>
         )}
 
         {/* Two small cards stacked */}

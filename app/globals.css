@@ -43,6 +43,16 @@
   --color-beige: rgb(var(--beige));
 }
 
+::selection {
+  background-color: rgba(140, 110, 93, 0.35);
+  color: rgb(22, 22, 22);
+}
+
+.dark ::selection {
+  background-color: rgba(193, 158, 121, 0.35);
+  color: rgb(245, 245, 245);
+}
+
 /* Estilo global do body */
 body {
   background-color: rgb(var(--background));

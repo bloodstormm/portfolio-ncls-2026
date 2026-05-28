@@ -42,6 +42,8 @@ export function HeroSection() {
           fill
           className="object-cover object-top"
           priority
+          placeholder="blur"
+          unoptimized
         />
       </motion.div>
 
