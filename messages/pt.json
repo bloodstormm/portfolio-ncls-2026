@@ -9,9 +9,28 @@
     "resume": "Currículo"
   },
   "footer": {
-    "portfolio": "Portfólio NCLS",
+    "cta": "Vamos trabalhar juntos?",
+    "ctaSubtitle": "Tenho disponibilidade para novos projetos. Me manda uma mensagem.",
     "rights": "Todos os direitos reservados.",
     "available": "Disponível para novos projetos."
+  },
+  "home": {
+    "heroSubtitle": "Freelance Designer & Developer",
+    "valueSectionLabel": "Com quem trabalho",
+    "valueSectionTitle": "Design e código, do começo ao fim.",
+    "valueSectionDesc": "Trabalho com pequenas empresas que precisam de um site construído com cuidado, e com agências que precisam de um designer que também escreve código.",
+    "valueCta": "Mais sobre mim",
+    "services": {
+      "design": "UX/UI Design",
+      "designDesc": "Projeto interfaces claras, funcionais e fáceis de usar, pensadas para quem vai utilizá-las de verdade.",
+      "dev": "Desenvolvimento Front-end",
+      "devDesc": "Construo o que projeto, então o resultado fica fiel ao que foi planejado. Limpo, responsivo e pronto para produção.",
+      "strategy": "Agências e Freelance",
+      "strategyDesc": "Tenho experiência em trabalhar dentro de times e fluxos existentes. Se precisar de um freelancer para um projeto específico, posso contribuir de forma rápida e independente."
+    },
+    "projectsLabel": "Projetos Recentes",
+    "projectsTitle": "Trabalhos Selecionados",
+    "projectsCta": "Ver todos os projetos"
   },
   "hero": {
     "title1": "UX/UI &",
@@ -60,7 +79,18 @@
     "description": "Uma seleção dos meus trabalhos em UX/UI Design e Desenvolvimento Front-end.",
     "count_one": "{count} projeto",
     "count_other": "{count} projetos",
-    "soon": "Em breve, novos projetos."
+    "soon": "Em breve, novos projetos.",
+    "filter": {
+      "all": "Todos",
+      "design": "Design",
+      "development": "Desenvolvimento",
+      "both": "Design & Dev"
+    },
+    "discipline": {
+      "design": "Design",
+      "development": "Desenvolvimento",
+      "both": "Design & Dev"
+    }
   },
   "menu": {
     "home": "Home",

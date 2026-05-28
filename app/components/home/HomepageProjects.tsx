@@ -1,0 +1,261 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { motion, AnimatePresence } from "framer-motion";
+import { BsArrowUpRight } from "react-icons/bs";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/app/i18n/navigation";
+import { db } from "@/app/lib/firebase";
+import { RichTextRenderer } from "@/app/components/RichTextRenderer";
+import type { Project } from "@/app/types/projects";
+
+const DISCIPLINE_LABELS: Record<string, string> = {
+  design: "Design",
+  development: "Development",
+  both: "Design & Dev",
+};
+
+const imageCache = new Set<string>();
+
+function preloadImage(url: string): Promise<void> {
+  return new Promise((resolve) => {
+    if (imageCache.has(url)) { resolve(); return; }
+    const img = new window.Image();
+    img.onload = () => { imageCache.add(url); resolve(); };
+    img.onerror = () => resolve();
+    img.src = url;
+  });
+}
+
+function ProjectCard({
+  project,
+  index,
+  size = "small",
+}: {
+  project: Project;
+  index: number;
+  size?: "large" | "small";
+}) {
+  const locale = useLocale();
+  const [imageIndex, setImageIndex] = useState(0);
+  const allImages = [project.coverUrl, ...(project.images ?? [])].filter(Boolean);
+  const description =
+    locale === "en" ? (project.description_en ?? project.description) : project.description;
+
+  const [loadedSet, setLoadedSet] = useState<Set<string>>(
+    () => new Set(allImages.filter((u) => imageCache.has(u)))
+  );
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isHoveringRef = useRef(false);
+
+  function markLoaded(url: string) {
+    imageCache.add(url);
+    setLoadedSet((prev) => (prev.has(url) ? prev : new Set(prev).add(url)));
+  }
+
+  function scheduleNext(currentIdx: number) {
+    timeoutRef.current = setTimeout(async () => {
+      if (!isHoveringRef.current) return;
+      const nextIdx = (currentIdx + 1) % allImages.length;
+      await preloadImage(allImages[nextIdx]);
+      if (!isHoveringRef.current) return;
+      markLoaded(allImages[nextIdx]);
+      setImageIndex(nextIdx);
+      scheduleNext(nextIdx);
+    }, 1300);
+  }
+
+  function startCycling() {
+    if (allImages.length <= 1) return;
+    isHoveringRef.current = true;
+    preloadImage(allImages[1 % allImages.length]).then(() =>
+      markLoaded(allImages[1 % allImages.length])
+    );
+    scheduleNext(0);
+  }
+
+  function stopCycling() {
+    isHoveringRef.current = false;
+    if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
+    setImageIndex(0);
+  }
+
+  useEffect(() => {
+    preloadImage(project.coverUrl).then(() => markLoaded(project.coverUrl));
+    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.coverUrl]);
+
+  const currentUrl = allImages[imageIndex];
+  const isLoaded = loadedSet.has(currentUrl);
+
+  return (
+    <Link href={`/projects/${project.id}` as `/projects/${string}`} className="block h-full">
+      <div
+        className="group relative h-full overflow-hidden rounded-2xl cursor-pointer"
+        onMouseEnter={startCycling}
+        onMouseLeave={stopCycling}
+      >
+        {/* Scale wrapper — CSS only so it doesn't conflict with framer-motion */}
+        <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-102">
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={`${project.id}-${imageIndex}`}
+              src={currentUrl}
+              alt={project.title}
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              style={{
+                filter: isLoaded ? "blur(0px)" : "blur(18px)",
+                transform: isLoaded ? "scale(1)" : "scale(1.08)",
+                transition: "filter 0.65s ease-out, transform 0.65s ease-out",
+              }}
+              onLoad={() => markLoaded(currentUrl)}
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        {/* Top row: index + arrow */}
+        <div className="absolute top-5 left-5 right-5 flex items-center justify-between">
+          <span className="font-Odasans text-xs text-white/30 tabular-nums">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-1 group-hover:translate-x-0 -translate-y-1 group-hover:translate-y-0">
+            <BsArrowUpRight className="text-white h-4 w-4" />
+          </span>
+        </div>
+
+        {/* Image dots */}
+        {allImages.length > 1 && (
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {allImages.map((_, i) => (
+              <span
+                key={i}
+                className={`block h-1 rounded-full transition-all duration-300 ${
+                  i === imageIndex ? "w-4 bg-white" : "w-1 bg-white/40"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Bottom text */}
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+          {project.discipline && (
+            <p className="font-Odasans text-[10px] uppercase tracking-widest text-white/50 mb-2">
+              {DISCIPLINE_LABELS[project.discipline] ?? project.discipline}
+            </p>
+          )}
+          <h3
+            className={`font-Wulkan uppercase text-white leading-tight ${
+              size === "large" ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"
+            }`}
+          >
+            {project.title}
+          </h3>
+
+          {/* Description — slides up on hover */}
+          {description && (
+            <div className="overflow-hidden mt-2 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400 ease-out">
+              <RichTextRenderer
+                content={description}
+                maxLines={size === "large" ? 3 : 2}
+                className="text-white/60 text-sm"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function HomepageProjects() {
+  const t = useTranslations("home");
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      const snap = await getDocs(collection(db, "projects"));
+      const data = snap.docs
+        .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<Project, "id">) }) as Project)
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+        )
+        .slice(0, 3);
+      setProjects(data);
+    }
+    load();
+  }, []);
+
+  return (
+    <section className="container mx-auto px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32 space-y-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="flex items-end justify-between"
+      >
+        <div className="space-y-2">
+          <span className="text-primary text-xs uppercase tracking-widest font-Odasans">
+            {t("projectsLabel")}
+          </span>
+          <h2 className="font-Wulkan text-4xl md:text-5xl uppercase">
+            {t("projectsTitle")}
+          </h2>
+        </div>
+        <Link
+          href="/projects"
+          className="hidden md:inline-flex items-center gap-2 text-sm text-foreground/50 hover:text-primary transition-colors duration-300"
+        >
+          {t("projectsCta")}
+          <BsArrowUpRight className="h-4 w-4" />
+        </Link>
+      </motion.div>
+
+      {/* Editorial grid: large left + two stacked right */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-4 md:h-140"
+      >
+        {/* Large card */}
+        {projects[0] && (
+          <ProjectCard project={projects[0]} index={0} size="large" />
+        )}
+
+        {/* Two small cards stacked */}
+        <div className="grid grid-rows-2 gap-4 h-120 md:h-full">
+          {projects[1] && (
+            <ProjectCard project={projects[1]} index={1} size="small" />
+          )}
+          {projects[2] && (
+            <ProjectCard project={projects[2]} index={2} size="small" />
+          )}
+        </div>
+      </motion.div>
+
+      <div className="text-center md:hidden">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 text-sm text-foreground/50 hover:text-primary transition-colors duration-300"
+        >
+          {t("projectsCta")}
+          <BsArrowUpRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </section>
+  );
+}

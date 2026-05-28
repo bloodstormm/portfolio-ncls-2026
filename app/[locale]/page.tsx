@@ -1,11 +1,13 @@
 import { HeroSection } from "@/app/components/home/HeroSection";
-import { DesktopDecorations } from "@/app/components/home/DesktopDecorations";
+import { ValueSection } from "@/app/components/home/ValueSection";
+import { HomepageProjects } from "@/app/components/home/HomepageProjects";
 
 export default function Home() {
   return (
-    <div className="relative overflow-hidden pb-10">
+    <div>
       <HeroSection />
-      <DesktopDecorations />
+      <ValueSection />
+      <HomepageProjects />
     </div>
   );
 }

@@ -25,7 +25,8 @@ export const Header = () => {
   const { theme, toggleTheme } = useTheme();
 
   const darkHeroPages = /^\/(en\/)?projects\/.+/;
-  const hasDarkHero = darkHeroPages.test(rawPathname) && !scrolled;
+  const isHomepage = pathname === "/";
+  const hasDarkHero = (darkHeroPages.test(rawPathname) || isHomepage) && !scrolled;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);

@@ -7,7 +7,7 @@ import { BsArrowUpRight, BsEye } from "react-icons/bs";
 import { itemAnimation } from "@/app/utils/Animations";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getDescription } from "@/app/utils/projectLocale";
 
 export type CardSize = "small" | "large" | "featured";
@@ -30,6 +30,14 @@ export function ProjectCard({
   size = "small",
 }: ProjectCardProps) {
   const locale = useLocale();
+  const t = useTranslations("projects");
+
+  const disciplineStyles: Record<string, string> = {
+    design: "bg-violet-500/20 text-violet-300 border-violet-400/30",
+    development: "bg-sky-500/20 text-sky-300 border-sky-400/30",
+    both: "bg-white/10 text-white/80 border-white/20",
+  };
+
   return (
     <motion.div
       variants={itemAnimation}
@@ -55,10 +63,17 @@ export function ProjectCard({
           <div className="relative h-full p-6 flex flex-col justify-between">
             {/* Top */}
             <div className="flex justify-between items-start">
-              <div className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
-                <span className="text-xs font-mono text-white/90">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
+                  <span className="text-xs font-mono text-white/90">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                {project.discipline && (
+                  <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${disciplineStyles[project.discipline]}`}>
+                    {t(`discipline.${project.discipline}`)}
+                  </span>
+                )}
               </div>
               {size === "featured" && (
                 <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/20 px-3 py-1 rounded-full">

@@ -9,10 +9,10 @@ import type { ProjectFormData } from "@/app/hooks/useProjectForm";
 import type { Project } from "@/app/types/projects";
 
 const inputClass =
-  "w-full px-4 py-3 bg-background border border-beige/30 rounded-xl text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20 transition-all duration-300";
+  "w-full px-4 py-3 bg-transparent border border-foreground/10 rounded-xl text-sm text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300";
 
 const fieldLabel = (text: string) => (
-  <span className="text-xs uppercase tracking-widest text-muted font-medium">{text}</span>
+  <span className="text-xs uppercase tracking-widest text-foreground/40 font-Odasans">{text}</span>
 );
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -65,23 +65,42 @@ export function ProjectFormFields({
       <form onSubmit={onSubmit}>
         <div className="space-y-10">
 
-          {/* Título + Categoria */}
+          {/* Título */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.05 }}
-            className="grid md:grid-cols-[1fr_200px] gap-6"
+            className="space-y-2"
+          >
+            {fieldLabel("Título *")}
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+              className={inputClass}
+              placeholder="Nome do projeto"
+              required
+            />
+          </motion.div>
+
+          {/* Disciplina + Categoria */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease, delay: 0.08 }}
+            className="grid md:grid-cols-2 gap-6"
           >
             <div className="space-y-2">
-              {fieldLabel("Título *")}
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+              {fieldLabel("Disciplina *")}
+              <select
+                value={formData.discipline}
+                onChange={(e) => setFormData((prev) => ({ ...prev, discipline: e.target.value as ProjectFormData["discipline"] }))}
                 className={inputClass}
-                placeholder="Nome do projeto"
-                required
-              />
+              >
+                <option value="development">Desenvolvimento</option>
+                <option value="design">Design</option>
+                <option value="both">Design & Desenvolvimento</option>
+              </select>
             </div>
             <div className="space-y-2">
               {fieldLabel("Categoria")}
@@ -145,7 +164,7 @@ export function ProjectFormFields({
                       }
                     }}
                     onDragEnd={() => { dragIndexRef.current = null; }}
-                    className="relative group rounded-xl overflow-hidden border border-beige/20 hover:border-primary/30 transition-all duration-200 cursor-grab active:cursor-grabbing"
+                    className="relative group rounded-xl overflow-hidden border border-foreground/10 hover:border-primary/30 transition-all duration-200 cursor-grab active:cursor-grabbing"
                     style={{ aspectRatio: "4/3" }}
                   >
                     {src.startsWith("blob:") || src.startsWith("data:") ? (
@@ -235,7 +254,7 @@ export function ProjectFormFields({
               <button
                 type="button"
                 onClick={onAddTag}
-                className="shrink-0 w-11 h-11 flex items-center justify-center border border-beige/30 text-muted hover:text-primary hover:border-primary/40 rounded-xl transition-all duration-300"
+                className="shrink-0 w-11 h-11 flex items-center justify-center border border-foreground/10 text-foreground/40 hover:text-primary hover:border-primary/30 rounded-xl transition-all duration-300"
               >
                 <BsPlus className="h-5 w-5" />
               </button>
@@ -243,7 +262,7 @@ export function ProjectFormFields({
             {formData.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {formData.tags.map((tag) => (
-                  <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/8 text-primary border border-primary/20 rounded-full text-xs">
+                  <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1 text-primary border border-primary/20 rounded-full text-xs">
                     {tag}
                     <button type="button" onClick={() => onRemoveTag(tag)} className="text-primary/50 hover:text-red-500 transition-colors">×</button>
                   </span>
@@ -286,7 +305,7 @@ export function ProjectFormFields({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.35 }}
-            className="flex items-center justify-between pt-4 border-t border-beige/20"
+            className="flex items-center justify-between pt-4 border-t border-foreground/10"
           >
             <button
               type="button"
@@ -298,7 +317,7 @@ export function ProjectFormFields({
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-primary text-white rounded-full text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/80 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-primary text-white rounded-full text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors duration-300"
             >
               {loading ? (
                 <>

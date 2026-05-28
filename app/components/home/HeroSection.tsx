@@ -1,90 +1,96 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { BsArrowUpRight } from "react-icons/bs";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link } from "@/app/i18n/navigation";
-import HomeImage from "@/public/images/home-image.jpg";
-import {
-  fadeInUpBlur,
-  fadeInLeftBlur,
-  fadeInRightBlur,
-  scaleUpBlur,
-} from "@/app/utils/Animations";
-import { SocialLinks } from "./SocialLinks";
-import { ProjectsList } from "@/app/components/ProjectsList";
+import HeroImage from "@/public/images/homepage.webp";
+
+const MARQUEE_ITEMS = 6;
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export function HeroSection() {
-  const t = useTranslations("hero");
+  const t = useTranslations("home");
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   return (
-    <section className="container relative z-20 mx-auto w-full min-h-screen sm:mt-4 flex flex-col items-center justify-center">
+    <section ref={sectionRef} className="relative min-h-screen -mt-20 flex flex-col justify-end overflow-hidden">
+
+      {/* Imagem com zoom de entrada + parallax */}
       <motion.div
-        {...fadeInUpBlur}
-        transition={{ ...fadeInUpBlur.transition, delay: 0.2 }}
-        className="mx-auto grid items-center gap-4 p-8 md:grid-cols-2 lg:grid-cols-3 xl:gap-14"
+        initial={{ scale: 1.08, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.8, ease }}
+        style={{ y: imageY, scale: imageScale }}
+        className="absolute inset-0"
       >
-        {/* Coluna esquerda: título + bio + redes */}
-        <motion.div
-          {...fadeInLeftBlur}
-          transition={{ ...fadeInLeftBlur.transition, delay: 0.4 }}
-          className="flex flex-col gap-6"
-        >
-          <h1 className="text-center font-Wulkan text-4xl lg:text-5xl font-medium uppercase lg:text-left xl:text-5xl">
-            {t("title1")}
-            <br className="hidden lg:block" /> {t("title2")}
-          </h1>
-          <p className="text-sm xl:text-base">
-            {t("bio")}
-          </p>
-          <SocialLinks />
-        </motion.div>
-
-        {/* Coluna central: foto de perfil */}
-        <motion.div
-          {...scaleUpBlur}
-          transition={{ ...scaleUpBlur.transition, delay: 0.7 }}
-          className="mx-auto w-[90%] shadow-2xl overflow-hidden rounded-full"
-        >
-          <motion.img
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-            src={HomeImage.src || undefined}
-            className="mx-auto w-full"
-            alt="Nicolas Malachias"
-          />
-        </motion.div>
-
-        {/* Coluna direita: nome + botão de projetos */}
-        <motion.div
-          {...fadeInRightBlur}
-          transition={{ ...fadeInRightBlur.transition, delay: 0.5 }}
-          className="relative h-2/3"
-        >
-          <h1 className="text-center font-Wulkan text-4xl lg:text-5xl uppercase md:hidden lg:block sm:text-left xl:text-6xl">
-            Nícolas Malachias
-          </h1>
-          <Link
-            href="/projects"
-            className="absolute group -bottom-4 left-6 hidden h-32 w-32 items-center justify-center rounded-full border border-brown dark:border-beige sm:flex lg:left-14 lg:h-40 lg:w-40 xl:bottom-0 hover:-translate-y-1 hover:scale-105 transition-transform duration-300"
-          >
-            <div className="absolute top-2 right-1 h-6 w-6 rounded-full group-hover:animate-pulse transition bg-primary lg:top-1 lg:right-5" />
-            <p className="w-20">{t("viewProjects")}</p>
-            <BsArrowUpRight className="h-5 w-5" />
-          </Link>
-        </motion.div>
+        <Image
+          src={HeroImage}
+          alt="Nícolas Malachias"
+          fill
+          className="object-cover object-top"
+          priority
+        />
       </motion.div>
 
+      {/* Overlay */}
       <motion.div
-        {...fadeInUpBlur}
-        transition={{ ...fadeInUpBlur.transition, delay: 1.2 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease, delay: 0.3 }}
+        className="absolute inset-0 bg-linear-to-t from-black/75 via-black/15 to-black/0"
+      />
+
+      {/* Subtitle */}
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease, delay: 0.7 }}
+        className="relative z-10 text-white/60 text-xs uppercase tracking-[0.25em] font-Odasans px-6 lg:px-8 mb-4 container mx-auto w-full"
       >
-        <ProjectsList />
+        {t("heroSubtitle")}
+      </motion.p>
+
+      {/* Marquee name */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease, delay: 0.9 }}
+        className="relative z-10 w-full overflow-hidden pb-36 md:pb-24"
+      >
+        <div className="flex w-max animate-[marquee_40s_linear_infinite]">
+          {Array.from({ length: MARQUEE_ITEMS }).map((_, i) => (
+            <span
+              key={i}
+              className="font-poppins tracking-tight text-6xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[13rem] text-white whitespace-nowrap pr-16 md:pr-24"
+            >
+              Nícolas Malachias –
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.6 }}
+        className="absolute bottom-8 right-8 md:right-12 flex flex-col items-center gap-3 z-10"
+      >
+        <div className="h-12 w-px bg-white/20" />
+        <span className="text-white/30 text-[10px] uppercase tracking-widest">scroll</span>
       </motion.div>
     </section>
   );

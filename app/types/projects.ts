@@ -10,4 +10,5 @@ export type Project = {
     repositoryUrl?: string; // link para repositório
     createdAt?: string; // data de criação
     category?: 'web' | 'mobile' | 'design' | 'fullstack'; // categoria do projeto
+    discipline?: 'design' | 'development' | 'both'; // área de atuação
   };

@@ -4,6 +4,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Providers } from "../providers";
 import { HtmlLang } from "../components/HtmlLang";
+import { SmoothScrollProvider } from "../components/SmoothScrollProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { routing } from "../i18n/routing";
@@ -48,11 +49,13 @@ export default async function LocaleLayout({
     <NextIntlClientProvider messages={messages}>
       <HtmlLang locale={locale} />
       <Providers>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-1 pt-20">{children}</main>
-          <Footer />
-        </div>
+        <SmoothScrollProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 pt-20">{children}</main>
+            <Footer />
+          </div>
+        </SmoothScrollProvider>
       </Providers>
       <Analytics />
     </NextIntlClientProvider>

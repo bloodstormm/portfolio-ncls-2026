@@ -9,9 +9,28 @@
     "resume": "Resume"
   },
   "footer": {
-    "portfolio": "NCLS Portfolio",
+    "cta": "Let's work together.",
+    "ctaSubtitle": "I'm available for new projects. Send me a message.",
     "rights": "All rights reserved.",
     "available": "Available for new projects."
+  },
+  "home": {
+    "heroSubtitle": "Freelance Designer & Developer",
+    "valueSectionLabel": "Who I work with",
+    "valueSectionTitle": "Design and code, start to finish.",
+    "valueSectionDesc": "I work with small businesses that need a website built with care, and with agencies that need a designer who can also write the code.",
+    "valueCta": "More about me",
+    "services": {
+      "design": "UX/UI Design",
+      "designDesc": "I design interfaces that are clear, functional, and easy to use, thought through for the people who will actually use them.",
+      "dev": "Front-end Development",
+      "devDesc": "I build what I design, so the result stays true to what was planned. Clean, responsive, and ready to ship.",
+      "strategy": "Agencies & Freelance",
+      "strategyDesc": "I have experience working inside existing teams and workflows. If you need a freelancer for a specific project, I can contribute quickly and independently."
+    },
+    "projectsLabel": "Recent Work",
+    "projectsTitle": "Selected Projects",
+    "projectsCta": "View all projects"
   },
   "hero": {
     "title1": "UX/UI &",
@@ -60,7 +79,18 @@
     "description": "A selection of my work in UX/UI Design and Front-end Development.",
     "count_one": "{count} project",
     "count_other": "{count} projects",
-    "soon": "New projects coming soon."
+    "soon": "New projects coming soon.",
+    "filter": {
+      "all": "All",
+      "design": "Design",
+      "development": "Development",
+      "both": "Design & Dev"
+    },
+    "discipline": {
+      "design": "Design",
+      "development": "Development",
+      "both": "Design & Dev"
+    }
   },
   "menu": {
     "home": "Home",

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getDescription } from "@/app/utils/projectLocale";
 
 interface ProjectCardProps {
@@ -16,8 +16,15 @@ interface ProjectCardProps {
 
 const cardEase = [0.16, 1, 0.3, 1] as const;
 
+const disciplineStyles: Record<string, string> = {
+  design: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+  development: "bg-sky-500/10 text-sky-400 border-sky-500/20",
+  both: "bg-primary/10 text-primary border-primary/20",
+};
+
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const locale = useLocale();
+  const t = useTranslations("projects");
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -52,13 +59,18 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               className="flex flex-col justify-between gap-6 pr-12"
             >
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <span className="text-xs font-mono text-foreground/30">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   {project.category && (
                     <span className="text-xs uppercase tracking-widest text-primary/70 font-medium">
                       {project.category}
+                    </span>
+                  )}
+                  {project.discipline && (
+                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${disciplineStyles[project.discipline]}`}>
+                      {t(`discipline.${project.discipline}`)}
                     </span>
                   )}
                 </div>
@@ -97,13 +109,18 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
           {/* Info mobile — abaixo da imagem */}
           <div className="md:hidden space-y-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <span className="text-xs font-mono text-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
               {project.category && (
                 <span className="text-xs uppercase tracking-widest text-primary/70 font-medium">
                   {project.category}
+                </span>
+              )}
+              {project.discipline && (
+                <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${disciplineStyles[project.discipline]}`}>
+                  {t(`discipline.${project.discipline}`)}
                 </span>
               )}
             </div>

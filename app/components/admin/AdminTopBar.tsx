@@ -24,26 +24,26 @@ export function AdminTopBar({ viewMode, editingTitle, onCancel, onLogout }: Admi
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="sticky top-0 z-40 border-b border-beige/20 bg-background/80"
+      className="sticky top-0 z-40 border-b border-foreground/10 bg-background/80 backdrop-blur-md"
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between max-w-6xl">
         <div className="flex items-center gap-5">
           <button
             onClick={() => router.push("/")}
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted hover:text-primary transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors duration-300"
           >
             <BsArrowLeft className="h-3.5 w-3.5" />
             Portfólio
           </button>
-          <div className="h-4 w-px bg-beige/40" />
+          <div className="h-4 w-px bg-foreground/15" />
           <span className="font-Wulkan text-lg uppercase text-primary tracking-wide">{title}</span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           {viewMode === "form" && (
             <button
               onClick={onCancel}
-              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-muted hover:text-primary transition-colors duration-300"
+              className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors duration-300"
             >
               <BsX className="h-4 w-4" />
               Cancelar
@@ -51,7 +51,7 @@ export function AdminTopBar({ viewMode, editingTitle, onCancel, onLogout }: Admi
           )}
           <button
             onClick={onLogout}
-            className="text-xs uppercase tracking-widest text-muted hover:text-primary transition-colors duration-300"
+            className="text-xs uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors duration-300"
           >
             Sair
           </button>

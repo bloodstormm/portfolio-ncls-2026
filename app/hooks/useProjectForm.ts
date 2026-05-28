@@ -32,6 +32,7 @@ export interface ProjectFormData {
   demoUrl: string;
   repositoryUrl: string;
   category: "web" | "mobile" | "design" | "fullstack" | "";
+  discipline: "design" | "development" | "both" | "";
 }
 
 const emptyForm: ProjectFormData = {
@@ -44,6 +45,7 @@ const emptyForm: ProjectFormData = {
   demoUrl: "",
   repositoryUrl: "",
   category: "",
+  discipline: "development",
 };
 
 export function useProjectForm(onSuccess: () => void) {
@@ -76,6 +78,7 @@ export function useProjectForm(onSuccess: () => void) {
       demoUrl: project.demoUrl || "",
       repositoryUrl: project.repositoryUrl || "",
       category: project.category || "",
+      discipline: project.discipline || "development",
     });
     setCoverPreview(project.coverUrl);
     setImagesPreview(project.images || []);
@@ -201,6 +204,7 @@ export function useProjectForm(onSuccess: () => void) {
         demoUrl: formData.demoUrl.trim(),
         repositoryUrl: formData.repositoryUrl.trim(),
         category: formData.category,
+        discipline: formData.discipline || "development",
         ...(editingProject
           ? { updatedAt: new Date().toISOString() }
           : { createdAt: new Date().toISOString() }),
