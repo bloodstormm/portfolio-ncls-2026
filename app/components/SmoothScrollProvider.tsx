@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
+import { frame, cancelFrame } from "framer-motion";
 import Lenis from "lenis";
+
+const LenisContext = createContext<React.RefObject<Lenis | null> | null>(null);
+
+export function useLenis() {
+  return useContext(LenisContext);
+}
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
@@ -15,18 +22,17 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     lenisRef.current = lenis;
 
-    let raf: number;
-    function onRaf(time: number) {
-      lenis.raf(time);
-      raf = requestAnimationFrame(onRaf);
+    function update(data: { timestamp: number }) {
+      lenis.raf(data.timestamp);
     }
-    raf = requestAnimationFrame(onRaf);
+    frame.update(update, true);
 
     return () => {
-      cancelAnimationFrame(raf);
+      cancelFrame(update);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
-  return <>{children}</>;
+  return <LenisContext.Provider value={lenisRef}>{children}</LenisContext.Provider>;
 }

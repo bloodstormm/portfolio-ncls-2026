@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useLenis } from "@/app/components/SmoothScrollProvider";
 import HeroImage from "@/public/images/homepage.webp";
 
 const MARQUEE_ITEMS = 6;
@@ -12,10 +13,15 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export function HeroSection() {
   const t = useTranslations("home");
   const sectionRef = useRef<HTMLElement>(null);
+  const lenisRef = useLenis();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (lenisRef?.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [lenisRef]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
