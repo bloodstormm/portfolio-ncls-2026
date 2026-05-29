@@ -19,11 +19,33 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
+  const title = t("title");
+  const description = t("description");
   return {
-    title: t("title"),
-    description: t("description"),
+    metadataBase: new URL("https://nicolasmalachias.com"),
+    title,
+    description,
     openGraph: {
-      images: "/images/og-image.jpg",
+      type: "website",
+      siteName: "Nícolas Malachias",
+      locale: locale === "pt" ? "pt_BR" : "en_US",
+      url: `/${locale}`,
+      title,
+      description,
+      images: [
+        {
+          url: "/images/og-image.jpg",
+          width: 1200,
+          height: 675,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/og-image.jpg"],
     },
   };
 }
