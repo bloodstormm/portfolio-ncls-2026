@@ -34,22 +34,28 @@ export function HeroSection() {
   return (
     <section ref={sectionRef} className="relative min-h-screen -mt-20 flex flex-col justify-end overflow-hidden">
 
-      {/* Imagem com zoom de entrada + parallax */}
+      {/* Parallax (scroll) — isolado da entrada para não disputar o mesmo transform */}
       <motion.div
-        initial={{ scale: 1.08, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.8, ease }}
         style={{ y: imageY, scale: imageScale }}
         className="absolute inset-0"
       >
-        <Image
-          src={HeroImage}
-          alt="Nícolas Malachias"
-          fill
-          className="object-cover object-top"
-          priority
-          unoptimized
-        />
+        {/* Zoom + fade de entrada */}
+        <motion.div
+          initial={{ scale: 1.08, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.8, ease }}
+          className="relative h-full w-full"
+        >
+          <Image
+            src={HeroImage}
+            alt="Nícolas Malachias"
+            fill
+            sizes="(max-width: 768px) 300vw, 100vw"
+            quality={90}
+            className="object-cover object-top"
+            priority
+          />
+        </motion.div>
       </motion.div>
 
       {/* Overlay */}
