@@ -14,13 +14,13 @@
     "available": "Disponível para novos projetos."
   },
   "home": {
-    "heroSubtitle": "Freelance Designer & Developer",
+    "heroSubtitle": "Designer & Desenvolvedor Freelancer",
     "currentlyAt": "Atualmente em",
     "valueSectionTitle": "Design e código, do começo ao fim.",
     "valueSectionDesc": "Trabalho com pequenas e médias empresas que precisam de um site construído com cuidado, e com agências que precisam de um designer que também escreve código.",
     "valueCta": "Mais sobre mim",
-    "projectsLabel": "Projetos Recentes",
-    "projectsTitle": "Últimos trabalhos",
+    "projectsLabel": "Cada projeto, uma história",
+    "projectsTitle": "Projetos Recentes",
     "projectsCta": "Ver todos os projetos"
   },
   "projectsList": {
@@ -43,7 +43,9 @@
     "label": "Empresas onde trabalhei"
   },
   "about": {
-    "subtitle": "UX/UI & Front-End Dev",
+    "aboutTitle": "Quem é",
+    "aboutTitleName": "o Nícolas?",
+    "subtitle": "Sobre mim",
     "available": "Disponível",
     "bio": "Olá 👋, sou formado em Análise e Desenvolvimento de Sistemas e hoje atuo entre front-end e UX/UI.",
     "bio2": "Faço sites como freelancer e já entreguei mais de 3 projetos de ponta a ponta que aumentaram retenção e credibilidade dos meus clientes :)",
@@ -59,7 +61,7 @@
     "sendEmail": "Enviar e-mail"
   },
   "projects": {
-    "label": "Portfólio",
+    "label": "Cada projeto, uma história",
     "title": "Projetos",
     "description": "Uma seleção dos meus trabalhos em UX/UI Design e Desenvolvimento Front-end.",
     "count_one": "{count} projeto",

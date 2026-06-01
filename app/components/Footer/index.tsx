@@ -3,13 +3,16 @@ import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { FooterDecoration } from "./FooterDecoration";
+import { BackToTopButton } from "./BackToTopButton";
 
 export const Footer = () => {
   const t = useTranslations("footer");
 
   return (
-    <footer className="bg-[#111111] text-white">
-      <div className="container mx-auto px-6 lg:px-8 pt-20 pb-10 md:pt-28 md:pb-12">
+    <footer className="relative bg-[#111111] text-white overflow-hidden">
+      <FooterDecoration />
+      <div className="relative z-10 container mx-auto px-6 lg:px-8 pt-20 pb-10 md:pt-28 md:pb-12">
         <div className="border-b border-white/10 pb-14 mb-10 space-y-6">
           <p className="text-primary text-xs uppercase tracking-widest font-Odasans">
             {t("available")}
@@ -55,17 +58,20 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <p className="text-white/30 text-sm">
-            &copy; {new Date().getFullYear()} Nícolas Malachias. {t("rights")}
-          </p>
-          <Link
-            href="/admin"
-            className="text-[10px] text-white/10 hover:text-primary/40 transition-colors duration-300 select-none ml-2"
-            title="Admin"
-          >
-            •
-          </Link>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <p className="text-white/30 text-sm">
+              &copy; {new Date().getFullYear()} Nícolas Malachias. {t("rights")}
+            </p>
+            <Link
+              href="/admin"
+              className="text-[10px] text-white/10 hover:text-primary/40 transition-colors duration-300 select-none ml-2"
+              title="Admin"
+            >
+              •
+            </Link>
+          </div>
+          <BackToTopButton />
         </div>
       </div>
     </footer>

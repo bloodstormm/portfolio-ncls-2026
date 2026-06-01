@@ -53,17 +53,17 @@ export function AboutHero() {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.3, ease, delay: 0.35 }}
-            className="font-Wulkan uppercase leading-none text-5xl md:text-6xl xl:text-7xl"
+            className="font-Wulkan  leading-none text-5xl md:text-6xl xl:text-7xl"
           >
-            Nícolas
+            {t("aboutTitle")}
           </motion.h1>
           <motion.h1
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.3, ease, delay: 0.45 }}
-            className="font-Wulkan uppercase leading-none text-5xl md:text-6xl xl:text-7xl text-primary"
-          >
-            Malachias
+            className="font-Wulkan  leading-none text-5xl md:text-6xl xl:text-7xl text-primary"
+            >
+            {t("aboutTitleName")}
           </motion.h1>
 
           <motion.div

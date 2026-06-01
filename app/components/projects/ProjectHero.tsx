@@ -56,7 +56,7 @@ export function ProjectHero({ project }: ProjectHeroProps) {
               {project.category}
             </span>
           )}
-          <h1 className="font-Wulkan text-4xl md:text-6xl uppercase tracking-wide text-white leading-tight">
+          <h1 className="font-Wulkan text-4xl md:text-6xl capitalize tracking-wide text-white leading-tight">
             {project.title}
           </h1>
           {project.tags && project.tags.length > 0 && (

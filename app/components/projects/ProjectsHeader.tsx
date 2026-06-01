@@ -19,7 +19,7 @@ export function ProjectsHeader({ count }: ProjectsHeaderProps) {
         <span className="text-xs uppercase tracking-widest text-primary font-semibold">
           {t("label")}
         </span>
-        <h1 className="font-Wulkan text-5xl md:text-7xl uppercase tracking-wide leading-none">
+        <h1 className="font-Wulkan text-5xl md:text-7xl mt-1 tracking-wide leading-none">
           {t("title")}
         </h1>
         <div className="flex items-end justify-between gap-6 flex-wrap">

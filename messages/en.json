@@ -43,7 +43,9 @@
     "label": "Companies I've worked at"
   },
   "about": {
-    "subtitle": "UX/UI & Front-End Dev",
+    "aboutTitle": "Who is",
+    "aboutTitleName": "Nícolas?",
+    "subtitle": "About me",
     "available": "Available",
     "bio": "Hey 👋, I have a degree in Systems Analysis and Development and currently work across front-end and UX/UI.",
     "bio2": "I build websites as a freelancer and have delivered 3+ end-to-end projects that improved retention and credibility for my clients :)",

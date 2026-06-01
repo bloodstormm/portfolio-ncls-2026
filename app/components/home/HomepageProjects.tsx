@@ -9,6 +9,7 @@ import { Link } from "@/app/i18n/navigation";
 import { db } from "@/app/lib/firebase";
 import { RichTextRenderer } from "@/app/components/RichTextRenderer";
 import type { Project } from "@/app/types/projects";
+import { PulsingRings } from "./PulsingRings";
 
 const DISCIPLINE_LABELS: Record<string, string> = {
   design: "Design",
@@ -111,7 +112,9 @@ export function HomepageProjects() {
   }, []);
 
   return (
-    <section className="container mx-auto px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32 space-y-10">
+    <section className="relative overflow-hidden">
+      <PulsingRings />
+      <div className="container mx-auto px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32 space-y-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -120,10 +123,10 @@ export function HomepageProjects() {
         className="flex items-end justify-between"
       >
         <div className="space-y-2">
-          <span className="text-primary text-xs uppercase tracking-widest font-Odasans">
+          <span className="text-primary text-xs uppercase tracking-widest font-semibold">
             {t("projectsLabel")}
           </span>
-          <h2 className="font-Wulkan text-4xl md:text-5xl uppercase">
+          <h2 className="font-Wulkan text-4xl mt-1 md:text-5xl">
             {t("projectsTitle")}
           </h2>
         </div>
@@ -170,6 +173,7 @@ export function HomepageProjects() {
           {t("projectsCta")}
           <BsArrowUpRight className="h-4 w-4" />
         </Link>
+      </div>
       </div>
     </section>
   );
