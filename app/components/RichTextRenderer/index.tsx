@@ -37,7 +37,7 @@ export function RichTextRenderer({
 
   const baseClasses = `
     prose prose-sm max-w-none
-    [&_p]:mb-3 [&_p]:leading-relaxed [&_p]:text-muted [&_p]:!text-[inherit]
+    [&_p]:mb-3 [&_p]:min-h-[1.5em] [&_p]:leading-relaxed [&_p]:text-muted [&_p]:!text-[inherit]
     [&_strong]:text-primary [&_strong]:font-semibold
     [&_em]:italic [&_em]:text-muted [&_em]:!text-[inherit]
     [&_code]:px-2 [&_code]:py-1 [&_code]:bg-beige/20 [&_code]:rounded [&_code]:text-primary [&_code]:text-sm
