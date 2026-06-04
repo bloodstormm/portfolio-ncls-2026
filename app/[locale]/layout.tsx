@@ -87,6 +87,23 @@ export default async function LocaleLayout({
           </FooterReveal>
         </SmoothScrollProvider>
       </Providers>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Nícolas Malachias",
+            url: "https://nicolasmalachias.com",
+            image: "https://nicolasmalachias.com/images/og-image.jpg",
+            jobTitle: "UI/UX Designer & Front-end Developer",
+            sameAs: [
+              "https://www.linkedin.com/in/nicolas-malachias/",
+              "https://github.com/bloodstormm",
+            ],
+          }),
+        }}
+      />
       <Analytics />
     </NextIntlClientProvider>
   );

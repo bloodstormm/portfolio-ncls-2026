@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Freelance Web Developer | Nícolas Malachias.",
-    "description": "Freelance web developer with personalized service, professional delivery and affordable pricing."
+    "title": "Freelance Web Developer | Nícolas Malachias",
+    "description": "UI/UX designer and freelance front-end developer. Professional web design and development for businesses and agencies. Let's build something together."
   },
   "header": {
     "about": "About me",
@@ -19,8 +19,8 @@
     "valueSectionTitle": "Design and code, start to finish.",
     "valueSectionDesc": "I work with small and medium businesses that need a website built with care, and with agencies that need a designer who can also write the code.",
     "valueCta": "More about me",
-    "projectsLabel": "Recent Work",
-    "projectsTitle": "Last Projects",
+    "projectsLabel": "Each project, a story",
+    "projectsTitle": "Recent Projects",
     "projectsCta": "View all projects"
   },
   "projectsList": {
@@ -61,7 +61,7 @@
     "sendEmail": "Send email"
   },
   "projects": {
-    "label": "Portfolio",
+    "label": "Each project, a story",
     "title": "Projects",
     "description": "A selection of my work in UX/UI Design and Front-end Development.",
     "count_one": "{count} project",
