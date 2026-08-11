@@ -71,6 +71,11 @@ export function AdminProjectList({ projects, onNew, onEdit, onDelete }: AdminPro
                       <span className="text-xs font-Odasans text-foreground/20 tabular-nums">
                         {String(index + 1).padStart(2, "0")}
                       </span>
+                      {project.type === "case_study" && (
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-500 border-amber-500/20">
+                          Estudo de caso
+                        </span>
+                      )}
                       {project.category && (
                         <span className="text-xs uppercase tracking-widest text-primary/50">
                           {project.category}

@@ -1,5 +1,6 @@
 export type Project = {
     id: string;
+    type?: 'project' | 'case_study'; // tipo do projeto — ausente = 'project' (compatibilidade)
     title: string;
     description: string;
     description_en?: string;

@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { BsArrowLeft } from "react-icons/bs";
+import NextLink from "next/link";
+import { BsArrowLeft, BsPencil } from "react-icons/bs";
 import type { Project } from "@/app/types/projects";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
@@ -15,6 +17,12 @@ interface ProjectHeroProps {
 
 export function ProjectHero({ project }: ProjectHeroProps) {
   const t = useTranslations("projectDetail");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(!!sessionStorage.getItem("admin_authenticated"));
+  }, []);
+
   return (
     <section className="relative w-full h-[70vh] min-h-[480px]">
       <Image
@@ -34,13 +42,25 @@ export function ProjectHero({ project }: ProjectHeroProps) {
         transition={{ duration: 0.9, ease }}
         className="absolute top-24 left-0 right-0 container mx-auto px-6"
       >
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 px-4 py-2 rounded-full text-sm"
-        >
-          <BsArrowLeft className="h-4 w-4" />
-          {t("allProjects")}
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 px-4 py-2 rounded-full text-sm"
+          >
+            <BsArrowLeft className="h-4 w-4" />
+            {t("allProjects")}
+          </Link>
+
+          {isAdmin && (
+            <NextLink
+              href={`/admin/projects?edit=${project.id}`}
+              className="inline-flex items-center justify-center w-8 h-8 text-white/30 hover:text-white/70 transition-colors duration-300"
+              title="Editar projeto"
+            >
+              <BsPencil className="h-3.5 w-3.5" />
+            </NextLink>
+          )}
+        </div>
       </motion.div>
 
       {/* Título sobre a imagem */}

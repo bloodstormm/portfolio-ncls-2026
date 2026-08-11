@@ -23,6 +23,7 @@ async function apiProjects(method: string, body: object) {
 }
 
 export interface ProjectFormData {
+  type: "project" | "case_study";
   title: string;
   description: string;
   description_en: string;
@@ -36,6 +37,7 @@ export interface ProjectFormData {
 }
 
 const emptyForm: ProjectFormData = {
+  type: "project",
   title: "",
   description: "",
   description_en: "",
@@ -69,6 +71,7 @@ export function useProjectForm(onSuccess: () => void) {
 
   const loadFromProject = (project: Project) => {
     setFormData({
+      type: project.type || "project",
       title: project.title,
       description: project.description,
       description_en: project.description_en || "",
@@ -145,6 +148,11 @@ export function useProjectForm(onSuccess: () => void) {
     setAdditionalFiles(newFileOrder);
   };
 
+  const handleContentImageUpload = async (file: File): Promise<string> => {
+    const token = getAdminToken();
+    return uploadImageViaApi(file, "projects/content", token);
+  };
+
   const addTag = () => {
     const trimmed = tagInput.trim();
     if (!trimmed) return;
@@ -195,6 +203,7 @@ export function useProjectForm(onSuccess: () => void) {
       );
 
       const projectData = {
+        type: formData.type,
         title: formData.title.trim(),
         description: formData.description,
         description_en: formData.description_en,
@@ -246,6 +255,7 @@ export function useProjectForm(onSuccess: () => void) {
     handleAdditionalImagesSelected,
     removeAdditionalImage,
     reorderImages,
+    handleContentImageUpload,
     addTag,
     removeTag,
     submit,

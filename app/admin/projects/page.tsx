@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import { AdminProjectsContent } from "@/app/components/admin/AdminProjectsContent";
 
 export default function AdminProjectsPage() {
-  return <AdminProjectsContent />;
+  return (
+    <Suspense fallback={null}>
+      <AdminProjectsContent />
+    </Suspense>
+  );
 }

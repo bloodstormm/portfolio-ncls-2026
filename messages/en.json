@@ -77,7 +77,8 @@
       "design": "Design",
       "development": "Development",
       "both": "Design & Dev"
-    }
+    },
+    "caseStudy": "Case study"
   },
   "menu": {
     "home": "Home",

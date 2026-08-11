@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const odasans = localFont({
@@ -29,6 +30,7 @@ export default function RootLayout({
         className={`${odasans.variable} ${wulkan.variable} ${poppins.variable} antialiased`}
       >
         {children}
+        <Toaster position="top-right" expand={true} closeButton />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useProjectForm } from "@/app/hooks/useProjectForm";
 import { AdminTopBar } from "./AdminTopBar";
@@ -13,6 +13,7 @@ type ViewMode = "list" | "form";
 
 export function AdminProjectsContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [projects, setProjects] = useState<Project[]>([]);
@@ -32,9 +33,19 @@ export function AdminProjectsContent() {
       setIsAuthenticated(true);
       loadProjects();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const loadProjects = async () => {
+  useEffect(() => {
+    if (!isAuthenticated || projects.length === 0) return;
+    const editId = searchParams.get("edit");
+    if (!editId) return;
+    const target = projects.find((p) => p.id === editId);
+    if (target) handleEdit(target);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, projects, searchParams]);
+
+  const loadProjects = async (): Promise<Project[]> => {
     try {
       const token = sessionStorage.getItem("admin_token") ?? "";
       const res = await fetch("/api/admin/projects", {
@@ -42,10 +53,15 @@ export function AdminProjectsContent() {
       });
       if (!res.ok) throw new Error();
       const data: Project[] = await res.json();
-      setProjects(data);
+      const sorted = data.sort(
+        (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
+      setProjects(sorted);
+      return sorted;
     } catch (error) {
       console.error("Erro ao carregar projetos:", error);
       toast.error("Erro ao carregar projetos");
+      return [];
     }
   };
 
@@ -135,6 +151,7 @@ export function AdminProjectsContent() {
           onReorderImages={form.reorderImages}
           onAddTag={form.addTag}
           onRemoveTag={form.removeTag}
+          onContentImageUpload={form.handleContentImageUpload}
           onSubmit={(e) => form.submit(e, editingProject)}
           onCancel={handleCancel}
         />

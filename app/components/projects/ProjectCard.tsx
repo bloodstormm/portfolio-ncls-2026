@@ -63,6 +63,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   <span className="text-xs font-mono text-foreground/30">
                     {String(index + 1).padStart(2, "0")}
                   </span>
+                  {project.type === "case_study" && (
+                    <span className="text-xs font-medium px-2.5 py-0.5 rounded-full border bg-amber-500/10 text-amber-500 border-amber-500/20">
+                      {t("caseStudy")}
+                    </span>
+                  )}
                   {project.category && (
                     <span className="text-xs uppercase tracking-widest text-primary/70 font-medium">
                       {project.category}
@@ -113,6 +118,11 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               <span className="text-xs font-mono text-foreground/30">
                 {String(index + 1).padStart(2, "0")}
               </span>
+              {project.type === "case_study" && (
+                <span className="text-xs font-medium px-2.5 py-0.5 rounded-full border bg-amber-500/10 text-amber-500 border-amber-500/20">
+                  {t("caseStudy")}
+                </span>
+              )}
               {project.category && (
                 <span className="text-xs uppercase tracking-widest text-primary/70 font-medium">
                   {project.category}

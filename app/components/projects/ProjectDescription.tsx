@@ -29,7 +29,7 @@ export function ProjectDescription({ project }: ProjectDescriptionProps) {
           <div className="w-12 h-0.5 bg-primary rounded-full" />
           <RichTextRenderer
             content={getDescription(project, locale)}
-            className="text-lg leading-relaxed text-foreground/80"
+            className="text-base leading-relaxed text-foreground/80"
           />
         </div>
 

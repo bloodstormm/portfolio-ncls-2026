@@ -34,6 +34,7 @@ interface ProjectFormFieldsProps {
   onReorderImages: (from: number, to: number) => void;
   onAddTag: () => void;
   onRemoveTag: (tag: string) => void;
+  onContentImageUpload: (file: File) => Promise<string>;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
 }
@@ -43,8 +44,10 @@ export function ProjectFormFields({
   tagInput, setTagInput, loading, editingProject, dragIndexRef,
   onCoverSelected, onRemoveCover, onAdditionalSelected,
   onRemoveAdditionalImage, onReorderImages,
-  onAddTag, onRemoveTag, onSubmit, onCancel,
+  onAddTag, onRemoveTag, onContentImageUpload, onSubmit, onCancel,
 }: ProjectFormFieldsProps) {
+  const isCaseStudy = formData.type === "case_study";
+
   return (
     <section className="container mx-auto px-6 py-14 max-w-3xl">
       <motion.div
@@ -83,6 +86,29 @@ export function ProjectFormFields({
             />
           </motion.div>
 
+          {/* Tipo de projeto */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease, delay: 0.06 }}
+            className="space-y-2"
+          >
+            {fieldLabel("Tipo de projeto *")}
+            <select
+              value={formData.type}
+              onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value as ProjectFormData["type"] }))}
+              className={inputClass}
+            >
+              <option value="project">Projeto (técnico / entregável)</option>
+              <option value="case_study">Estudo de caso (texto + imagens)</option>
+            </select>
+            {isCaseStudy && (
+              <p className="text-xs text-muted/60">
+                Use a descrição abaixo como um post: títulos (H2/H3) para separar seções e imagens inseridas no fluxo do texto.
+              </p>
+            )}
+          </motion.div>
+
           {/* Disciplina + Categoria */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -102,20 +128,22 @@ export function ProjectFormFields({
                 <option value="both">Design & Desenvolvimento</option>
               </select>
             </div>
-            <div className="space-y-2">
-              {fieldLabel("Categoria")}
-              <select
-                value={formData.category}
-                onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value as ProjectFormData["category"] }))}
-                className={inputClass}
-              >
-                <option value="">—</option>
-                <option value="web">Web Development</option>
-                <option value="mobile">Mobile App</option>
-                <option value="design">UI/UX Design</option>
-                <option value="fullstack">Full Stack</option>
-              </select>
-            </div>
+            {!isCaseStudy && (
+              <div className="space-y-2">
+                {fieldLabel("Categoria")}
+                <select
+                  value={formData.category}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value as ProjectFormData["category"] }))}
+                  className={inputClass}
+                >
+                  <option value="">—</option>
+                  <option value="web">Web Development</option>
+                  <option value="mobile">Mobile App</option>
+                  <option value="design">UI/UX Design</option>
+                  <option value="fullstack">Full Stack</option>
+                </select>
+              </div>
+            )}
           </motion.div>
 
           {/* Imagem de Capa */}
@@ -137,6 +165,7 @@ export function ProjectFormFields({
           </motion.div>
 
           {/* Galeria */}
+          {!isCaseStudy && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -203,6 +232,7 @@ export function ProjectFormFields({
               <p className="text-xs text-muted/60">Arraste para reordenar.</p>
             )}
           </motion.div>
+          )}
 
           {/* Descrição PT */}
           <motion.div
@@ -215,7 +245,10 @@ export function ProjectFormFields({
             <RichTextEditor
               content={formData.description}
               onChange={(content) => setFormData((prev) => ({ ...prev, description: content }))}
-              placeholder="Descreva o projeto, tecnologias, desafios e resultados..."
+              placeholder={isCaseStudy
+                ? "Conte o estudo de caso: contexto, o que foi feito, resultados... use H2/H3 para separar seções."
+                : "Descreva o projeto, tecnologias, desafios e resultados..."}
+              onImageUpload={onContentImageUpload}
             />
           </motion.div>
 
@@ -230,11 +263,15 @@ export function ProjectFormFields({
             <RichTextEditor
               content={formData.description_en}
               onChange={(content) => setFormData((prev) => ({ ...prev, description_en: content }))}
-              placeholder="Describe the project, technologies, challenges and results..."
+              placeholder={isCaseStudy
+                ? "Tell the case study: context, what was done, results... use H2/H3 to separate sections."
+                : "Describe the project, technologies, challenges and results..."}
+              onImageUpload={onContentImageUpload}
             />
           </motion.div>
 
           {/* Tags */}
+          {!isCaseStudy && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -270,8 +307,10 @@ export function ProjectFormFields({
               </div>
             )}
           </motion.div>
+          )}
 
           {/* URLs */}
+          {!isCaseStudy && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -299,6 +338,7 @@ export function ProjectFormFields({
               />
             </div>
           </motion.div>
+          )}
 
           {/* Submit */}
           <motion.div

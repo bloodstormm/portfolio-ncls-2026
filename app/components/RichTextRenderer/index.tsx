@@ -23,9 +23,10 @@ export function RichTextRenderer({
         ALLOWED_TAGS: [
           'p', 'strong', 'em', 'u', 'code', 'pre',
           'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-          'ul', 'ol', 'li', 'blockquote', 'a', 'br'
+          'ul', 'ol', 'li', 'blockquote', 'a', 'br',
+          'img', 'hr'
         ],
-        ALLOWED_ATTR: ['href', 'target', 'rel']
+        ALLOWED_ATTR: ['href', 'target', 'rel', 'src', 'alt', 'width']
       });
       setSanitizedContent(clean);
     }
@@ -42,14 +43,16 @@ export function RichTextRenderer({
     [&_em]:italic [&_em]:text-muted [&_em]:!text-[inherit]
     [&_code]:px-2 [&_code]:py-1 [&_code]:bg-beige/20 [&_code]:rounded [&_code]:text-primary [&_code]:text-sm
     [&_pre]:bg-beige/10 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto
-    [&_h1]:text-xl [&_h1]:font-semibold [&_h1]:text-primary [&_h1]:mb-4 [&_h1]:font-Odasans
-    [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:text-primary [&_h2]:mb-3 [&_h2]:font-Odasans
-    [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mb-2 [&_h3]:font-Odasans
+    [&_h1]:text-4xl [&_h1]:font-semibold [&_h1]:text-primary [&_h1]:mb-4 [&_h1]:mt-2 [&_h1]:font-Odasans
+    [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:text-primary [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:font-Odasans
+    [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:font-Odasans
     [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ul]:text-muted [&_ul]:!text-[inherit]
     [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_ol]:text-muted [&_ol]:!text-[inherit]
     [&_li]:mb-1 [&_li]:text-muted [&_li]:!text-[inherit]
     [&_blockquote]:border-l-4 [&_blockquote]:border-primary/30 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted/80 [&_blockquote]:bg-beige/5 [&_blockquote]:py-3 [&_blockquote]:rounded-r
     [&_a]:text-primary [&_a]:hover:underline [&_a]:transition-colors [&_a]:duration-300
+    [&_img]:rounded-xl [&_img]:max-w-full [&_img]:h-auto [&_img]:my-6 [&_img:not([width])]:w-full
+    [&_hr]:border-beige/30 [&_hr]:my-10
   `;
 
   const truncateClasses = maxLines ? `
