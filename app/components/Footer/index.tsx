@@ -10,7 +10,7 @@ export const Footer = () => {
   const t = useTranslations("footer");
 
   return (
-    <footer className="relative bg-[#111111] text-white overflow-hidden">
+    <footer className="relative bg-espresso text-white overflow-hidden">
       <FooterDecoration />
       <div className="relative z-10 container mx-auto px-6 lg:px-8 pt-20 pb-10 md:pt-28 md:pb-12">
         <div className="border-b border-white/10 pb-14 mb-10 space-y-6">

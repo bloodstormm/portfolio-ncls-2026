@@ -7,6 +7,8 @@ import { useTranslations, useLocale } from "next-intl";
 
 import { Link, useRouter, usePathname } from "@/app/i18n/navigation";
 import { MenuModal } from "../MenuModal";
+import { Button } from "@/app/components/ui/button";
+import { ProgressiveBlur } from "@/app/components/ui/skiper-ui/progressive-blur";
 import { useTheme } from "@/app/hooks/useTheme";
 
 import { MdOpenInNew } from "react-icons/md";
@@ -24,9 +26,8 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  const darkHeroPages = /^\/(en\/)?projects\/.+/;
-  const isHomepage = pathname === "/";
-  const hasDarkHero = (darkHeroPages.test(rawPathname) || isHomepage) && !scrolled;
+  // No page puts a dark image under the header any more; kept as a switch for the styles below.
+  const hasDarkHero = false;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -46,12 +47,12 @@ export const Header = () => {
       transition={{ duration: 0.6, ease: [0.6, -0.05, 0.1, 0.9] }}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     >
-      <div
-        className={`absolute inset-0 transition-all duration-500 ${
-          scrolled
-            ? "backdrop-blur-md bg-background/80"
-            : "bg-transparent"
-        }`}
+      {/* Cor que se desfaz em transparente, com o blur sumindo junto (Skiper UI) */}
+      <ProgressiveBlur
+        position="top"
+        height="8.5rem"
+        blurAmount="10px"
+        backgroundColor={hasDarkHero ? "rgba(0, 0, 0, 0.45)" : "rgb(var(--background))"}
       />
       <div className="container mx-auto px-6 lg:px-8 relative z-10">
         <div className="flex items-center justify-between h-20">
@@ -66,11 +67,11 @@ export const Header = () => {
               className="relative group"
             >
               <span className="font-Odasans text-4xl lg:text-5xl font-bold">
-                <span className="text-primary dark:text-secondary transition-colors duration-300">NCLS</span>
+                <span className="text-logo transition-colors duration-300">NCLS</span>
               </span>
 
               {/* Underline effect */}
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary dark:bg-secondary group-hover:w-full transition-all duration-300 ease-out"></div>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-logo group-hover:w-full transition-all duration-300 ease-out"></div>
             </Link>
           </motion.div>
 
@@ -139,17 +140,16 @@ export const Header = () => {
             </motion.button>
 
             {/* Resume Button */}
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{...transition, duration: 0.6}}
-              href={`${locale == "pt" ? "https://drive.google.com/file/d/1ipSfPNCbf07TWmZltuGgU_CpUq9fhTng/view?usp=sharing": "https://drive.google.com/file/d/1lS1TbVDD2WYQaw_0h043cMAw2gaMWo8Q/view?usp=sharing"}`}
-              target="_blank"
-              className="hidden lg:flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium text-sm hover:shadow-lg transition-colors duration-300"
-            >
-              <span>{t("resume")}</span>
-              <MdOpenInNew className="h-4 w-4" />
-            </motion.a>
+            <Button asChild className="hidden h-10 rounded-full px-6 lg:inline-flex">
+              <a
+                href={locale == "pt" ? "https://drive.google.com/file/d/1ipSfPNCbf07TWmZltuGgU_CpUq9fhTng/view?usp=sharing" : "https://drive.google.com/file/d/1lS1TbVDD2WYQaw_0h043cMAw2gaMWo8Q/view?usp=sharing"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t("resume")}
+                <MdOpenInNew />
+              </a>
+            </Button>
 
             {/* Mobile Menu */}
             <motion.button

@@ -9,7 +9,10 @@ const odasans = localFont({
 });
 
 const wulkan = localFont({
-  src: "./fonts/Wulkan/WulkanDisplayRegular.ttf",
+  src: [
+    { path: "./fonts/Wulkan/WulkanDisplayRegular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/Wulkan/WulkanDisplayItalic.ttf", weight: "400", style: "italic" },
+  ],
   variable: "--font-Wulkan",
 });
 
