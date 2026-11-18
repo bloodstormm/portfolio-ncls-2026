@@ -134,7 +134,7 @@ export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
                 <HiOutlineMail className="h-5 w-5" />
               </a>
               <a
-                href="https://github.com/bloodstormm"
+                href="https://github.com/nicmalachias"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted hover:text-primary transition-colors duration-300"

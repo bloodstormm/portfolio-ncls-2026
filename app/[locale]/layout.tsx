@@ -96,7 +96,7 @@ export default async function LocaleLayout({
             jobTitle: "UI/UX Designer & Front-end Developer",
             sameAs: [
               "https://www.linkedin.com/in/nicolas-malachias/",
-              "https://github.com/bloodstormm",
+              "https://github.com/nicmalachias",
             ],
           }),
         }}

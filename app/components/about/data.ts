@@ -118,7 +118,7 @@ export const socials = [
   { href: "https://wa.me/5512988770308", label: "WhatsApp" },
   { href: "https://www.linkedin.com/in/nicolas-malachias/", label: "LinkedIn" },
   { href: "mailto:nicolasmalaquias2015@gmail.com", label: "E-mail" },
-  { href: "https://github.com/bloodstormm", label: "GitHub" },
+  { href: "https://github.com/nicmalachias", label: "GitHub" },
 ];
 
 export const stats = [
