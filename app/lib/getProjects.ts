@@ -1,4 +1,7 @@
 import type { Project } from "@/app/types/projects";
+import { getAdminDb, isAdminConfigured } from "@/app/lib/firebaseAdmin";
+
+const SITE_URL = "https://nicolasmalachias.com/";
 
 type FirestoreValue = {
   stringValue?: string;
@@ -31,9 +34,16 @@ export async function fetchProjectsFromRest(
 
   const res = await fetch(
     `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/projects?pageSize=200&key=${apiKey}`,
-    init
+    {
+      ...init,
+      // Browser API keys are often restricted by HTTP referrer; server requests send none.
+      headers: { Referer: SITE_URL, ...(init.headers ?? {}) },
+    }
   );
-  if (!res.ok) throw new Error(`Firestore REST ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Firestore REST ${res.status}: ${body.slice(0, 300)}`);
+  }
   const data = (await res.json()) as { documents?: FirestoreDoc[] };
 
   return (data.documents ?? []).map((doc) => {
@@ -44,20 +54,41 @@ export async function fetchProjectsFromRest(
   });
 }
 
+async function fetchProjectsFromAdmin(): Promise<Project[]> {
+  const snap = await getAdminDb().collection("projects").get();
+  // JSON round-trip turns Firestore types (Timestamps etc.) into plain values for client components.
+  return JSON.parse(JSON.stringify(snap.docs.map((d) => ({ id: d.id, ...d.data() })))) as Project[];
+}
+
 /**
- * Reads every project from Firestore on the server (REST, cached for a minute)
- * so the homepage ships with its content instead of loading it in the browser.
+ * Reads every project on the server so pages ship with their content.
+ * Uses the service account when it is configured (same path the admin uses),
+ * and falls back to Firestore's public REST API. Failures are logged, not hidden.
  */
 export async function getProjects(): Promise<Project[]> {
-  try {
-    const projects = await fetchProjectsFromRest({ next: { revalidate: 60 } });
-    return projects
-      .filter((project) => project.title && project.coverUrl)
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
-      );
-  } catch {
-    return [];
+  let projects: Project[] | null = null;
+
+  if (isAdminConfigured()) {
+    try {
+      projects = await fetchProjectsFromAdmin();
+    } catch (error) {
+      console.error("[getProjects] firebase-admin read failed:", error);
+    }
   }
+
+  if (!projects) {
+    try {
+      projects = await fetchProjectsFromRest({ next: { revalidate: 60 } });
+    } catch (error) {
+      console.error("[getProjects] Firestore REST read failed:", error);
+      return [];
+    }
+  }
+
+  return projects
+    .filter((project) => project.title && project.coverUrl)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
 }

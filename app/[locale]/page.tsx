@@ -5,6 +5,9 @@ import { HomeIntro } from "@/app/components/home/HomeIntro";
 import { HomeProjects } from "@/app/components/home/HomeProjects";
 import { getProjects } from "@/app/lib/getProjects";
 
+// Refresh project data at most once a minute.
+export const revalidate = 60;
+
 export default async function Home() {
   const projects = await getProjects();
 
