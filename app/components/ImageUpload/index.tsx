@@ -3,9 +3,8 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { ImagePlus, RefreshCw, X } from "lucide-react";
+import { BsCloudUpload, BsX, BsImage } from "react-icons/bs";
 import { toast } from "sonner";
-import { cn } from "@/app/lib/utils";
 import { validateImageFile, validateMultipleImages } from "../../lib/uploadImage";
 
 interface ImageUploadProps {
@@ -16,16 +15,6 @@ interface ImageUploadProps {
   isUploading?: boolean;
   multiple?: boolean;
   label?: string;
-  className?: string;
-}
-
-function Preview({ src, alt }: { src: string; alt: string }) {
-  return src.startsWith("blob:") || src.startsWith("data:") ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
-  ) : (
-    <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 22rem, 100vw" className="object-cover" />
-  );
 }
 
 export function ImageUpload({
@@ -35,26 +24,28 @@ export function ImageUpload({
   onRemoveImage,
   isUploading = false,
   multiple = true,
-  label,
-  className,
+  label = "Imagens do Projeto"
 }: ImageUploadProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles.length === 0) return;
-      if (!multiple && acceptedFiles.length > 1) acceptedFiles = [acceptedFiles[0]];
+      if (!multiple && acceptedFiles.length > 1) {
+        acceptedFiles = [acceptedFiles[0]];
+      }
 
       if (multiple) {
         const validation = validateMultipleImages(acceptedFiles);
         if (!validation.valid) {
-          validation.errors.forEach((error) => toast.error(error));
+          validation.errors.forEach(error => toast.error(error));
           return;
         }
+        toast.success(`${acceptedFiles.length} imagem(ns) selecionada(s)!`);
       } else {
         const validation = validateImageFile(acceptedFiles[0]);
         if (!validation.valid) {
           toast.error(validation.error);
           return;
         }
+        toast.success("Imagem selecionada com sucesso!");
       }
 
       onImagesSelected(acceptedFiles);
@@ -64,120 +55,132 @@ export function ImageUpload({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [".jpeg", ".jpg", ".png", ".webp"] },
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png", ".webp"]
+    },
     multiple,
-    disabled: isUploading,
+    disabled: isUploading
   });
 
-  // Single image already chosen: the preview itself is the drop target, so it can be replaced.
-  if (!multiple && currentImages.length > 0) {
-    return (
-      <div className={cn("space-y-2", className)}>
-        {label && <span className="block text-sm font-medium">{label}</span>}
-        <div
-          {...getRootProps()}
-          className={cn(
-            "group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-xl border border-border bg-secondary outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40",
-            isDragActive && "ring-[3px] ring-primary/50"
-          )}
-        >
-          <input {...getInputProps()} />
-          <Preview src={currentImages[0]} alt="Capa" />
-          <div className="absolute inset-0 flex items-center justify-center bg-espresso/55 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <span className="inline-flex items-center gap-2 rounded-full bg-background px-4 py-2 text-sm font-medium text-foreground">
-              <RefreshCw className="size-4" />
-              Trocar imagem
-            </span>
-          </div>
-          {isUploading && (
-            <div className="absolute inset-0 grid place-items-center bg-espresso/55">
-              <span className="size-6 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-            </div>
-          )}
-          {onRemoveImage && !isUploading && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onRemoveImage(0);
-              }}
-              aria-label="Remover imagem"
-              className="absolute right-2 top-2 z-10 grid size-8 place-items-center rounded-full bg-background/90 text-foreground shadow-sm backdrop-blur transition-colors duration-200 hover:bg-destructive hover:text-white"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  const canAddMore = multiple ? currentImages.length < maxImages : true;
+  const canAddMore = multiple ? currentImages.length < maxImages : currentImages.length === 0;
 
   return (
-    <div className={cn("space-y-3", className)}>
-      {label && <span className="block text-sm font-medium">{label}</span>}
+    <div className="space-y-4">
+      {/* Label */}
+      {label && (
+        <label className="block text-sm font-medium text-primary">
+          {label}
+          {multiple && (
+            <span className="text-muted ml-2">
+              ({currentImages.length}/{maxImages})
+            </span>
+          )}
+        </label>
+      )}
 
+      {/* Upload Area */}
       {canAddMore && (
         <div
           {...getRootProps()}
-          className={cn(
-            "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-8 text-center outline-none transition-colors duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/40",
-            !multiple && "aspect-[4/3]",
-            isDragActive
-              ? "border-primary bg-primary/10"
-              : "border-input hover:border-primary/60 hover:bg-secondary/40",
-            isUploading && "cursor-not-allowed opacity-50"
-          )}
+          className={`
+            border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all duration-300
+            ${isDragActive
+              ? "border-primary bg-primary/10 scale-[1.02]"
+              : "border-beige/40 hover:border-primary/50 hover:bg-beige/5"
+            }
+            ${isUploading ? "opacity-50 cursor-not-allowed" : ""}
+          `}
         >
           <input {...getInputProps()} />
-          <span className="grid size-11 place-items-center rounded-full bg-secondary text-primary">
-            {isUploading ? (
-              <span className="size-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-            ) : (
-              <ImagePlus className="size-5" />
-            )}
-          </span>
-          <span>
-            <span className="block text-sm font-medium">
-              {isDragActive
-                ? "Solte aqui"
-                : multiple
-                  ? "Arraste imagens ou clique para escolher"
-                  : "Arraste uma imagem ou clique"}
-            </span>
-            <span className="mt-1 block text-xs text-muted-foreground">
-              JPEG, PNG ou WebP, até 5 MB
-            </span>
-          </span>
+
+          <div className="space-y-4">
+            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+              {isUploading ? (
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <BsCloudUpload className="h-8 w-8 text-primary" />
+              )}
+            </div>
+
+            <div>
+              <p className="text-primary font-medium">
+                {isDragActive ? (
+                  "Solte as imagens aqui..."
+                ) : (
+                  <>
+                    Clique ou arraste {multiple ? "imagens" : "uma imagem"} aqui
+                  </>
+                )}
+              </p>
+              <p className="text-sm text-muted mt-2">
+                Suporta JPEG, PNG e WebP até 5MB cada
+                {multiple && ` (máximo ${maxImages} imagens)`}
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
-      {multiple && currentImages.length > 0 && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {currentImages.map((imageUrl, index) => (
-            <div
-              key={index}
-              className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-secondary"
-            >
-              <Preview src={imageUrl} alt={`Imagem ${index + 1}`} />
-              {onRemoveImage && !isUploading && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onRemoveImage(index);
-                  }}
-                  aria-label="Remover imagem"
-                  className="absolute right-2 top-2 grid size-7 place-items-center rounded-full bg-background/90 text-foreground transition-colors hover:bg-destructive hover:text-white"
-                >
-                  <X className="size-3.5" />
-                </button>
-              )}
-            </div>
-          ))}
+      {/* Current Images Preview */}
+      {currentImages.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-sm font-medium text-primary">
+            {multiple ? "Imagens Selecionadas:" : "Imagem Selecionada:"}
+          </p>
+
+          <div className={`grid gap-4 ${multiple ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-4" : "grid-cols-1 max-w-xs"}`}>
+            {currentImages.map((imageUrl, index) => (
+              <div key={index} className="relative group">
+                <div className="relative aspect-square rounded-lg overflow-hidden bg-beige/10 border border-beige/20 hover:border-primary/30 transition-colors duration-200">
+                  {imageUrl.startsWith("blob:") || imageUrl.startsWith("data:") ? (
+                    <img
+                      src={imageUrl}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src={imageUrl}
+                      alt={`Imagem ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+
+                  {/* Loading Overlay */}
+                  {isUploading && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
+
+                  {/* Remove Button */}
+                  {onRemoveImage && !isUploading && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onRemoveImage(index);
+                      }}
+                      className="absolute top-1 right-1 w-7 h-7 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-red-500/30 hover:scale-110 z-10"
+                      type="button"
+                      title="Remover imagem"
+                    >
+                      <BsX className="h-4 w-4 text-white" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+      )}
+
+      {/* Info Message */}
+      {!multiple && currentImages.length === 1 && (
+        <p className="text-sm text-muted">
+          Para alterar a imagem, selecione uma nova imagem acima.
+        </p>
       )}
     </div>
   );

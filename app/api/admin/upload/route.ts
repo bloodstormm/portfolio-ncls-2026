@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AdminNotConfiguredError, getAdminStorage } from "@/app/lib/firebaseAdmin";
+import { adminStorage } from "@/app/lib/firebaseAdmin";
 
 function isAuthorized(req: NextRequest): boolean {
   const token = req.headers.get("x-admin-token");
@@ -23,26 +23,13 @@ export async function POST(req: NextRequest) {
   const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "");
   const fullPath = `${path}/${timestamp}-${safeName}`;
 
-  try {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const bucket = getAdminStorage().bucket();
-    const fileRef = bucket.file(fullPath);
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const bucket = adminStorage.bucket();
+  const fileRef = bucket.file(fullPath);
 
-    await fileRef.save(buffer, { contentType: file.type });
-    await fileRef.makePublic();
+  await fileRef.save(buffer, { contentType: file.type });
+  await fileRef.makePublic();
 
-    const url = `https://storage.googleapis.com/${bucket.name}/${fullPath}`;
-    return NextResponse.json({ url });
-  } catch (error) {
-    console.error("[admin/upload]", error);
-    const missing = error instanceof AdminNotConfiguredError;
-    return NextResponse.json(
-      {
-        error: missing
-          ? "Credencial do Firebase Admin ausente (FIREBASE_SERVICE_ACCOUNT_JSON)."
-          : "Falha no upload da imagem.",
-      },
-      { status: missing ? 503 : 500 }
-    );
-  }
+  const url = `https://storage.googleapis.com/${bucket.name}/${fullPath}`;
+  return NextResponse.json({ url });
 }

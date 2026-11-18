@@ -1,33 +1,28 @@
 @import "tailwindcss";
 
-/* dark: segue a classe .dark do botão de tema, não só a preferência do sistema */
-@custom-variant dark (&:where(.dark, .dark *));
-
 /* Tema base em RGB (para usar com rgb(var(--...))) */
 :root {
-  /* Modo claro: papel quente, tinta café e marrom de marca */
-  --background: 246, 241, 235; /* #F6F1EB */
-  --foreground: 28, 22, 18;    /* #1C1612 */
-  --brand: 133, 94, 66;        /* #855E42 - marrom de marca (5:1 sobre o fundo) */
-  --brand-hover: 105, 72, 49;  /* #694831 */
-  --text-muted: 92, 80, 70;    /* #5C5046 - texto secundário */
-  --beige: 221, 208, 192;      /* #DDD0C0 */
-  --espresso: 30, 23, 18;      /* #1E1712 - superfícies escuras */
-  --on-brand: 255, 255, 255;
-  --logo: 74, 50, 34;          /* #4A3222 - logo mais escura no claro */
+  /* Fundo e texto (modo claro) */
+  --background: 245, 243, 241; /* ##E5DDD4 */
+  --foreground: 22, 22, 22;    /* #161616 */
+
+  /* Cores de marca principais (claras) */
+  --brand: 140, 110, 93;       /* #8C6E5D - cor de marca */
+  --brand-hover: 115, 88, 73;  /* #735849 - hover/alt */
+  --text-muted: 74, 74, 74;    /* #4A4A4A - texto secundário */
+  --beige: 210, 200, 186;      /* #D2C8BA - beige suave que combina */
 }
 
 .dark {
-  /* Modo escuro: fundo quase preto e neutro; o marrom fica só nos destaques */
-  --background: 13, 12, 11;    /* #0D0C0B */
-  --foreground: 240, 236, 231; /* #F0ECE7 */
-  --brand: 204, 163, 125;      /* #CCA37D - destaque */
-  --brand-hover: 180, 138, 100;
-  --text-muted: 170, 164, 157; /* #AAA49D */
-  --beige: 32, 30, 28;         /* #201E1C - superfícies secundárias */
-  --espresso: 23, 22, 20;      /* #171614 - cartões e rodapé */
-  --on-brand: 13, 12, 11;
-  --logo: 204, 163, 125;
+  /* Fundo e texto (modo escuro suave) */
+  --background: 28, 28, 28;    /* quase preto suave */
+  --foreground: 245, 245, 245; /* texto claro */
+
+  /* Mantém a marca mas um pouco mais clara no escuro */
+  --brand: 193, 158, 121;      /* brand levemente mais clara */
+  --brand-hover: 168, 133, 100;
+  --text-muted: 200, 200, 200;
+  --beige: 100, 95, 85;        /* beige mais escuro para modo escuro */
 }
 
 /* Tokens do Tailwind 4 */
@@ -46,47 +41,15 @@
   --color-primary-hover: rgb(var(--brand-hover));
   --color-muted: rgb(var(--text-muted));
   --color-beige: rgb(var(--beige));
-  --color-espresso: rgb(var(--espresso));
-  --color-logo: rgb(var(--logo));
-
-  /* Tokens que os componentes shadcn/ui esperam, ligados à mesma paleta */
-  --color-primary-foreground: rgb(var(--on-brand));
-  --color-secondary: rgb(var(--beige));
-  --color-secondary-foreground: rgb(var(--foreground));
-  --color-accent: rgb(var(--beige));
-  --color-accent-foreground: rgb(var(--foreground));
-  --color-muted-foreground: rgb(var(--text-muted));
-  --color-card: rgb(var(--background));
-  --color-card-foreground: rgb(var(--foreground));
-  --color-popover: rgb(var(--background));
-  --color-popover-foreground: rgb(var(--foreground));
-  --color-border: rgba(var(--foreground), 0.14);
-  --color-input: rgba(var(--foreground), 0.14);
-  --color-ring: rgb(var(--brand));
-  --color-destructive: #b3261e;
-
-  /* shadcn/ui accordion */
-  --animate-accordion-down: accordion-down 0.3s ease-out;
-  --animate-accordion-up: accordion-up 0.3s ease-out;
-
-  @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
-  }
-
-  @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
-  }
 }
 
 ::selection {
-  background-color: rgba(133, 94, 66, 0.35);
+  background-color: rgba(140, 110, 93, 0.35);
   color: rgb(22, 22, 22);
 }
 
 .dark ::selection {
-  background-color: rgba(204, 163, 125, 0.35);
+  background-color: rgba(193, 158, 121, 0.35);
   color: rgb(245, 245, 245);
 }
 
@@ -104,45 +67,7 @@ body {
   }
 }
 
-/* Spell UI logos-carousel */
-@keyframes logos-enter {
-  from { transform: translateY(40px); filter: blur(4px); opacity: 0; }
-  to   { transform: translateY(0); filter: blur(0); opacity: 1; }
-}
-
-@keyframes logos-exit {
-  from { transform: translateY(0); filter: blur(0); opacity: 1; }
-  to   { transform: translateY(-40px); filter: blur(4px); opacity: 0; }
-}
-
-/* Logos de empresas em uma cor só, acompanhando o tema */
-.logo-mono {
-  filter: brightness(0);
-}
-
-.dark .logo-mono {
-  filter: brightness(0) invert(1);
-}
-
-/* Letter roll dos botões (Skiper UI TextRoll, em CSS): cada letra sobe e a cópia entra por baixo */
-.roll-letter {
-  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.roll-bottom .roll-letter {
-  transform: translateY(100%);
-}
-
-.group\/btn:hover .roll-top .roll-letter,
-.group\/btn:focus-visible .roll-top .roll-letter {
-  transform: translateY(-100%);
-}
-
-.group\/btn:hover .roll-bottom .roll-letter,
-.group\/btn:focus-visible .roll-bottom .roll-letter {
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .roll-letter { transition: none; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }

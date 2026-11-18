@@ -18,10 +18,7 @@ async function apiProjects(method: string, body: object) {
     },
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || "Erro na operação do projeto");
-  }
+  if (!res.ok) throw new Error("Erro na operação do projeto");
   return res.json();
 }
 
@@ -225,19 +222,18 @@ export function useProjectForm(onSuccess: () => void) {
       if (editingProject) {
         toast.loading("Atualizando projeto...", { id: "upload" });
         await apiProjects("PUT", { id: editingProject.id, ...projectData });
-        toast.success("Projeto atualizado", { id: "upload", duration: 4000 });
+        toast.success("✨ Projeto atualizado com sucesso!", { id: "upload", duration: 4000 });
       } else {
         toast.loading("Criando projeto...", { id: "upload" });
         await apiProjects("POST", projectData);
-        toast.success("Projeto criado", { id: "upload", duration: 4000 });
+        toast.success("🎉 Projeto criado com sucesso!", { id: "upload", duration: 4000 });
       }
 
       reset();
       onSuccess();
     } catch (error) {
       console.error("Erro ao salvar projeto:", error);
-      const message = error instanceof Error ? error.message : "Tente novamente.";
-      toast.error(`Erro ao salvar projeto: ${message}`, { id: "upload", duration: 6000 });
+      toast.error("❌ Erro ao salvar projeto. Tente novamente.", { id: "upload", duration: 4000 });
     } finally {
       setLoading(false);
     }

@@ -1,138 +1,96 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import NextLink from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { BsArrowLeft, BsPencil } from "react-icons/bs";
+import type { Project } from "@/app/types/projects";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
-import { DotGrid, Rings } from "@/app/components/home/Decor";
-import { Badge } from "@/app/components/ui/badge";
-import { Button } from "@/app/components/ui/button";
-import { WordsStagger } from "@/app/components/ui/words-stagger";
-import type { Project } from "@/app/types/projects";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export function ProjectHero({
-  project,
-  position,
-  total,
-}: {
+interface ProjectHeroProps {
   project: Project;
-  position: number;
-  total: number;
-}) {
-  const t = useTranslations("projectDetail");
-  const tp = useTranslations("projects");
-  // Read on the client only: the admin flag lives in sessionStorage
-  const isAdmin = useSyncExternalStore(
-    () => () => {},
-    () => !!sessionStorage.getItem("admin_authenticated"),
-    () => false,
-  );
-  const coverRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: coverRef,
-    offset: ["start end", "end start"],
-  });
-  const coverY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
-  const pad = (value: number) => String(value).padStart(2, "0");
+}
 
-  const rise = (order: number) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, ease, delay: 0.1 + order * 0.1 },
-  });
+export function ProjectHero({ project }: ProjectHeroProps) {
+  const t = useTranslations("projectDetail");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(!!sessionStorage.getItem("admin_authenticated"));
+  }, []);
 
   return (
-    <section className="relative overflow-hidden">
-      <Rings className="absolute -right-40 -top-40 hidden h-[30rem] w-[30rem] text-primary/30 [mask-image:radial-gradient(closest-side,black_35%,transparent_98%)] md:block" />
-      <DotGrid className="absolute -left-10 top-40 hidden h-64 w-64 text-primary/50 md:block" />
+    <section className="relative w-full h-[70vh] min-h-[480px]">
+      <Image
+        src={project.coverUrl}
+        alt={project.title}
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
 
-      <div className="container relative mx-auto px-6 pt-10 md:pt-16 lg:px-8">
-        <motion.div
-          {...rise(0)}
-          className="flex items-center justify-between gap-4"
-        >
-          <Button asChild variant="outline" className="h-10 rounded-full px-4">
-            <Link href="/projects">
-              <ArrowLeft aria-hidden="true" />
-              {t("allProjects")}
-            </Link>
-          </Button>
-          <div className="flex items-center gap-3">
-            {isAdmin && (
-              <NextLink
-                href={`/admin/projects?edit=${project.id}`}
-                title="Editar projeto"
-                className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Pencil aria-hidden="true" className="size-4" />
-              </NextLink>
-            )}
-            {position > 0 && (
-              <span className="text-sm tabular-nums text-muted-foreground">
-                {pad(position)} / {pad(total)}
-              </span>
-            )}
-          </div>
-        </motion.div>
+      {/* Botão voltar */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease }}
+        className="absolute top-24 left-0 right-0 container mx-auto px-6"
+      >
+        <div className="flex items-center justify-between">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-300 bg-black/20 px-4 py-2 rounded-full text-sm"
+          >
+            <BsArrowLeft className="h-4 w-4" />
+            {t("allProjects")}
+          </Link>
 
-        <motion.div
-          {...rise(1)}
-          className="mt-10 flex flex-wrap gap-2 md:mt-14"
-        >
-          {project.type === "case_study" && <Badge>{tp("caseStudy")}</Badge>}
-          {project.discipline && (
-            <Badge variant="secondary">
-              {tp(`discipline.${project.discipline}`)}
-            </Badge>
+          {isAdmin && (
+            <NextLink
+              href={`/admin/projects?edit=${project.id}`}
+              className="inline-flex items-center justify-center w-8 h-8 text-white/30 hover:text-white/70 transition-colors duration-300"
+              title="Editar projeto"
+            >
+              <BsPencil className="h-3.5 w-3.5" />
+            </NextLink>
           )}
-        </motion.div>
+        </div>
+      </motion.div>
 
-        <h1 className="mt-5 max-w-[20ch] font-Wulkan text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] tracking-[-0.02em] text-balance">
-          <WordsStagger delay={0.25} stagger={0.06} speed={0.6}>
+      {/* Título sobre a imagem */}
+      <div className="absolute bottom-0 left-0 right-0 container mx-auto px-6 pb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease, delay: 0.2 }}
+          className="space-y-4 max-w-3xl"
+        >
+          {project.category && (
+            <span className="text-xs uppercase tracking-widest text-primary font-semibold bg-primary/15 px-3 py-1 rounded-full">
+              {project.category}
+            </span>
+          )}
+          <h1 className="font-Wulkan text-4xl md:text-6xl capitalize tracking-wide text-white leading-tight">
             {project.title}
-          </WordsStagger>
-        </h1>
-
-        {project.tags && project.tags.length > 0 && (
-          <motion.ul {...rise(3)} className="mt-6 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <li key={tag}>
-                <Badge
-                  variant="outline"
-                  className="px-3 py-1 font-normal text-muted-foreground"
+          </h1>
+          {project.tags && project.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs text-white/70 border border-white/20 px-3 py-1 rounded-full"
                 >
                   {tag}
-                </Badge>
-              </li>
-            ))}
-          </motion.ul>
-        )}
-
-        <motion.div
-          ref={coverRef}
-          initial={{ opacity: 0, clipPath: "inset(8% 6% 8% 6% round 2rem)" }}
-          animate={{ opacity: 1, clipPath: "inset(0% 0% 0% 0% round 2rem)" }}
-          transition={{ duration: 1.2, ease, delay: 0.35 }}
-          className="relative mt-10 aspect-[4/3] overflow-hidden rounded-[2rem] md:mt-14 md:aspect-[16/8]"
-        >
-          <motion.div
-            style={{ y: coverY }}
-            className="absolute inset-x-0 -inset-y-[7%]"
-          >
-            <Image
-              src={project.coverUrl}
-              alt={project.title}
-              fill
-              priority
-              sizes="(min-width: 1024px) 90vw, 100vw"
-              className="object-cover"
-            />
-          </motion.div>
+                </span>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

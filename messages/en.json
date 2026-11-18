@@ -9,34 +9,19 @@
     "resume": "Resume"
   },
   "footer": {
-    "cta": "Want to chat?",
-    "text": "Message me on WhatsApp and we can talk it over. If you'd like to know me better first, my resume is here too.",
-    "rights": "All rights reserved."
+    "cta": "Let's work together.",
+    "rights": "All rights reserved.",
+    "available": "Available for new projects."
   },
   "home": {
-    "role": "UI/UX designer and front-end developer",
-    "cta": "Message me on WhatsApp",
-    "resume": "Resume",
-    "trusted": "I've worked with",
-    "photoAlt": "Portrait of Nícolas Malachias",
-    "stat1Suffix": "k+",
-    "stat1Label": "people a year on Volkswagen's Lineup page, through CI&T",
-    "stat2Label": "retention on the Johnson & Johnson site",
-    "stat3Label": "projects published here",
+    "heroSubtitle": "Freelance Designer & Developer",
+    "currentlyAt": "Currently at",
+    "valueSectionTitle": "Design and code, start to finish.",
+    "valueSectionDesc": "I work with small and medium businesses that need a website built with care, and with agencies that need a designer who can also write the code.",
+    "valueCta": "More about me",
     "projectsLabel": "Each project, a story",
     "projectsTitle": "Recent Projects",
-    "viewProject": "View project",
-    "allProjects": "View all",
-    "projectsEmpty": "Projects will show up here soon.",
-    "card2Cta": "Open resume",
-    "about": "About me",
-    "viaCit": "through CI&T",
-    "prevProject": "Previous project",
-    "nextProject": "Next project",
-    "seeProjects": "See my work",
-    "introTitle": "Design and code, start to finish.",
-    "introText": "I work with small and medium businesses that need a website built with care, and with agencies that need a designer who can also write the code.",
-    "introCta": "More about me"
+    "projectsCta": "View all projects"
   },
   "projectsList": {
     "heading": "Recent Projects",
@@ -61,7 +46,6 @@
     "aboutTitle": "Who is",
     "aboutTitleName": "Nícolas?",
     "subtitle": "About me",
-    "photoAlt": "Nícolas Malachias at dusk, at a countryside restaurant",
     "available": "Available",
     "bio": "Hey 👋, I have a degree in Systems Analysis and Development and currently work across front-end and UX/UI.",
     "bio2": "I build websites as a freelancer and have delivered 3+ end-to-end projects that improved retention and credibility for my clients :)",
