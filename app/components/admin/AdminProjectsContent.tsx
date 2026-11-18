@@ -17,6 +17,8 @@ export function AdminProjectsContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [projects, setProjects] = useState<Project[]>([]);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [errorMessage, setErrorMessage] = useState<string>();
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   const form = useProjectForm(() => {
@@ -46,21 +48,36 @@ export function AdminProjectsContent() {
   }, [isAuthenticated, projects, searchParams]);
 
   const loadProjects = async (): Promise<Project[]> => {
+    setStatus((prev) => (prev === "ready" ? prev : "loading"));
     try {
       const token = sessionStorage.getItem("admin_token") ?? "";
       const res = await fetch("/api/admin/projects", {
         headers: { "x-admin-token": token },
+        cache: "no-store",
       });
-      if (!res.ok) throw new Error();
+      if (res.status === 401) {
+        // Stored password no longer matches the server: send back to login.
+        sessionStorage.removeItem("admin_authenticated");
+        sessionStorage.removeItem("admin_token");
+        toast.error("Sessão expirada. Entre de novo.");
+        router.push("/admin");
+        return [];
+      }
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Erro ${res.status}`);
+      }
       const data: Project[] = await res.json();
       const sorted = data.sort(
         (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
       );
       setProjects(sorted);
+      setStatus("ready");
       return sorted;
     } catch (error) {
       console.error("Erro ao carregar projetos:", error);
-      toast.error("Erro ao carregar projetos");
+      setErrorMessage(error instanceof Error ? error.message : undefined);
+      setStatus("error");
       return [];
     }
   };
@@ -86,12 +103,15 @@ export function AdminProjectsContent() {
         headers: { "Content-Type": "application/json", "x-admin-token": token },
         body: JSON.stringify({ id: project.id }),
       });
-      if (!res.ok) throw new Error();
-      toast.success("Projeto excluído com sucesso!");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Erro ${res.status}`);
+      }
+      toast.success("Projeto excluído");
       loadProjects();
     } catch (error) {
       console.error("Erro ao excluir projeto:", error);
-      toast.error("Erro ao excluir projeto");
+      toast.error(`Erro ao excluir: ${error instanceof Error ? error.message : "tente de novo"}`);
     }
   };
 
@@ -110,7 +130,7 @@ export function AdminProjectsContent() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -127,6 +147,9 @@ export function AdminProjectsContent() {
       {viewMode === "list" && (
         <AdminProjectList
           projects={projects}
+          status={status}
+          errorMessage={errorMessage}
+          onRetry={loadProjects}
           onNew={handleNew}
           onEdit={handleEdit}
           onDelete={handleDelete}

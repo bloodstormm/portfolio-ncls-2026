@@ -1,99 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { motion } from "framer-motion";
-import { BsArrowLeft } from "react-icons/bs";
-import { db } from "@/app/lib/firebase";
-import { fadeInUpBlur } from "@/app/utils/Animations";
+import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
-import { ProjectHero } from "./ProjectHero";
+import { Button } from "@/app/components/ui/button";
+import type { Project } from "@/app/types/projects";
+import { NextProject } from "./NextProject";
 import { ProjectDescription } from "./ProjectDescription";
 import { ProjectGallery } from "./ProjectGallery";
-import { NextProject } from "./NextProject";
-import type { Project } from "@/app/types/projects";
+import { ProjectHero } from "./ProjectHero";
 
-export function ProjectDetailContent() {
-  const params = useParams();
+export function ProjectDetailContent({
+  project,
+  nextProject,
+  position,
+  total,
+}: {
+  project: Project | null;
+  nextProject: Project | null;
+  position: number;
+  total: number;
+}) {
   const t = useTranslations("projectDetail");
-  const [project, setProject] = useState<Project | null>(null);
-  const [nextProject, setNextProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadProject() {
-      if (!params.id) return;
-
-      try {
-        const [projectDoc, allSnap] = await Promise.all([
-          getDoc(doc(db, "projects", params.id as string)),
-          getDocs(collection(db, "projects")),
-        ]);
-
-        if (projectDoc.exists()) {
-          setProject({ id: projectDoc.id, ...projectDoc.data() } as Project);
-        }
-
-        const all = allSnap.docs
-          .map((d) => ({ id: d.id, ...d.data() }) as Project)
-          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-
-        const currentIndex = all.findIndex((p) => p.id === params.id);
-        if (currentIndex !== -1 && currentIndex < all.length - 1) {
-          setNextProject(all[currentIndex + 1]);
-        }
-      } catch (error) {
-        console.error("Error loading project:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadProject();
-  }, [params.id]);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-muted text-sm">{t("loading")}</p>
-        </div>
-      </main>
-    );
-  }
 
   if (!project) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <motion.div
-          {...fadeInUpBlur}
-          transition={{ ...fadeInUpBlur.transition, duration: 0.8 }}
-          className="text-center space-y-6"
-        >
-          <h1 className="font-Wulkan text-3xl text-primary">{t("notFound")}</h1>
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full"
-          >
-            <BsArrowLeft className="h-4 w-4" />
+      <section className="container mx-auto flex min-h-[60svh] flex-col items-center justify-center gap-8 px-6 text-center lg:px-8">
+        <h1 className="font-Wulkan text-[clamp(2.5rem,6vw,4.5rem)] leading-none">
+          {t("notFound")}
+        </h1>
+        <Button asChild size="pill">
+          <Link href="/projects">
+            <ArrowLeft aria-hidden="true" />
             {t("backToProjects")}
           </Link>
-        </motion.div>
-      </main>
+        </Button>
+      </section>
     );
   }
 
-  const allImages = [project.coverUrl, ...(project.images ?? [])];
-
   return (
-    <main className="min-h-screen bg-background -mt-20">
-      <ProjectHero project={project} />
+    <>
+      <ProjectHero project={project} position={position} total={total} />
       <ProjectDescription project={project} />
-      <ProjectGallery images={allImages} title={project.title} />
+      <ProjectGallery images={project.images ?? []} title={project.title} />
       {nextProject && <NextProject project={nextProject} />}
-    </main>
+    </>
   );
 }
