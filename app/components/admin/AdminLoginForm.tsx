@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { BsEye, BsEyeSlash, BsArrowLeft } from "react-icons/bs";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Button } from "@/app/components/ui/button";
+import { DotGrid, Rings } from "@/app/components/home/Decor";
+import { useTheme } from "@/app/hooks/useTheme";
 import { toast } from "sonner";
 
 export function AdminLoginForm() {
@@ -12,6 +16,7 @@ export function AdminLoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  useTheme(); // apply the saved light/dark theme outside the locale layout
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,84 +52,85 @@ export function AdminLoginForm() {
   };
 
   return (
-    <main className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
+    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-6">
+      <Rings className="absolute -right-40 -top-40 hidden h-[30rem] w-[30rem] text-primary/30 [mask-image:radial-gradient(closest-side,black_35%,transparent_98%)] md:block" />
+      <DotGrid className="absolute -left-10 bottom-0 hidden h-64 w-64 text-primary/50 md:block" />
+
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-sm"
+        className="relative w-full max-w-sm"
       >
-        {/* Header */}
-        <div className="mb-12 space-y-3">
-          <span className="text-primary text-xs uppercase tracking-widest font-Odasans">
-            Admin
-          </span>
-          <h1 className="font-Wulkan text-5xl uppercase leading-none">
-            Portal
+        <span className="font-Odasans text-4xl font-bold text-logo">NCLS</span>
+
+        <div className="mt-10 border-b border-border pb-8">
+          <p className="text-sm font-medium text-primary md:text-base">Painel</p>
+          <h1 className="mt-3 font-Wulkan text-[clamp(2.75rem,8vw,4rem)] leading-none tracking-[-0.02em]">
+            Entrar
           </h1>
-          <div className="w-full h-px bg-foreground/10 mt-6" />
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <span className="text-xs uppercase tracking-widest text-foreground/40 font-Odasans">
-              Senha de acesso
-            </span>
-            <div className="relative">
+        <form onSubmit={handleLogin} className="mt-8 space-y-5">
+          <label htmlFor="password" className="block space-y-2">
+            <span className="block text-sm font-medium">Senha</span>
+            <span className="relative block">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                autoComplete="current-password"
+                autoFocus
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3.5 bg-transparent border border-foreground/10 rounded-xl text-sm text-foreground placeholder:text-foreground/20 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-300"
+                aria-invalid={Boolean(error)}
+                className="h-12 w-full rounded-xl border border-input bg-background/40 px-4 pr-12 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors duration-300 focus:border-primary focus:outline-none focus:ring-[3px] focus:ring-ring/25 aria-[invalid=true]:border-destructive"
                 placeholder="••••••••"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-primary transition-colors duration-300"
+                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
+                className="absolute right-1.5 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition-colors duration-300 hover:text-primary"
               >
-                {showPassword ? <BsEyeSlash className="h-4 w-4" /> : <BsEye className="h-4 w-4" />}
+                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
               </button>
-            </div>
-          </div>
+            </span>
+          </label>
 
           {error && (
             <motion.p
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-red-400 text-xs"
+              role="alert"
+              className="text-sm text-destructive"
             >
               {error}
             </motion.p>
           )}
 
-          <button
-            type="submit"
-            disabled={loading || !password}
-            className="w-full px-6 py-3.5 bg-primary text-white rounded-full text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors duration-300"
-          >
+          <Button type="submit" size="pill" disabled={loading || !password} className="w-full">
             {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <>
+                <span className="size-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground" />
                 Verificando...
-              </span>
+              </>
             ) : (
-              "Acessar painel"
+              <>
+                Entrar no painel
+                <ArrowRight />
+              </>
             )}
-          </button>
+          </Button>
         </form>
 
-        {/* Back link */}
-        <button
-          onClick={() => router.push("/")}
-          className="mt-10 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/30 hover:text-primary transition-colors duration-300"
+        <Link
+          href="/"
+          className="mt-10 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-primary"
         >
-          <BsArrowLeft className="h-3.5 w-3.5" />
-          Voltar ao portfólio
-        </button>
+          <ArrowLeft className="size-4" />
+          Voltar ao site
+        </Link>
       </motion.div>
     </main>
   );

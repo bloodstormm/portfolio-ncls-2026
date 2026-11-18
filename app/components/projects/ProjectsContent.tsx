@@ -1,86 +1,124 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { motion, AnimatePresence } from "framer-motion";
-import { db } from "@/app/lib/firebase";
-import { fadeInUpBlur } from "@/app/utils/Animations";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { ProjectsHeader } from "./ProjectsHeader";
-import { ProjectCard } from "./ProjectCard";
+import { DotGrid, Rings } from "@/app/components/home/Decor";
+import { Button } from "@/app/components/ui/button";
+import { WordsStagger } from "@/app/components/ui/words-stagger";
+import { cn } from "@/app/lib/utils";
 import type { Project } from "@/app/types/projects";
+import { ProjectsList } from "./ProjectsList";
 
 type DisciplineFilter = "all" | "design" | "development" | "both";
 
-const filterOptions: DisciplineFilter[] = ["all", "design", "development", "both"];
+const filterOptions: DisciplineFilter[] = [
+  "all",
+  "design",
+  "development",
+  "both",
+];
+const ease = [0.16, 1, 0.3, 1] as const;
 
-export function ProjectsContent() {
+export function ProjectsContent({ projects }: { projects: Project[] }) {
   const t = useTranslations("projects");
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<DisciplineFilter>("all");
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const snap = await getDocs(collection(db, "projects"));
-        const data = snap.docs
-          .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<Project, "id">) }) as Project)
-          .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-        setProjects(data);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
-
-  const filtered = activeFilter === "all"
-    ? projects
-    : projects.filter((p) => p.discipline === activeFilter);
+  const count = (option: DisciplineFilter) =>
+    option === "all"
+      ? projects.length
+      : projects.filter((project) => project.discipline === option).length;
+  const filtered =
+    activeFilter === "all"
+      ? projects
+      : projects.filter((project) => project.discipline === activeFilter);
 
   return (
-    <main className="min-h-screen bg-background">
-      <ProjectsHeader count={filtered.length} />
+    <>
+      {/* Heading */}
+      <section className="relative overflow-hidden">
+        <Rings className="absolute -right-40 -top-40 hidden h-[30rem] w-[30rem] text-primary/30 [mask-image:radial-gradient(closest-side,black_35%,transparent_98%)] md:block" />
+        <DotGrid className="absolute -left-10 bottom-0 hidden h-64 w-64 text-primary/50 md:block" />
 
-      <section className="container mx-auto px-6 pb-24 max-w-6xl">
-        {/* Filter toggle */}
+        <div className="container relative mx-auto px-6 pb-10 pt-14 md:pb-12 md:pt-24 lg:px-8">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease }}
+            className="text-sm font-medium text-primary md:text-base"
+          >
+            {t("label")}
+          </motion.p>
+          <h1 className="mt-4 flex items-start font-Wulkan text-[clamp(3rem,7vw,6rem)] leading-none tracking-[-0.02em] md:mt-6">
+            <motion.span
+              initial={{ opacity: 0, y: "40%" }}
+              animate={{ opacity: 1, y: "0%" }}
+              transition={{ duration: 1, ease, delay: 0.05 }}
+              className="block"
+            >
+              {t("title")}
+            </motion.span>
+            {projects.length > 0 && (
+              <motion.sup
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="ml-2 mt-[0.3em] font-Poppins text-base font-medium tracking-normal text-primary md:text-xl"
+              >
+                {String(projects.length).padStart(2, "0")}
+              </motion.sup>
+            )}
+          </h1>
+          <div className="mt-6 max-w-[44ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+            <WordsStagger delay={0.35} stagger={0.03} speed={0.5}>
+              {t("description")}
+            </WordsStagger>
+          </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-6 pb-24 md:pb-40 lg:px-8">
+        {/* Filters */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center gap-2 flex-wrap mb-12"
+          transition={{ duration: 0.6, ease, delay: 0.5 }}
+          role="group"
+          aria-label={t("title")}
+          className="flex flex-wrap items-center gap-2.5 border-t border-border pt-8"
         >
-          {filterOptions.map((option) => (
-            <button
-              key={option}
-              onClick={() => setActiveFilter(option)}
-              className={`relative px-4 py-2 text-sm rounded-full border transition-all duration-300 ${
-                activeFilter === option
-                  ? "border-primary text-primary bg-primary/10"
-                  : "border-beige/20 text-foreground/50 hover:border-beige/40 hover:text-foreground/80"
-              }`}
-            >
-              {t(`filter.${option}`)}
-              {activeFilter === option && (
-                <motion.span
-                  layoutId="filter-pill"
-                  className="absolute inset-0 rounded-full bg-primary/10 border border-primary -z-10"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-            </button>
-          ))}
+          {filterOptions.map((option) => {
+            const active = activeFilter === option;
+            return (
+              <Button
+                key={option}
+                type="button"
+                variant={active ? "default" : "outline"}
+                aria-pressed={active}
+                disabled={count(option) === 0}
+                onClick={() => setActiveFilter(option)}
+                className="h-10 rounded-full px-4"
+              >
+                {t(`filter.${option}`)}
+                <span
+                  className={cn(
+                    "text-xs tabular-nums",
+                    active
+                      ? "text-primary-foreground/70"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {count(option)}
+                </span>
+              </Button>
+            );
+          })}
         </motion.div>
 
-        {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
-        ) : filtered.length === 0 ? (
-          <motion.div {...fadeInUpBlur} className="text-center py-24 text-muted">
-            <p className="text-lg">{t("soon")}</p>
-          </motion.div>
+        {filtered.length === 0 ? (
+          <p className="py-24 text-center text-lg text-muted-foreground">
+            {t("soon")}
+          </p>
         ) : (
           <AnimatePresence mode="wait">
             <motion.div
@@ -88,16 +126,14 @@ export function ProjectsContent() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-0"
+              transition={{ duration: 0.35, ease }}
+              className="mt-8 md:mt-10"
             >
-              {filtered.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
-              ))}
+              <ProjectsList projects={filtered} />
             </motion.div>
           </AnimatePresence>
         )}
       </section>
-    </main>
+    </>
   );
 }

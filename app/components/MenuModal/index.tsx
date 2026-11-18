@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { BsX, BsGithub } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import { MdOpenInNew } from "react-icons/md";
+import { ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
 
@@ -107,7 +107,7 @@ export const MenuModal = ({ isOpen, setIsOpen }: MenuModalProps) => {
                   <span className="font-Wulkan text-3xl uppercase tracking-wide leading-none">
                     {t("resume")}
                   </span>
-                  <MdOpenInNew className="h-5 w-5 shrink-0" />
+                  <ArrowUpRight aria-hidden="true" className="h-5 w-5 shrink-0" />
                 </a>
               </motion.div>
             </nav>
