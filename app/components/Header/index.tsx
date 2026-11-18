@@ -11,8 +11,7 @@ import { Button } from "@/app/components/ui/button";
 import { ProgressiveBlur } from "@/app/components/ui/skiper-ui/progressive-blur";
 import { useTheme } from "@/app/hooks/useTheme";
 
-import { ArrowUpRight } from "lucide-react";
-import { BsMoon, BsStars } from "react-icons/bs";
+import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { transition } from "@/app/utils/Animations";
 
@@ -109,35 +108,29 @@ export const Header = () => {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-2">
 
-            {/* Language Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{...transition}}
+            {/* Language Toggle (same outline button as the theme toggle) */}
+            <Button
+              variant="outline"
+              size="icon"
               onClick={toggleLocale}
-              className={`p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors text-xs font-Odasans font-semibold tracking-widest ${
-                hasDarkHero ? "text-white/80" : "text-foreground/70"
-              }`}
+              aria-label={locale === "pt" ? "Switch to English" : "Mudar para português"}
+              className="size-10 rounded-full text-xs font-semibold"
             >
               {locale === "pt" ? "EN" : "PT"}
-            </motion.button>
+            </Button>
 
-            {/* Theme Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{...transition}}
+            {/* Theme Toggle (same button as the admin top bar) */}
+            <Button
+              variant="outline"
+              size="icon"
               onClick={toggleTheme}
-              className="p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors"
+              aria-label={theme === "dark" ? "Tema claro" : "Tema escuro"}
+              className="size-10 rounded-full"
             >
-              {theme === "light" ? (
-                <BsMoon className={`h-5 w-5 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
-              ) : (
-                <BsStars className={`h-5 w-5 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
-              )}
-            </motion.button>
+              {theme === "dark" ? <Sun /> : <Moon />}
+            </Button>
 
             {/* Resume Button */}
             <Button asChild className="hidden h-10 rounded-full px-6 lg:inline-flex">
@@ -152,14 +145,15 @@ export const Header = () => {
             </Button>
 
             {/* Mobile Menu */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+            <Button
+              variant="outline"
+              size="icon"
               onClick={() => setIsOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-beige/10 hover:bg-beige/20 transition-colors duration-300"
+              aria-label="Menu"
+              className="size-10 rounded-full lg:hidden"
             >
-              <HiOutlineMenuAlt4 className={`h-6 w-6 transition-colors duration-300 ${hasDarkHero ? "text-white/80" : "text-foreground/70"}`} />
-            </motion.button>
+              <HiOutlineMenuAlt4 className="size-5" />
+            </Button>
           </div>
         </div>
       </div>

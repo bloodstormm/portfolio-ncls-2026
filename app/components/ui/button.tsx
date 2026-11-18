@@ -4,7 +4,7 @@ import { cn } from "@/app/lib/utils"
 import { Slot } from "radix-ui"
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/btn inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -38,11 +38,51 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Letter roll adapted from Skiper UI "skiper58" (TextRoll), https://skiper-ui.com, by
+ * @gurvinder-singh02, rewritten in CSS so it works in server components. Each letter
+ * rolls up on hover and its copy rolls in from below, with a small stagger.
+ */
+function RollText({ text }: { text: string }) {
+  const letters = text.split("")
+  const layer = (name: string) => (
+    <span aria-hidden="true" className={cn("block", name, name === "roll-bottom" && "absolute inset-0")}>
+      {letters.map((letter, i) => (
+        <span key={i} className="roll-letter inline-block" style={{ transitionDelay: `${i * 12}ms` }}>
+          {letter}
+        </span>
+      ))}
+    </span>
+  )
+  return (
+    <span className="relative block overflow-hidden whitespace-pre">
+      <span className="sr-only">{text}</span>
+      {layer("roll-top")}
+      {layer("roll-bottom")}
+    </span>
+  )
+}
+
+// Swaps every text node inside the button (including inside an asChild Link) for RollText.
+function withRoll(node: React.ReactNode): React.ReactNode {
+  return React.Children.map(node, (child) => {
+    if (typeof child === "string" || typeof child === "number") {
+      const text = String(child).trim()
+      return text ? <RollText text={text} /> : null
+    }
+    if (React.isValidElement<{ children?: React.ReactNode }>(child) && child.props.children != null) {
+      return React.cloneElement(child, undefined, withRoll(child.props.children))
+    }
+    return child
+  })
+}
+
 function Button({
   className,
   variant = "default",
   size = "default",
   asChild = false,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
@@ -57,7 +97,13 @@ function Button({
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
-    />
+    >
+      {variant === "link"
+        ? children
+        : asChild && React.isValidElement<{ children?: React.ReactNode }>(children)
+          ? React.cloneElement(children, undefined, withRoll(children.props.children))
+          : withRoll(children)}
+    </Comp>
   )
 }
 

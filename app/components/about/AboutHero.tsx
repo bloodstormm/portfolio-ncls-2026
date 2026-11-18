@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { DotGrid, Rings } from "@/app/components/home/Decor";
 import { Button } from "@/app/components/ui/button";
 import { WordsStagger } from "@/app/components/ui/words-stagger";
-import AboutImage from "@/public/images/about-imager.jpg";
+import AboutImage from "@/public/images/about.jpg";
 import { ease, socials, stats } from "./data";
 
 const socialIcons: Record<string, React.ReactNode> = {

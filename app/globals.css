@@ -123,3 +123,26 @@ body {
 .dark .logo-mono {
   filter: brightness(0) invert(1);
 }
+
+/* Letter roll dos botões (Skiper UI TextRoll, em CSS): cada letra sobe e a cópia entra por baixo */
+.roll-letter {
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.roll-bottom .roll-letter {
+  transform: translateY(100%);
+}
+
+.group\/btn:hover .roll-top .roll-letter,
+.group\/btn:focus-visible .roll-top .roll-letter {
+  transform: translateY(-100%);
+}
+
+.group\/btn:hover .roll-bottom .roll-letter,
+.group\/btn:focus-visible .roll-bottom .roll-letter {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-letter { transition: none; }
+}

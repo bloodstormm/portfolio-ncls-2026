@@ -4,15 +4,20 @@ import { ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
 import { Button } from "@/app/components/ui/button";
-import { CoverflowCarousel } from "@/app/components/ui/skiper-ui/coverflow-carousel";
-import { ProjectTile } from "@/app/components/projects/ProjectTile";
+import { ProjectsStack } from "./ProjectsStack";
 import type { Project } from "@/app/types/projects";
+
+// The home shows only the newest ones; the rest live on the projects page
+const FEATURED = 4;
 
 export function HomeProjects({ projects }: { projects: Project[] }) {
   const t = useTranslations("home");
 
   return (
-    <section id="projetos" className="scroll-mt-28 pb-24 md:pb-40">
+    <section
+      id="projetos"
+      className="scroll-mt-20 pb-24 pt-20 md:pb-36 md:pt-28"
+    >
       <div className="container mx-auto px-6 lg:px-8">
         <div className="flex items-end justify-between gap-6">
           <div>
@@ -41,22 +46,20 @@ export function HomeProjects({ projects }: { projects: Project[] }) {
           {t("projectsEmpty")}
         </p>
       ) : (
-        <CoverflowCarousel
-          className="mt-12 md:mt-16"
-          prevLabel={t("prevProject")}
-          nextLabel={t("nextProject")}
-          items={projects.map((project, index) => ({
-            id: project.id,
-            content: (
-              <ProjectTile
-                project={project}
-                position={index + 1}
-                total={projects.length}
-                sizes="(min-width: 1024px) 60rem, 84vw"
-              />
-            ),
-          }))}
-        />
+        <>
+          <ProjectsStack
+            projects={projects.slice(0, FEATURED)}
+            className="mt-12 md:mt-16"
+          />
+          <div className="container mx-auto mt-10 flex justify-center px-6 sm:hidden">
+            <Button asChild variant="outline" size="pill">
+              <Link href="/projects">
+                {t("allProjects")}
+                <ArrowUpRight aria-hidden="true" />
+              </Link>
+            </Button>
+          </div>
+        </>
       )}
     </section>
   );
