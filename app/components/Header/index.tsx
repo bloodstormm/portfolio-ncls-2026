@@ -84,7 +84,7 @@ export const Header = () => {
                   className={`relative text-base font-medium transition-colors duration-300 group ${
                     hasDarkHero
                       ? "text-white/90 hover:text-white"
-                      : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
+                      : "text-foreground/80 hover:text-primary"
                   }`}
                 >
                   {t("about")}
@@ -98,7 +98,7 @@ export const Header = () => {
                   className={`relative text-base font-medium transition-colors duration-300 group ${
                     hasDarkHero
                       ? "text-white/90 hover:text-white"
-                      : "text-foreground/80 hover:text-primary dark:hover:text-secondary"
+                      : "text-foreground/80 hover:text-primary"
                   }`}
                 >
                   {t("projects")}

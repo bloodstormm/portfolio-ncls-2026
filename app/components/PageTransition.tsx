@@ -15,7 +15,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
+  const lastPathname = useRef(pathname);
 
   // Leave: intercept clicks on internal links
   useEffect(() => {
@@ -76,11 +76,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
-    // First load: the page is already on screen, no fade
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    // Only when the route really changed: never on the first load
+    if (lastPathname.current === pathname) return;
+    lastPathname.current = pathname;
     wrapper.style.transition = "none";
     wrapper.style.opacity = "0";
     const frame = requestAnimationFrame(() => {

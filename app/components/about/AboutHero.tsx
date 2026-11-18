@@ -52,7 +52,7 @@ export function AboutHero() {
           {t("subtitle")}
         </motion.p>
 
-        <div className="mt-4 flex flex-col gap-8 md:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+        <div className="mt-4 flex flex-col gap-8 md:mt-6 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
           <h1 className="font-Wulkan text-[clamp(3rem,8vw,7rem)] leading-[0.95] tracking-[-0.02em]">
             <motion.span {...titleLine(0)} className="block">
               {t("aboutTitle")}
@@ -62,7 +62,7 @@ export function AboutHero() {
             </motion.span>
           </h1>
 
-          <div className="max-w-[46ch] lg:pb-3">
+          <div className="max-w-[46ch] lg:pt-4">
             <div className="text-base leading-relaxed text-muted-foreground md:text-lg">
               <WordsStagger delay={0.35} stagger={0.02} speed={0.5}>
                 {`${t("bio")} ${t("bio2")}`}
