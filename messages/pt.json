@@ -9,9 +9,9 @@
     "resume": "Currículo"
   },
   "footer": {
-    "cta": "Vamos trabalhar juntos?",
-    "rights": "Todos os direitos reservados.",
-    "available": "Disponível para novos projetos."
+    "cta": "Vamos conversar?",
+    "text": "Me chama no WhatsApp pra gente trocar uma ideia. Se quiser me conhecer melhor antes, o currículo está aqui também.",
+    "rights": "Todos os direitos reservados."
   },
   "home": {
     "role": "Designer UI/UX e desenvolvedor front-end",
@@ -28,10 +28,6 @@
     "viewProject": "Ver projeto",
     "allProjects": "Ver todos",
     "projectsEmpty": "Os projetos aparecem aqui em breve.",
-    "card1Title": "Precisa de um site?",
-    "card1Text": "Me conta a ideia que eu cuido do resto, do layout até o site no ar.",
-    "card2Title": "Está contratando?",
-    "card2Text": "Hoje trabalho na CI&T e já passei pela Johnson & Johnson. O currículo conta o resto.",
     "card2Cta": "Abrir currículo",
     "about": "Sobre mim",
     "viaCit": "pela CI&T",
@@ -65,6 +61,7 @@
     "aboutTitle": "Quem é",
     "aboutTitleName": "o Nícolas?",
     "subtitle": "Sobre mim",
+    "photoAlt": "Nícolas Malachias ao entardecer, em um restaurante no campo",
     "available": "Disponível",
     "bio": "Olá 👋, sou formado em Análise e Desenvolvimento de Sistemas e hoje atuo entre front-end e UX/UI.",
     "bio2": "Faço sites como freelancer e já entreguei mais de 3 projetos de ponta a ponta que aumentaram retenção e credibilidade dos meus clientes :)",

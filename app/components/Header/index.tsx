@@ -11,7 +11,7 @@ import { Button } from "@/app/components/ui/button";
 import { ProgressiveBlur } from "@/app/components/ui/skiper-ui/progressive-blur";
 import { useTheme } from "@/app/hooks/useTheme";
 
-import { MdOpenInNew } from "react-icons/md";
+import { ArrowUpRight } from "lucide-react";
 import { BsMoon, BsStars } from "react-icons/bs";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { transition } from "@/app/utils/Animations";
@@ -147,7 +147,7 @@ export const Header = () => {
                 rel="noreferrer"
               >
                 {t("resume")}
-                <MdOpenInNew />
+                <ArrowUpRight aria-hidden="true" />
               </a>
             </Button>
 

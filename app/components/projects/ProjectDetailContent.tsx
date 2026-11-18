@@ -3,7 +3,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/app/i18n/navigation";
-import { HomeCards } from "@/app/components/home/HomeCards";
 import { Button } from "@/app/components/ui/button";
 import type { Project } from "@/app/types/projects";
 import { NextProject } from "./NextProject";
@@ -46,7 +45,6 @@ export function ProjectDetailContent({
       <ProjectDescription project={project} />
       <ProjectGallery images={project.images ?? []} title={project.title} />
       {nextProject && <NextProject project={nextProject} />}
-      <HomeCards />
     </>
   );
 }

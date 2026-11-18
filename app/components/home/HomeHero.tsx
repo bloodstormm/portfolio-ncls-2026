@@ -7,6 +7,7 @@ import { ArrowDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/app/components/ui/button";
 import { WordsStagger } from "@/app/components/ui/words-stagger";
+import { useLenis } from "@/app/components/SmoothScrollProvider";
 import Portrait from "@/public/images/portrait.jpg";
 import { getIntroDelay } from "./Preloader";
 
@@ -34,6 +35,22 @@ function NameLines({ delay }: { delay: number }) {
 export function HomeHero() {
   const t = useTranslations("home");
   const [delay] = useState(getIntroDelay);
+  const lenisRef = useLenis();
+
+  // Lenis owns the scroll position, so a plain anchor jump lands in the wrong place
+  function scrollToProjects(event: React.MouseEvent<HTMLAnchorElement>) {
+    const target = document.getElementById("projetos");
+    if (!target) return;
+    event.preventDefault();
+    if (lenisRef?.current) {
+      lenisRef.current.scrollTo(target, {
+        duration: 1.4,
+        easing: (t) => 1 - Math.pow(1 - t, 4),
+      });
+    } else {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  }
   const stageRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: stageRef,
@@ -118,7 +135,7 @@ export function HomeHero() {
             className="flex flex-wrap items-center gap-3"
           >
             <Button asChild size="pill">
-              <a href="#projetos">
+              <a href="#projetos" onClick={scrollToProjects}>
                 {t("seeProjects")}
                 <ArrowDown aria-hidden="true" />
               </a>

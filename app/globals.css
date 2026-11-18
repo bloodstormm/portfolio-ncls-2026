@@ -64,6 +64,20 @@
   --color-input: rgba(var(--foreground), 0.14);
   --color-ring: rgb(var(--brand));
   --color-destructive: #b3261e;
+
+  /* shadcn/ui accordion */
+  --animate-accordion-down: accordion-down 0.3s ease-out;
+  --animate-accordion-up: accordion-up 0.3s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
 }
 
 ::selection {

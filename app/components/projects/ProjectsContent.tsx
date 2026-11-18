@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { DotGrid, Rings } from "@/app/components/home/Decor";
-import { HomeCards } from "@/app/components/home/HomeCards";
 import { Button } from "@/app/components/ui/button";
 import { WordsStagger } from "@/app/components/ui/words-stagger";
 import { cn } from "@/app/lib/utils";
@@ -135,8 +134,6 @@ export function ProjectsContent({ projects }: { projects: Project[] }) {
           </AnimatePresence>
         )}
       </section>
-
-      <HomeCards />
     </>
   );
 }
