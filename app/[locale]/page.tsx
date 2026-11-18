@@ -1,13 +1,23 @@
-import { HeroSection } from "@/app/components/home/HeroSection";
-import { ValueSection } from "@/app/components/home/ValueSection";
-import { HomepageProjects } from "@/app/components/home/HomepageProjects";
+import { Preloader } from "@/app/components/home/Preloader";
+import { HomeHero } from "@/app/components/home/HomeHero";
+import { HomeClients } from "@/app/components/home/HomeClients";
+import { HomeIntro } from "@/app/components/home/HomeIntro";
+import { HomeProjects } from "@/app/components/home/HomeProjects";
+import { getProjects } from "@/app/lib/getProjects";
 
-export default function Home() {
+// Refresh project data at most once a minute.
+export const revalidate = 60;
+
+export default async function Home() {
+  const projects = await getProjects();
+
   return (
-    <div>
-      <HeroSection />
-      <ValueSection />
-      <HomepageProjects />
-    </div>
+    <>
+      <Preloader />
+      <HomeHero />
+      <HomeClients />
+      <HomeIntro />
+      <HomeProjects projects={projects} />
+    </>
   );
 }

@@ -9,7 +9,10 @@ export async function uploadImageViaApi(file: File, path: string, adminToken: st
     body: form,
   });
 
-  if (!res.ok) throw new Error("Falha no upload da imagem");
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || "Falha no upload da imagem");
+  }
   const { url } = await res.json();
   return url;
 }

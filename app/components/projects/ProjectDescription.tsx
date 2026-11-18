@@ -1,65 +1,87 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
-import { BsArrowUpRight, BsGithub, BsGlobe } from "react-icons/bs";
-import { RichTextRenderer } from "@/app/components/RichTextRenderer";
-import type { Project } from "@/app/types/projects";
+import { ArrowUpRight, Globe } from "lucide-react";
+import { BsGithub } from "react-icons/bs";
 import { useLocale, useTranslations } from "next-intl";
+import { RichTextRenderer } from "@/app/components/RichTextRenderer";
+import { Button } from "@/app/components/ui/button";
+import type { Project } from "@/app/types/projects";
+import { ReadingProgress } from "./ReadingProgress";
 import { getDescription } from "@/app/utils/projectLocale";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-interface ProjectDescriptionProps {
-  project: Project;
-}
-
-export function ProjectDescription({ project }: ProjectDescriptionProps) {
+export function ProjectDescription({ project }: { project: Project }) {
   const locale = useLocale();
   const t = useTranslations("projectDetail");
+  const textRef = useRef<HTMLDivElement>(null);
+  const year = project.createdAt
+    ? new Date(project.createdAt).getFullYear()
+    : null;
+
   return (
-    <section className="container mx-auto px-6 py-20 max-w-4xl">
+    <section className="container mx-auto px-6 py-20 md:py-28 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease, delay: 0.6 }}
-        className="space-y-10"
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+        transition={{ duration: 0.9, ease }}
+        className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16"
       >
-        <div className="space-y-4">
-          <h3 className="text-3xl font-semibold text-primary">{t("about")}</h3>
-          <div className="w-12 h-0.5 bg-primary rounded-full" />
-          <RichTextRenderer
-            content={getDescription(project, locale)}
-            className="text-base leading-relaxed text-foreground/80"
+        {/* Side column: stays in view while the text scrolls */}
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <h2 className="font-Wulkan text-[clamp(2rem,3.6vw,3rem)] leading-[1.05]">
+            {t("about")}
+          </h2>
+          {year && (
+            <p className="mt-4 text-sm tabular-nums text-muted-foreground">
+              {year}
+            </p>
+          )}
+
+          {(project.demoUrl || project.repositoryUrl) && (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {project.demoUrl && (
+                <Button asChild size="pill">
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Globe aria-hidden="true" />
+                    {t("visitSite")}
+                    <ArrowUpRight aria-hidden="true" />
+                  </a>
+                </Button>
+              )}
+              {project.repositoryUrl && (
+                <Button asChild variant="outline" size="pill">
+                  <a
+                    href={project.repositoryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BsGithub aria-hidden="true" />
+                    {t("repository")}
+                  </a>
+                </Button>
+              )}
+            </div>
+          )}
+          <ReadingProgress
+            target={textRef}
+            className="ml-1 mt-12 hidden lg:block"
           />
         </div>
 
-        {(project.demoUrl || project.repositoryUrl) && (
-          <div className="flex gap-4 flex-wrap pt-2">
-            {project.demoUrl && (
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-hover transition-colors duration-300 text-sm font-medium"
-              >
-                <BsGlobe className="h-4 w-4" />
-                {t("visitSite")}
-                <BsArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-            )}
-            {project.repositoryUrl && (
-              <a
-                href={project.repositoryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 border border-beige/40 text-foreground hover:border-primary/50 hover:text-primary rounded-full transition-all duration-300 text-sm font-medium"
-              >
-                <BsGithub className="h-4 w-4" />
-                {t("repository")}
-              </a>
-            )}
-          </div>
-        )}
+        <div ref={textRef}>
+          <RichTextRenderer
+            content={getDescription(project, locale)}
+            className="max-w-[68ch] text-base leading-relaxed text-foreground/80 md:text-lg"
+          />
+        </div>
       </motion.div>
     </section>
   );

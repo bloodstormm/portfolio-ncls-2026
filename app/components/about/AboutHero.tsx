@@ -1,188 +1,146 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { BsWhatsapp, BsGithub } from "react-icons/bs";
+import { BsGithub, BsWhatsapp } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import AboutImage from "@/public/images/about-imager.jpg";
-import { ease, stats, socials } from "./data";
 import { useTranslations } from "next-intl";
+import { DotGrid, Rings } from "@/app/components/home/Decor";
+import { Button } from "@/app/components/ui/button";
+import { WordsStagger } from "@/app/components/ui/words-stagger";
+import AboutImage from "@/public/images/about.jpg";
+import { ease, socials, stats } from "./data";
 
 const socialIcons: Record<string, React.ReactNode> = {
-  WhatsApp: <BsWhatsapp />,
-  LinkedIn: <FaLinkedinIn />,
-  "E-mail": <HiOutlineMail />,
-  GitHub: <BsGithub />,
+  WhatsApp: <BsWhatsapp aria-hidden="true" />,
+  LinkedIn: <FaLinkedinIn aria-hidden="true" />,
+  "E-mail": <HiOutlineMail aria-hidden="true" />,
+  GitHub: <BsGithub aria-hidden="true" />,
 };
+
+type StatKey = "stats.experience" | "stats.projects" | "stats.companies";
 
 export function AboutHero() {
   const t = useTranslations("about");
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const heroRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
+  const photoRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: photoRef,
+    offset: ["start end", "end start"],
   });
-  const photoY = useTransform(heroProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(heroProgress, [0, 0.65], [1, 0]);
+  const photoY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+
+  const titleLine = (order: number) => ({
+    initial: { opacity: 0, y: "40%" },
+    animate: { opacity: 1, y: "0%" },
+    transition: { duration: 1, ease, delay: 0.05 + order * 0.1 },
+  });
 
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen overflow-hidden flex items-center"
-    >
-      <div className="container mx-auto px-6 md:px-8 pb-16 md:pb-24 w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        {/* Coluna esquerda: tipografia + stats + socials */}
-        <div className="flex flex-col">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 0.2 }}
-            className="text-[10px] uppercase tracking-[0.4em] text-primary/50 font-Odasans mb-6"
-          >
-            {t("subtitle")}
-          </motion.span>
+    <section className="relative overflow-hidden">
+      <Rings className="absolute -right-40 -top-40 hidden h-[30rem] w-[30rem] text-primary/30 [mask-image:radial-gradient(closest-side,black_35%,transparent_98%)] md:block" />
+      <DotGrid className="absolute -left-10 top-72 hidden h-64 w-64 text-primary/50 md:block" />
 
-          <motion.h1
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.3, ease, delay: 0.35 }}
-            className="font-Wulkan  leading-none text-5xl md:text-6xl xl:text-7xl"
-          >
-            {t("aboutTitle")}
-          </motion.h1>
-          <motion.h1
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.3, ease, delay: 0.45 }}
-            className="font-Wulkan  leading-none text-5xl md:text-6xl xl:text-7xl text-primary"
-            >
-            {t("aboutTitleName")}
-          </motion.h1>
+      <div className="container relative mx-auto px-6 pt-14 md:pt-24 lg:px-8">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease }}
+          className="text-sm font-medium text-primary md:text-base"
+        >
+          {t("subtitle")}
+        </motion.p>
 
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: 1, opacity: 1 }}
-            transition={{ duration: 1, ease, delay: 0.7 }}
-            className="h-px bg-linear-to-r from-primary/40 via-primary/15 to-transparent origin-left mt-8 mb-7"
-          />
+        <div className="mt-4 flex flex-col gap-8 md:mt-6 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+          <h1 className="font-Wulkan text-[clamp(3rem,8vw,7rem)] leading-[0.95] tracking-[-0.02em]">
+            <motion.span {...titleLine(0)} className="block">
+              {t("aboutTitle")}
+            </motion.span>
+            <motion.span {...titleLine(1)} className="block text-primary">
+              {t("aboutTitleName")}
+            </motion.span>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease, delay: 0.8 }}
-            className="text-sm leading-relaxed text-muted/80 max-w-sm"
-          >
-            {t("bio")} <br /> <br />
-            <b className="text-primary">{t("bio2")}</b>
-          </motion.p>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease, delay: 0.95 }}
-            className="flex gap-10 mt-8"
-          >
-            {stats.map((s, i) => (
-              <motion.div
-                key={s.key}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease, delay: 1.0 + i * 0.08 }}
-                className="flex flex-col gap-0.5"
-              >
-                <span className="font-Wulkan text-4xl text-primary leading-none">
-                  {s.value}
-                </span>
-                <span className="text-[9px] text-muted/50 uppercase tracking-widest font-Odasans mt-1">
-                  {t(`stats.${s.key}` as "stats.experience" | "stats.projects" | "stats.companies")}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Socials + disponível */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 1.15 }}
-            className="flex flex-wrap items-center gap-3 mt-8"
-          >
-            <div className="flex items-center gap-2 mr-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-[10px] text-muted/60 font-Odasans uppercase tracking-wide">
-                {t("available")}
-              </span>
+          <div className="max-w-[46ch] lg:pt-4">
+            <div className="text-base leading-relaxed text-muted-foreground md:text-lg">
+              <WordsStagger delay={0.35} stagger={0.02} speed={0.5}>
+                {`${t("bio")} ${t("bio2")}`}
+              </WordsStagger>
             </div>
-            {socials.map((s, i) => (
-              <motion.a
-                key={s.label}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.35, ease, delay: 1.2 + i * 0.06 }}
-                whileHover={{ scale: 1.1, y: -2 }}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-foreground/40 hover:text-primary transition-colors duration-200 text-lg"
-                title={s.label}
-              >
-                {socialIcons[s.label]}
-              </motion.a>
-            ))}
-          </motion.div>
+            <motion.ul
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.7 }}
+              className="mt-6 flex gap-2"
+            >
+              {socials.map((social) => (
+                <li key={social.label}>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="icon-lg"
+                    className="rounded-full"
+                  >
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      title={social.label}
+                    >
+                      {socialIcons[social.label]}
+                    </a>
+                  </Button>
+                </li>
+              ))}
+            </motion.ul>
+          </div>
         </div>
 
-        {/* Coluna direita: foto estilo polaroid */}
         <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0, rotate: 2 }}
-          transition={{ duration: 1.4, ease, delay: 0.3 }}
-          whileHover={{ rotate: 0, scale: 1.02, transition: { duration: 0.4 } }}
-          className="relative cursor-pointer w-full max-w-sm mx-auto md:max-w-none"
-          style={{
-            background: "#fff",
-            padding: "12px 12px 48px 12px",
-            boxShadow:
-              "0 30px 80px rgba(0,0,0,0.28), 0 8px 24px rgba(0,0,0,0.16)",
-            borderRadius: "4px",
-          }}
+          ref={photoRef}
+          initial={{ opacity: 0, clipPath: "inset(8% 6% 8% 6% round 2rem)" }}
+          animate={{ opacity: 1, clipPath: "inset(0% 0% 0% 0% round 2rem)" }}
+          transition={{ duration: 1.2, ease, delay: 0.35 }}
+          className="relative mt-10 aspect-[4/5] overflow-hidden rounded-[2rem] sm:aspect-[16/10] md:mt-14 lg:aspect-[16/8]"
         >
-          <div className="overflow-hidden aspect-[3/4] md:aspect-auto md:h-[68vh]">
-            <motion.img
-              initial={{ scale: 1.12 }}
-              animate={{ scale: 1 }}
-              style={{ y: photoY }}
-              transition={{ duration: 2.2, ease }}
-              src={AboutImage.src}
-              alt="Nícolas Malachias"
-              className="w-full h-full object-cover object-center"
+          <motion.div
+            style={{ y: photoY }}
+            className="absolute inset-x-0 -inset-y-[7%]"
+          >
+            <Image
+              src={AboutImage}
+              alt={t("photoAlt")}
+              fill
+              priority
+              placeholder="blur"
+              sizes="(min-width: 1024px) 90vw, 100vw"
+              className="object-cover object-[50%_36%]"
             />
-          </div>
+          </motion.div>
         </motion.div>
-      </div>
 
-      {/* Indicador de scroll */}
-      <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-50"
-        style={{ opacity: heroOpacity }}
-      >
-        <motion.div
-          className="w-px h-8 bg-gradient-to-b from-transparent via-primary/50 to-primary origin-top"
-          animate={{ scaleY: [0, 1, 0], opacity: [0, 1, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-        />
-        <span className="text-[7px] uppercase tracking-[0.3em] text-muted/40 font-Odasans">
-          scroll
-        </span>
-      </motion.div>
+        <dl className="mt-10 grid grid-cols-3 gap-4 md:mt-14 md:gap-10">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.key}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+              transition={{ duration: 0.8, ease, delay: index * 0.1 }}
+              className="flex flex-col-reverse gap-2 border-t border-border pt-5 md:pt-6"
+            >
+              <dt className="text-sm text-muted-foreground md:text-base">
+                {t(`stats.${stat.key}` as StatKey)}
+              </dt>
+              <dd className="font-Wulkan text-[clamp(2.5rem,6vw,5rem)] leading-none text-primary">
+                {stat.value}
+              </dd>
+            </motion.div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }
